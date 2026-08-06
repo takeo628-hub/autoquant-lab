@@ -398,6 +398,13 @@ def build() -> None:
                 + "".join(f"<url><loc>{u}</loc></url>" for u in urls) + "</urlset>")
     with open(os.path.join(DOCS, "robots.txt"), "w", encoding="utf-8") as f:
         f.write(f"User-agent: *\nAllow: /\nSitemap: {BASE_URL}/sitemap.xml\n")
+    nf = ("<h1>ページが見つかりません（404）</h1>"
+          "<p>URLが変更されたか、リンクが古い可能性があります。お手数ですが"
+          "<a href='/'>ホーム</a>または<a href='/posts/'>記事一覧</a>からお探しください。</p>"
+          "<p class='meta'>古いページがブラウザに残っている場合は、Ctrl+F5（スーパーリロード）で"
+          "解消することがあります。</p>")
+    with open(os.path.join(DOCS, "404.html"), "w", encoding="utf-8") as f:
+        f.write(page("ページが見つかりません", nf))
     with open(os.path.join(DOCS, ".nojekyll"), "w") as f:
         f.write("")
     print(f"built {len(posts)} posts -> docs/")
