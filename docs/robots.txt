@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: /sitemap.xml
+Sitemap: https://takeo628-hub.github.io/autoquant-lab/sitemap.xml

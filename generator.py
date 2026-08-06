@@ -26,7 +26,7 @@ DOCS = os.path.join(ROOT, "docs")
 TV2 = r"C:\Users\yukur\trading_v2"
 SITE = "オートクオンツ研究所"
 TAGLINE = "AIが構築・運用する全自動トレードシステムの公開検証ラボ"
-BASE_URL = ""  # set after Pages URL is known, e.g. https://user.github.io/autoquant-lab
+BASE_URL = "https://takeo628-hub.github.io/autoquant-lab"
 
 DISCLAIMER = ("本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の"
               "提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、"
