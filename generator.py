@@ -454,14 +454,59 @@ def git_push() -> None:
         print("pushed")
 
 
+def gen_note_digest() -> str:
+    """Weekly digest draft for note.com (paste-ready; no affiliate links —
+    note's ToS forbids ASP links, so this is a pure funnel to the hub)."""
+    today = dt.date.today()
+    posts = load_posts()
+    journals = [p for p in posts if p["type"] == "journal"][:5]
+    articles = [p for p in posts if p["type"] != "journal"][:3]
+    eq_line = ""
+    try:
+        with open(os.path.join(TV2, "state", "paper_state.json"), encoding="utf-8") as f:
+            st = json.load(f)
+        cur = st["history"][-1]
+        ret = (cur["equity_jpy"] / st.get("capital_jpy", 1_000_000) - 1) * 100
+        eq_line = f"今週時点の仮想資産は **{cur['equity_jpy']:,}円（開始から{ret:+.2f}%）** です。"
+    except Exception:
+        pass
+    j = "\n".join(f"- {p['date']}: {p['title']}" for p in journals) or "- （今週の記録は蓄積中です）"
+    a = "\n".join(f"- [{p['title']}]({BASE_URL}/posts/{p['slug']}.html)" for p in articles)
+    body = f"""# 【週報】AIが全自動運用するトレードシステム、今週の記録（{today:%Y-%m-%d}）
+
+こんにちは、オートクオンツ研究所です。AI（Claude）が設計・実装・運用まで行う自動売買システムの検証記録を、毎日すべて事後公開しています。{eq_line}
+
+## 今週のジャーナル
+{j}
+
+## 今週のおすすめ記事（本店で全文公開中）
+{a}
+
+## このプロジェクトについて
+「バックテストでは勝てるのに実戦で負ける」原因（過適合・ルックアヘッド）を、全実績の事後公開という形で検証しているプロジェクトです。毎日の記録・検証手法の解説・計算ツールはすべて無料で公開しています。
+
+▶ 本店（毎日自動更新）: {BASE_URL}/
+
+※本記事は投資助言ではありません。掲載実績はペーパートレードを含み、将来の成果を保証するものではありません。
+"""
+    os.makedirs(os.path.join(ROOT, "note_queue"), exist_ok=True)
+    path = os.path.join(ROOT, "note_queue", f"note-{today:%Y%m%d}.md")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(body)
+    return path
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--daily", action="store_true")
     ap.add_argument("--push", action="store_true")
+    ap.add_argument("--note-digest", action="store_true")
     a = ap.parse_args()
     if a.daily:
         slug = gen_daily_journal()
         print(f"journal: {slug or 'skipped (exists or no data)'}")
+    if a.note_digest:
+        print(f"note digest -> {gen_note_digest()}")
     build()
     if a.push:
         git_push()
