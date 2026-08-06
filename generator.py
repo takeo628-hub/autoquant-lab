@@ -144,7 +144,8 @@ def page(title: str, body: str, desc: str = "", meta: dict | None = None) -> str
 <style>{CSS}</style></head><body>
 <header><div class="hwrap"><a class="t" href="/"><span class="logo">AQ</span>{SITE}</a>
 <nav><a href="/">ホーム</a><a href="/posts/">記事一覧</a><a href="/tools/">ツール</a>
-<a href="/hikaku.html">証券会社比較</a><a href="/about.html">このサイトについて</a></nav></div></header>
+<a href="/hikaku.html">証券会社比較</a><a href="/data.html">Data (EN)</a>
+<a href="/about.html">このサイトについて</a></nav></div></header>
 <main>{body}
 <div class="note">{DISCLAIMER}</div></main>
 <footer><div class="fwrap">© {dt.date.today().year} {SITE} ／ 本サイトの記事は自動売買システムの
@@ -587,6 +588,63 @@ def build() -> None:
         f.write(page("投資検証の用語集", gl,
                      "過適合・ルックアヘッド・ドローダウンなど、投資システム検証の用語を実務目線で解説する用語集。"))
 
+    tse_years = "2020-2031"
+    tse_first = {}
+    tse_src = os.path.join(ROOT, "tse_calendar.json")
+    if os.path.exists(tse_src):
+        with open(tse_src, encoding="utf-8") as f:
+            _t = json.load(f)
+        tse_years = _t.get("coverage", tse_years)
+        tse_first = _t.get("summary_by_year", {})
+    rows = "".join(
+        f"<tr><td>{y}</td><td>{v['trading_days']}</td>"
+        f"<td>{v['first_trading_day']}</td><td>{v['last_trading_day']}</td></tr>"
+        for y, v in sorted(tse_first.items()) if "2024" <= y <= "2028")
+    data_page = (
+        "<h1>Japan Data, Free and Machine-Readable</h1>"
+        "<p class='lead'>Public Japanese data that is oddly hard to get in a usable "
+        "form: exchange trading calendars, public holidays, broker fee schedules. "
+        "Plain JSON, no API key, CC0. Built and updated by an autonomous pipeline.</p>"
+        "<h2>Tokyo Stock Exchange trading calendar</h2>"
+        "<p><strong>The exchange calendar is not the public-holiday calendar.</strong> "
+        "TSE closes on public holidays <em>and</em> from 31 December through 3 January, "
+        "so the first and last session of the year move annually and naive "
+        "&ldquo;business day&rdquo; arithmetic gets settlement dates wrong.</p>"
+        f"<table><tr><th>Year</th><th>Sessions</th>"
+        f"<th>First session (大発会)</th><th>Last session (大納会)</th></tr>{rows}</table>"
+        f"<p class='meta'>Coverage {tse_years}. Every closure carries a reason "
+        "(<code>weekend</code>, <code>public_holiday:名称</code>, "
+        "<code>new_year_break</code>, <code>year_end_break</code>). Scheduled "
+        "closures only — unscheduled halts are historical events, not rules.</p>"
+        "<h2>Endpoints</h2>"
+        "<table><tr><th>Endpoint</th><th>Contents</th></tr>"
+        f"<tr><td><a href='/api/tse-calendar.json'>/api/tse-calendar.json</a></td>"
+        f"<td>TSE trading days, closures with reasons, per-year summary</td></tr>"
+        f"<tr><td><a href='/api/jp-holidays.json'>/api/jp-holidays.json</a></td>"
+        f"<td>Japanese public holidays incl. substitute holidays, {tse_years}</td></tr>"
+        f"<tr><td><a href='/api/broker-fees.json'>/api/broker-fees.json</a></td>"
+        f"<td>Japanese broker US-stock commission rates, with a measured impact figure</td></tr>"
+        f"<tr><td><a href='/api/index.json'>/api/index.json</a></td>"
+        f"<td>Endpoint directory</td></tr></table>"
+        "<h2>Use it from an AI assistant</h2>"
+        "<p>The same data is packaged as an MCP server with 11 tools "
+        "(trading-day checks, settlement-date shifts, era conversion, tax arithmetic), "
+        "so an assistant can call it instead of guessing: "
+        "<a href='https://github.com/takeo628-hub/jp-calendar-mcp'>jp-calendar-mcp</a> "
+        "(MIT, zero dependencies, 42 known-answer tests).</p>"
+        "<h2>Why this exists</h2>"
+        "<p>We needed an accurate Japanese trading calendar for our own backtests and "
+        "found no clean, free, machine-readable source in English. Since the data was "
+        "already generated and validated, publishing it costs nothing. Accuracy claims "
+        "are backed by tests against actual sessions rather than assertions.</p>"
+        "<p class='meta'>Data is provided as-is under CC0. Verify against official "
+        "sources before relying on it for anything that settles money.</p>")
+    with open(os.path.join(DOCS, "data.html"), "w", encoding="utf-8") as f:
+        f.write(page("Japan Data (free JSON API)", data_page,
+                     "Free machine-readable Japanese data: Tokyo Stock Exchange "
+                     "trading calendar, public holidays, broker fees. Plain JSON, "
+                     "no key, CC0."))
+
     about = ("<h1>このサイトについて</h1>"
              "<p>本サイトはAI（Claude）が設計・実装・運用する自動売買システムの検証記録を、"
              "同じくAIが毎日自動で公開する実験プロジェクトです。記事の生成からサイトの更新まで"
@@ -638,7 +696,8 @@ def build() -> None:
             f"{BASE_URL}/tools/fee-calc.html", f"{BASE_URL}/tools/moji-count.html",
             f"{BASE_URL}/tools/wareki.html", f"{BASE_URL}/tools/date-calc.html",
             f"{BASE_URL}/tools/image-compress.html", f"{BASE_URL}/tools/nisa.html",
-            f"{BASE_URL}/tools/ideco.html", f"{BASE_URL}/tools/furusato.html"] + \
+            f"{BASE_URL}/tools/ideco.html", f"{BASE_URL}/tools/furusato.html",
+            f"{BASE_URL}/data.html"] + \
            [f"{BASE_URL}/posts/{p['slug']}.html" for p in posts]
     with open(os.path.join(DOCS, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write("<?xml version='1.0' encoding='UTF-8'?>"
@@ -679,12 +738,22 @@ def build() -> None:
                        "description": "Same daily strategy, 15.6y backtest, costs included",
                        "cagr_difference_pct": 1.5,
                        "compared": ["0.495%", "0.088%"]}}, f, ensure_ascii=False)
+    tse_src = os.path.join(ROOT, "tse_calendar.json")
+    if os.path.exists(tse_src):
+        with open(tse_src, encoding="utf-8") as f:
+            tse = json.load(f)
+        with open(os.path.join(api, "tse-calendar.json"), "w", encoding="utf-8") as f:
+            json.dump(tse, f, ensure_ascii=False)
     with open(os.path.join(api, "index.json"), "w", encoding="utf-8") as f:
         json.dump({"site": SITE, "url": BASE_URL + "/",
-                   "description": "Machine-readable data behind the site's tools",
+                   "description": "Machine-readable data behind the site's tools. "
+                                  "Free, CC0, no key required.",
                    "endpoints": {
                        "jp_holidays": BASE_URL + "/api/jp-holidays.json",
-                       "broker_fees": BASE_URL + "/api/broker-fees.json"}},
+                       "tse_trading_calendar": BASE_URL + "/api/tse-calendar.json",
+                       "broker_fees": BASE_URL + "/api/broker-fees.json"},
+                   "docs": BASE_URL + "/data.html",
+                   "mcp_server": "https://github.com/takeo628-hub/jp-calendar-mcp"},
                   f, ensure_ascii=False)
 
     with open(os.path.join(DOCS, "v.json"), "w", encoding="utf-8") as f:
