@@ -85,9 +85,9 @@ button:hover{opacity:.92}
 footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface)}
 .fwrap{max-width:820px;margin:0 auto;padding:22px 20px;font-size:12px;color:var(--sub)}
 </style></head><body>
-<header><div class="hwrap"><a class="t" href="/autoquant-lab/?v=20260806122635"><span class="logo">AQ</span>オートクオンツ研究所</a>
-<nav><a href="/autoquant-lab/?v=20260806122635">ホーム</a><a href="/autoquant-lab/posts/?v=20260806122635">記事一覧</a><a href="/autoquant-lab/tools/?v=20260806122635">ツール</a>
-<a href="/autoquant-lab/hikaku.html?v=20260806122635">証券会社比較</a><a href="/autoquant-lab/about.html?v=20260806122635">このサイトについて</a></nav></div></header>
+<header><div class="hwrap"><a class="t" href="/autoquant-lab/?v=20260806123840"><span class="logo">AQ</span>オートクオンツ研究所</a>
+<nav><a href="/autoquant-lab/?v=20260806123840">ホーム</a><a href="/autoquant-lab/posts/?v=20260806123840">記事一覧</a><a href="/autoquant-lab/tools/?v=20260806123840">ツール</a>
+<a href="/autoquant-lab/hikaku.html?v=20260806123840">証券会社比較</a><a href="/autoquant-lab/about.html?v=20260806123840">このサイトについて</a></nav></div></header>
 <main><h1>証券会社の年間手数料計算機</h1><p>1回の取引金額と年間取引回数から、証券会社ごとの年間手数料を比較計算します。料率は2026年8月調査時点（必ず公式で最新確認を）。</p><div class='card'>1回の取引金額 <input id=amt type=number value=300000>円<br>
 年間取引回数 <input id=n type=number value=24>回<br>
 <button onclick=calc()>計算する</button><div class=result id=out></div>
@@ -102,7 +102,7 @@ document.getElementById('out').textContent='年間'+n+'回 × '+a.toLocaleString
 <div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
 <footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
-<script>(function(){var B="20260806122635";
+<script>(function(){var B="20260806123840";
 var q=new URLSearchParams(location.search);
 if(q.get("v")===B){q.delete("v");var s=q.toString();
 history.replaceState(null,"",location.pathname+(s?"?"+s:"")+location.hash);}
