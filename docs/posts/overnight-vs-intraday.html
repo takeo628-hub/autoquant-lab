@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測 | オートクオンツ研究所</title>
+<meta name="description" content="株価のリターンを日中（寄付→引け）と夜間（引け→翌寄付）に分解すると、利益のほぼすべてが夜間に発生していることがわかります。日米の実データで検証しました。">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml">
+<meta property="og:title" content="株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測"><meta property="og:description" content="株価のリターンを日中（寄付→引け）と夜間（引け→翌寄付）に分解すると、利益のほぼすべてが夜間に発生していることがわかります。日米の実データで検証しました。"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/overnight-vs-intraday.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測", "datePublished": "2026-08-06", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/overnight-vs-intraday.html"}</script>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--sub:#555;--line:#e5e5e5;--acc:#0b5fff;--box:#f6f8fa}
+@media(prefers-color-scheme:dark){:root{--bg:#111417;--fg:#e8e8e8;--sub:#9aa;--line:#2a2f35;--acc:#6ea8ff;--box:#1a1f24}}
+*{box-sizing:border-box}body{margin:0;font-family:'Hiragino Sans','Yu Gothic UI',Meiryo,sans-serif;
+background:var(--bg);color:var(--fg);line-height:1.9}
+main{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+header{border-bottom:1px solid var(--line)}
+.hwrap{max-width:760px;margin:0 auto;padding:14px 16px;display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+.hwrap a{color:var(--fg);text-decoration:none}.hwrap .t{font-weight:700;font-size:18px}
+nav a{color:var(--sub);text-decoration:none;margin-right:14px;font-size:14px}
+h1{font-size:26px;line-height:1.5}h2{font-size:20px;margin-top:2em;border-left:4px solid var(--acc);padding-left:10px}
+h3{font-size:17px}a{color:var(--acc)}
+table{border-collapse:collapse;width:100%;font-size:14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:right}th:first-child,td:first-child{text-align:left}
+.meta{color:var(--sub);font-size:13px}
+.note{background:var(--box);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--sub);margin-top:40px}
+.pr{background:var(--box);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:24px 0}
+.pr .tag{font-size:11px;color:var(--sub);letter-spacing:.1em}
+.card{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
+.card a{text-decoration:none;font-weight:600}
+input,select{font:inherit;padding:6px 8px;margin:4px 0;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+button{font:inherit;padding:8px 16px;border:0;border-radius:6px;background:var(--acc);color:#fff;cursor:pointer}
+.result{font-size:18px;font-weight:700;margin-top:12px}
+footer{border-top:1px solid var(--line);margin-top:48px}
+.fwrap{max-width:760px;margin:0 auto;padding:20px 16px;font-size:12px;color:var(--sub)}
+</style></head><body>
+<header><div class="hwrap"><a class="t" href="/">オートクオンツ研究所</a>
+<nav><a href="/">ホーム</a><a href="/posts/">記事一覧</a><a href="/tools/">ツール</a>
+<a href="/hikaku.html">証券会社比較</a><a href="/about.html">このサイトについて</a></nav></div></header>
+<main><h1>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</h1><div class='meta'>2026-08-06・解説記事</div><p>「デイトレードなら夜のリスクを避けられる」— これは正しいのですが、代わりに何を失うのかはあまり語られません。当ラボの検証エンジンで、株のリターンを<strong>日中（寄付→引け）</strong>と<strong>夜間（引け→翌朝の寄付）</strong>に分解した実測値を公開します。</p>
+<h2>実測結果（累積リターンの分解）</h2>
+<table>
+<tr><th>銘柄</th><th>期間</th><th>日中のみの累積</th><th>夜間のみの累積</th></tr>
+<tr><td>日経レバETF(1570)</td><td>2012〜2026</td><td><strong>-53%</strong></td><td><strong>+3,067%</strong></td></tr>
+<tr><td>TOPIX ETF(1306)</td><td>2009〜2026</td><td>-49%</td><td>+35%</td></tr>
+<tr><td>SPY（米S&amp;P500）</td><td>2001〜2026</td><td>+90%</td><td>+386%</td></tr>
+<tr><td>QQQ（米ナスダック100）</td><td>2001〜2026</td><td>+15%</td><td>+1,166%</td></tr>
+</table>
+<p>衝撃的なのは日本市場です。日経平均に連動するETFを<strong>日中だけ</strong>持ち続けた場合、この約14年で資産は半分になっています。同じETFを<strong>夜間だけ</strong>持てば約31倍。株式のリスクプレミアム（保有の対価としてのリターン）は、そのほとんどが<strong>取引所が閉まっている間</strong>に発生しているのです。</p>
+<h2>なぜこうなるのか</h2>
+<p>学術研究でも古くから知られる現象で、決算発表や海外市場の動きなど重要な情報の多くが取引時間外に出ること、寄付に買い需要が集中しやすいこと、などが要因として挙げられます。理由はどうあれ、実務上の含意は明確です。</p>
+<h2>実務上の含意</h2>
+<ul>
+<li><strong>日中だけの取引（デイトレード）は、リターンの発生源を自ら手放す選択</strong>です。夜間のギャップリスクを避ける対価として、期待リターンの大部分を支払っています</li>
+<li>逆に、夜間リスクを取れるなら「持ち越す」こと自体に構造的な追い風があります</li>
+<li>当ラボが日次システムで翌日寄付執行・オーバーナイト保有を採用しているのは、この実測が理由です</li>
+</ul>
+<h2>注意</h2>
+<p>この分解は過去の統計であり、将来も同じ配分が続く保証はありません。また夜間保有には突発ニュースによるギャップ損失のリスクが常にあります。リスクを取らずにリターンだけ得る方法は存在しない、というのがこのデータの最も誠実な読み方です。</p><h2>関連記事</h2><div class='card'><a href='/posts/luck-vs-skill-bootstrap.html'>その運用成績、実力と運をどう切り分けるか — ブートストラップ検証入門</a><div class='meta'>2026-08-06</div></div><div class='card'><a href='/posts/leveraged-etf-trend-15y.html'>レバレッジETFは「持ちっぱなし」と「トレンドフィルタ」でどう変わるか — 15年・コスト込み検証</a><div class='meta'>2026-08-06</div></div><div class='card'><a href='/posts/kabt-overfit-anatomy.html'>バックテスト年利+360%のシステムが実弾で-8%になった話 — 過適合の解剖記録</a><div class='meta'>2026-08-06</div></div>
+<div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
+<footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
+記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
+</body></html>

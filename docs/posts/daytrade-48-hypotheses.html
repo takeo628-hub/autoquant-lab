@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>デイトレード必勝法を48通り検証したら、生き残りは1つだけだった | オートクオンツ研究所</title>
+<meta name="description" content="ギャップ逆張り・ブレイクアウト・押し目買いなど、デイトレードの定番手法7種×6銘柄をコスト込みで全数検証。48セル中47が不合格になった記録です。">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml">
+<meta property="og:title" content="デイトレード必勝法を48通り検証したら、生き残りは1つだけだった"><meta property="og:description" content="ギャップ逆張り・ブレイクアウト・押し目買いなど、デイトレードの定番手法7種×6銘柄をコスト込みで全数検証。48セル中47が不合格になった記録です。"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/daytrade-48-hypotheses.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "デイトレード必勝法を48通り検証したら、生き残りは1つだけだった", "datePublished": "2026-08-06", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/daytrade-48-hypotheses.html"}</script>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--sub:#555;--line:#e5e5e5;--acc:#0b5fff;--box:#f6f8fa}
+@media(prefers-color-scheme:dark){:root{--bg:#111417;--fg:#e8e8e8;--sub:#9aa;--line:#2a2f35;--acc:#6ea8ff;--box:#1a1f24}}
+*{box-sizing:border-box}body{margin:0;font-family:'Hiragino Sans','Yu Gothic UI',Meiryo,sans-serif;
+background:var(--bg);color:var(--fg);line-height:1.9}
+main{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+header{border-bottom:1px solid var(--line)}
+.hwrap{max-width:760px;margin:0 auto;padding:14px 16px;display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+.hwrap a{color:var(--fg);text-decoration:none}.hwrap .t{font-weight:700;font-size:18px}
+nav a{color:var(--sub);text-decoration:none;margin-right:14px;font-size:14px}
+h1{font-size:26px;line-height:1.5}h2{font-size:20px;margin-top:2em;border-left:4px solid var(--acc);padding-left:10px}
+h3{font-size:17px}a{color:var(--acc)}
+table{border-collapse:collapse;width:100%;font-size:14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:right}th:first-child,td:first-child{text-align:left}
+.meta{color:var(--sub);font-size:13px}
+.note{background:var(--box);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--sub);margin-top:40px}
+.pr{background:var(--box);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:24px 0}
+.pr .tag{font-size:11px;color:var(--sub);letter-spacing:.1em}
+.card{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
+.card a{text-decoration:none;font-weight:600}
+input,select{font:inherit;padding:6px 8px;margin:4px 0;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+button{font:inherit;padding:8px 16px;border:0;border-radius:6px;background:var(--acc);color:#fff;cursor:pointer}
+.result{font-size:18px;font-weight:700;margin-top:12px}
+footer{border-top:1px solid var(--line);margin-top:48px}
+.fwrap{max-width:760px;margin:0 auto;padding:20px 16px;font-size:12px;color:var(--sub)}
+</style></head><body>
+<header><div class="hwrap"><a class="t" href="/">オートクオンツ研究所</a>
+<nav><a href="/">ホーム</a><a href="/posts/">記事一覧</a><a href="/tools/">ツール</a>
+<a href="/hikaku.html">証券会社比較</a><a href="/about.html">このサイトについて</a></nav></div></header>
+<main><h1>デイトレード必勝法を48通り検証したら、生き残りは1つだけだった</h1><div class='meta'>2026-08-06・解説記事</div><p>「寄付で買って引けで売る」タイプのデイトレード手法を、思いつきではなく<strong>全数検証</strong>した記録です。よくある検証記事と違うのは、(1)仮説を検証前に固定し、後から都合よく追加しなかったこと、(2)手数料・スリッページを含めたこと、(3)期間の前半と後半の両方で機能することを合格条件にしたことです。</p>
+<h2>検証した仮説（事前宣言した7種）</h2>
+<ul>
+<li>ギャップダウン逆張り（大きく下げて始まった日に買う）</li>
+<li>ギャップアップ順張り（トレンド日の継続を狙う）</li>
+<li>前日売られすぎからの反発（RSI(2)ベース）</li>
+<li>前日陽線の翌日追随</li>
+<li>上昇相場で毎日「寄り買い引け売り」</li>
+<li>下落相場での戻り売り（ショート）</li>
+<li>ボラティリティ拡大日の反転狙い</li>
+</ul>
+<p>これを日米6銘柄（日経レバETF・TOPIX・日経225 ETF・SPY・QQQ・TQQQ）に適用し、<strong>合計48セル</strong>を判定しました。</p>
+<h2>結果</h2>
+<p><strong>47セルが不合格。</strong> 米国銘柄は手数料（往復0.28〜1.0%）が日中の小さなエッジ（数bp〜十数bp）を丸ごと食い潰し、全滅。日本銘柄は手数料0円でも、そもそも日中の期待リターン自体がほぼゼロ以下（<a href="/posts/overnight-vs-intraday.html">この記事</a>で分解データを公開しています）のため、大半がマイナスでした。</p>
+<p>唯一の生き残りは「上昇相場で前日に売られすぎた日経レバETFを、翌日寄付で買って引けで売る」という条件の限定的な手法で、それでも1回あたりの期待値は<strong>+0.23%</strong>、発生頻度は<strong>年12回程度</strong>。しかも直近数年はエッジがほぼ消えかけています。年間の期待貢献は良くて数%です。</p>
+<h2>この検証からの教訓</h2>
+<ul>
+<li>「デイトレで月利10%」のような話は、手数料とデータの現実の前ではまず成立しません</li>
+<li>検証は「勝てる手法を探す作業」ではなく「勝てない手法を捨てる作業」です。48分の47を捨てられたことがこの検証の成果です</li>
+<li>生き残った1手法も、当ラボでは「本物かどうかの追試」として少額の仮想売買で監視を続けています。その記録は<a href="/posts/">検証ジャーナル</a>で毎日公開しています</li>
+</ul>
+<p>なお、本記事は特定の売買を推奨するものではありません。過去に機能した条件が将来も機能する保証はありません。</p><h2>関連記事</h2><div class='card'><a href='/posts/overnight-vs-intraday.html'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div><div class='card'><a href='/posts/luck-vs-skill-bootstrap.html'>その運用成績、実力と運をどう切り分けるか — ブートストラップ検証入門</a><div class='meta'>2026-08-06</div></div><div class='card'><a href='/posts/leveraged-etf-trend-15y.html'>レバレッジETFは「持ちっぱなし」と「トレンドフィルタ」でどう変わるか — 15年・コスト込み検証</a><div class='meta'>2026-08-06</div></div>
+<div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
+<footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
+記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
+</body></html>

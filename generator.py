@@ -60,21 +60,93 @@ footer{border-top:1px solid var(--line);margin-top:48px}
 """
 
 
-def page(title: str, body: str, desc: str = "") -> str:
+def page(title: str, body: str, desc: str = "", meta: dict | None = None) -> str:
+    m = meta or {}
+    url = m.get("url", BASE_URL + "/")
+    og = (f'<meta property="og:title" content="{html.escape(title)}">'
+          f'<meta property="og:description" content="{html.escape(desc or TAGLINE)}">'
+          f'<meta property="og:type" content="{"article" if m.get("date") else "website"}">'
+          f'<meta property="og:url" content="{url}">'
+          f'<meta property="og:site_name" content="{SITE}">'
+          f'<meta name="twitter:card" content="summary">')
+    jsonld = ""
+    if m.get("date"):
+        jsonld = ('<script type="application/ld+json">' + json.dumps({
+            "@context": "https://schema.org", "@type": "Article",
+            "headline": title, "datePublished": str(m["date"]),
+            "author": {"@type": "Organization", "name": SITE},
+            "mainEntityOfPage": url}, ensure_ascii=False) + "</script>")
     return f"""<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)} | {SITE}</title>
 <meta name="description" content="{html.escape(desc or TAGLINE)}">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml">
+{og}{jsonld}
 <style>{CSS}</style></head><body>
 <header><div class="hwrap"><a class="t" href="/">{SITE}</a>
 <nav><a href="/">ホーム</a><a href="/posts/">記事一覧</a><a href="/tools/">ツール</a>
-<a href="/about.html">このサイトについて</a></nav></div></header>
+<a href="/hikaku.html">証券会社比較</a><a href="/about.html">このサイトについて</a></nav></div></header>
 <main>{body}
 <div class="note">{DISCLAIMER}</div></main>
 <footer><div class="fwrap">© {dt.date.today().year} {SITE} ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
 </body></html>"""
+
+
+def svg_equity() -> str:
+    """Inline SVG equity line for journal posts (single series, both themes,
+    hover crosshair). Shows a placeholder until >=5 sessions of data exist."""
+    csvp = os.path.join(TV2, "reports", "daily_log.csv")
+    rows = []
+    if os.path.exists(csvp):
+        with open(csvp, encoding="utf-8") as f:
+            head = f.readline().strip().split(",")
+            for ln in f:
+                c = dict(zip(head, ln.strip().split(",")))
+                try:
+                    rows.append((c["data_date"], float(c["equity_jpy"])))
+                except (KeyError, ValueError):
+                    pass
+    rows = sorted(dict(rows).items())
+    if len(rows) < 5:
+        return ("<p class='meta'>資産推移チャートは検証データが5営業日分たまり次第、"
+                "ここに自動表示されます。</p>")
+    W, H, PL, PR, PT, PB = 640, 200, 8, 8, 16, 24
+    xs = [r[0] for r in rows]
+    ys = [r[1] for r in rows]
+    y0, y1 = min(ys), max(ys)
+    pad = (y1 - y0) * 0.08 or y0 * 0.01 or 1
+    y0, y1 = y0 - pad, y1 + pad
+    pts = []
+    for i, v in enumerate(ys):
+        x = PL + (W - PL - PR) * (i / max(len(ys) - 1, 1))
+        y = PT + (H - PT - PB) * (1 - (v - y0) / (y1 - y0))
+        pts.append(f"{x:.1f},{y:.1f}")
+    data = json.dumps({"d": xs, "v": ys}, ensure_ascii=False)
+    lx, ly = pts[-1].split(",")
+    return f"""<figure style="margin:0">
+<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block" role="img"
+ aria-label="仮想資産の推移（円）" id="eqchart" data-series='{data}'>
+<polyline points="{' '.join(pts)}" fill="none" stroke="var(--acc)" stroke-width="2"
+ stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="{lx}" cy="{ly}" r="4" fill="var(--acc)"/>
+<text x="{PL}" y="12" font-size="11" fill="var(--sub)">最高 {max(ys):,.0f}円</text>
+<text x="{PL}" y="{H - 8}" font-size="11" fill="var(--sub)">最低 {min(ys):,.0f}円
+{xs[0]} 〜 {xs[-1]}（{len(xs)}営業日）</text>
+<line id="eqcross" x1="0" x2="0" y1="{PT}" y2="{H - PB}" stroke="var(--sub)"
+ stroke-width="1" opacity="0"/>
+</svg>
+<div id="eqtip" class="meta" style="min-height:1.4em"></div></figure>
+<script>(function(){{var s=document.getElementById('eqchart');if(!s)return;
+var d=JSON.parse(s.dataset.series),n=d.v.length,PL={PL},PR={PR},W={W};
+var cr=document.getElementById('eqcross'),tip=document.getElementById('eqtip');
+s.addEventListener('mousemove',function(e){{var r=s.getBoundingClientRect();
+var fx=(e.clientX-r.left)/r.width*W;var i=Math.round((fx-PL)/(W-PL-PR)*(n-1));
+i=Math.max(0,Math.min(n-1,i));var x=PL+(W-PL-PR)*(i/Math.max(n-1,1));
+cr.setAttribute('x1',x);cr.setAttribute('x2',x);cr.setAttribute('opacity','0.5');
+tip.textContent=d.d[i]+'： '+Math.round(d.v[i]).toLocaleString()+'円';}});
+s.addEventListener('mouseleave',function(){{cr.setAttribute('opacity','0');
+tip.textContent='';}});}})();</script>"""
 
 
 def md2html(md: str) -> str:
@@ -198,7 +270,9 @@ AIが構築した全自動売買システム（日足・翌日寄付執行）の
 ## 直近の約定記録（事後）
 {fills_s}
 
-## 資産推移（直近7営業日）
+## 資産推移
+::EQUITY_CHART::
+
 | 日付 | 資産（円） |
 | --- | --- |
 {rows}
@@ -221,12 +295,20 @@ def build() -> None:
     posts = load_posts()
     aff = affiliate_box()
 
+    chart = svg_equity()
     for p in posts:
+        rendered = md2html(p["body"]).replace("<p>::EQUITY_CHART::</p>", chart)
+        others = [q for q in posts if q["slug"] != p["slug"]][:3]
+        rel = ("<h2>関連記事</h2>" + "".join(
+            f"<div class='card'><a href='/posts/{q['slug']}.html'>"
+            f"{html.escape(q['title'])}</a><div class='meta'>{q['date']}</div></div>"
+            for q in others)) if others else ""
         body = (f"<h1>{html.escape(p['title'])}</h1><div class='meta'>{p['date']}・"
                 f"{'検証ジャーナル' if p['type'] == 'journal' else '解説記事'}</div>"
-                + md2html(p["body"]) + aff)
+                + rendered + aff + rel)
+        meta = {"url": f"{BASE_URL}/posts/{p['slug']}.html", "date": p["date"]}
         with open(os.path.join(DOCS, "posts", p["slug"] + ".html"), "w", encoding="utf-8") as f:
-            f.write(page(p["title"], body, p["desc"]))
+            f.write(page(p["title"], body, p["desc"], meta))
 
     plist = "".join(f"<div class='card'><a href='/posts/{p['slug']}.html'>{html.escape(p['title'])}</a>"
                     f"<div class='meta'>{p['date']}</div></div>" for p in posts)
@@ -248,6 +330,28 @@ def build() -> None:
              "<div class='meta'>為替込みの実質損益を計算</div></div>")
     with open(os.path.join(DOCS, "index.html"), "w", encoding="utf-8") as f:
         f.write(page("ホーム", intro + aff, TAGLINE))
+
+    hikaku = ("<h1>証券会社の手数料比較 — 当ラボの実測データつき</h1>"
+              "<p>証券会社選びで最も確実に効くのは手数料です。予測が当たるかは不確実ですが、"
+              "コストは100%確実にリターンから引かれます。当ラボの検証エンジンで実測した影響と"
+              "あわせて比較します（手数料は改定されることがあります。申込前に必ず公式サイトで"
+              "最新の料率をご確認ください。2026年8月時点の調査に基づきます）。</p>"
+              "<h2>米国株の取引手数料</h2>"
+              "<table><tr><th>証券会社</th><th>米国株手数料</th><th>上限</th></tr>"
+              "<tr><td>moomoo証券</td><td>約定代金の0.088%（税込）</td><td>16.5ドル</td></tr>"
+              "<tr><td>楽天証券</td><td>約定代金の0.495%（税込）</td><td>22ドル</td></tr></table>"
+              "<h2>当ラボの実測：手数料差は年率でどれだけ効くか</h2>"
+              "<p>同一の売買ルール（15.6年・コスト込みバックテスト）を手数料率だけ変えて回した"
+              "結果、0.495%と0.088%の差は<strong>年率およそ1.5%</strong>の成績差になりました。"
+              "複利で15年続くと最終資産で数十%の差です。売買頻度が高い運用ほど差は拡大します。</p>"
+              "<h2>国内株について</h2>"
+              "<p>楽天証券は「ゼロコース」で国内株の売買手数料が0円です。当ラボの日本株検証でも"
+              "この前提を使用しています。</p>" + aff +
+              "<p class='meta'>本ページには広告リンクを含む場合があります（PR表記のあるもの）。"
+              "掲載の有無は比較内容・数値に影響しません。</p>")
+    with open(os.path.join(DOCS, "hikaku.html"), "w", encoding="utf-8") as f:
+        f.write(page("証券会社の手数料比較", hikaku,
+                     "米国株手数料を実測データつきで比較。手数料差が年率リターンに与える影響を15年バックテストで検証しました。"))
 
     about = ("<h1>このサイトについて</h1>"
              "<p>本サイトはAI（Claude）が設計・実装・運用する自動売買システムの検証記録を、"
@@ -278,7 +382,10 @@ def build() -> None:
         f.write(f"<?xml version='1.0' encoding='UTF-8'?><rss version='2.0'><channel>"
                 f"<title>{SITE}</title><link>{BASE_URL}/</link>"
                 f"<description>{TAGLINE}</description>{items}</channel></rss>")
-    urls = [f"{BASE_URL}/", f"{BASE_URL}/posts/", f"{BASE_URL}/tools/"] + \
+    urls = [f"{BASE_URL}/", f"{BASE_URL}/posts/", f"{BASE_URL}/tools/",
+            f"{BASE_URL}/hikaku.html", f"{BASE_URL}/about.html",
+            f"{BASE_URL}/tools/fukuri.html", f"{BASE_URL}/tools/position-size.html",
+            f"{BASE_URL}/tools/jpy-return.html"] + \
            [f"{BASE_URL}/posts/{p['slug']}.html" for p in posts]
     with open(os.path.join(DOCS, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write("<?xml version='1.0' encoding='UTF-8'?>"

@@ -3,6 +3,7 @@
 <title>バックテスト年利+360%のシステムが実弾で-8%になった話 — 過適合の解剖記録 | オートクオンツ研究所</title>
 <meta name="description" content="機械学習トレードシステムがバックテストで年利+360%を出しながら実運用で損失を出した実例を、原因特定から再発防止まで実データで解説します。">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml">
+<meta property="og:title" content="バックテスト年利+360%のシステムが実弾で-8%になった話 — 過適合の解剖記録"><meta property="og:description" content="機械学習トレードシステムがバックテストで年利+360%を出しながら実運用で損失を出した実例を、原因特定から再発防止まで実データで解説します。"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/kabt-overfit-anatomy.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "バックテスト年利+360%のシステムが実弾で-8%になった話 — 過適合の解剖記録", "datePublished": "2026-08-06", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/kabt-overfit-anatomy.html"}</script>
 <style>
 :root{--bg:#fff;--fg:#1a1a1a;--sub:#555;--line:#e5e5e5;--acc:#0b5fff;--box:#f6f8fa}
 @media(prefers-color-scheme:dark){:root{--bg:#111417;--fg:#e8e8e8;--sub:#9aa;--line:#2a2f35;--acc:#6ea8ff;--box:#1a1f24}}
@@ -31,7 +32,7 @@ footer{border-top:1px solid var(--line);margin-top:48px}
 </style></head><body>
 <header><div class="hwrap"><a class="t" href="/">オートクオンツ研究所</a>
 <nav><a href="/">ホーム</a><a href="/posts/">記事一覧</a><a href="/tools/">ツール</a>
-<a href="/about.html">このサイトについて</a></nav></div></header>
+<a href="/hikaku.html">証券会社比較</a><a href="/about.html">このサイトについて</a></nav></div></header>
 <main><h1>バックテスト年利+360%のシステムが実弾で-8%になった話 — 過適合の解剖記録</h1><div class='meta'>2026-08-06・解説記事</div><p>これは他人の失敗談ではありません。当ラボの前身システムが実際に踏んだ失敗の、一次データつきの解剖記録です。</p>
 <h2>何が起きたか</h2>
 <p>機械学習（LightGBM）で株価の上昇確率を予測する日中売買システムを構築し、バックテストは次の数字を出しました。</p>
@@ -62,7 +63,7 @@ footer{border-top:1px solid var(--line);margin-top:48px}
 <li>手数料・スリッページ・単元株制約を入れているか</li>
 </ul>
 <h2>教訓</h2>
-<p>バックテストの数字は「上げようと思えばいくらでも上がる」ものです。パラメータを結果を見ながら調整すれば、過去に対して完璧なシステムは誰でも作れます。しかしそれは<strong>将来の期待値を下げながら表示上の数字を上げる行為</strong>です。当ラボが現在運用中のシステムがバックテストで年率30%前後という「地味な」数字なのは、これらのチェックをすべて通した後の数字だからです。それでも将来は保証されません — だからこそ毎日の検証記録を公開しています。</p>
+<p>バックテストの数字は「上げようと思えばいくらでも上がる」ものです。パラメータを結果を見ながら調整すれば、過去に対して完璧なシステムは誰でも作れます。しかしそれは<strong>将来の期待値を下げながら表示上の数字を上げる行為</strong>です。当ラボが現在運用中のシステムがバックテストで年率30%前後という「地味な」数字なのは、これらのチェックをすべて通した後の数字だからです。それでも将来は保証されません — だからこそ毎日の検証記録を公開しています。</p><h2>関連記事</h2><div class='card'><a href='/posts/overnight-vs-intraday.html'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div><div class='card'><a href='/posts/luck-vs-skill-bootstrap.html'>その運用成績、実力と運をどう切り分けるか — ブートストラップ検証入門</a><div class='meta'>2026-08-06</div></div><div class='card'><a href='/posts/leveraged-etf-trend-15y.html'>レバレッジETFは「持ちっぱなし」と「トレンドフィルタ」でどう変わるか — 15年・コスト込み検証</a><div class='meta'>2026-08-06</div></div>
 <div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
 <footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
