@@ -137,6 +137,7 @@ def page(title: str, body: str, desc: str = "", meta: dict | None = None) -> str
 <title>{html.escape(title)} | {SITE}</title>
 <meta name="description" content="{html.escape(desc or TAGLINE)}">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml">
+<meta name="google-site-verification" content="m12_RQ-zBJvqM2eH3OLYsZEMH0SPqbrsixEoZpn9gSc">
 {og}{jsonld}
 <style>{CSS}</style></head><body>
 <header><div class="hwrap"><a class="t" href="/"><span class="logo">AQ</span>{SITE}</a>
