@@ -124,20 +124,17 @@ def fmt(s: str) -> str:
 
 
 def affiliate_box() -> str:
+    """Render the PR box from affiliate.json links: [{label, url}, ...]."""
     path = os.path.join(ROOT, "affiliate.json")
     if not os.path.exists(path):
         return ""
     with open(path, encoding="utf-8") as f:
         aff = json.load(f)
-    links = []
-    if aff.get("moomoo"):
-        links.append(f'<a href="{aff["moomoo"]}" rel="sponsored">moomoo証券（米国株手数料0.088%）の口座開設はこちら</a>')
-    if aff.get("rakuten_sec"):
-        links.append(f'<a href="{aff["rakuten_sec"]}" rel="sponsored">楽天証券（国内株手数料0円）の口座開設はこちら</a>')
+    links = [f'<a href="{l["url"]}" rel="sponsored nofollow">{html.escape(l["label"])}</a>'
+             for l in aff.get("links", []) if l.get("url")]
     if not links:
         return ""
-    return ('<div class="pr"><div class="tag">PR</div>当ラボの検証で使用している証券会社: '
-            + "／".join(links) + "</div>")
+    return ('<div class="pr"><div class="tag">PR</div>' + "／".join(links) + "</div>")
 
 
 # ---------------------------------------------------------------- journal
