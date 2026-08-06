@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>請求書作成（インボイス制度対応・登録不要） | オートクオンツ研究所</title>
+<meta name="description" content="適格請求書の記載要件を満たした請求書を作れます。消費税は税率ごとに1回だけ端数処理する正しい計算方式です。入力内容はブラウザの外に出ないため、取引先名や金額が送信されません。">
+<link rel="canonical" href="https://takeo628-hub.github.io/autoquant-lab/">
+<link rel="alternate" type="application/rss+xml" href="/autoquant-lab/feed.xml">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234338ca'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='30' font-weight='800' fill='white' text-anchor='middle'%3EAQ%3C/text%3E%3C/svg%3E">
+<meta name="google-site-verification" content="m12_RQ-zBJvqM2eH3OLYsZEMH0SPqbrsixEoZpn9gSc">
+<meta property="og:title" content="請求書作成（インボイス制度対応・登録不要）"><meta property="og:description" content="適格請求書の記載要件を満たした請求書を作れます。消費税は税率ごとに1回だけ端数処理する正しい計算方式です。入力内容はブラウザの外に出ないため、取引先名や金額が送信されません。"><meta property="og:type" content="website"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary">
+<style>
+:root{--bg:#f7f8fa;--surface:#ffffff;--fg:#17181c;--sub:#5b616e;--line:#e6e8ec;
+--acc:#4338ca;--acc2:#0ea5e9;--ok:#047857;--bad:#b91c1c;--box:#f1f3f7;
+--shadow:0 1px 2px rgba(16,24,40,.06),0 4px 16px rgba(16,24,40,.06)}
+@media(prefers-color-scheme:dark){:root{--bg:#0b0e14;--surface:#141824;--fg:#e8e9ee;
+--sub:#9aa1b2;--line:#252b3a;--acc:#8b93f8;--acc2:#38bdf8;--ok:#34d399;--bad:#f87171;
+--box:#1a2030;--shadow:0 1px 2px rgba(0,0,0,.5),0 6px 20px rgba(0,0,0,.35)}}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',Meiryo,sans-serif;
+background:var(--bg);color:var(--fg);line-height:1.95;font-size:16px}
+main{max-width:820px;margin:0 auto;padding:28px 20px 72px}
+header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);
+backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hwrap{max-width:1020px;margin:0 auto;padding:12px 20px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.hwrap a{color:var(--fg);text-decoration:none}
+.hwrap .t{font-weight:800;font-size:17px;display:flex;align-items:center;gap:8px}
+.logo{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--acc),var(--acc2));
+display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{color:var(--sub);text-decoration:none;font-size:13.5px;padding:6px 10px;border-radius:8px}
+nav a:hover{background:var(--box);color:var(--fg)}
+h1{font-size:clamp(24px,4.5vw,32px);line-height:1.45;letter-spacing:-.01em}
+h2{font-size:21px;margin-top:2.2em;padding-left:12px;border-left:4px solid var(--acc);line-height:1.5}
+h3{font-size:17px}a{color:var(--acc)}
+p{margin:1.1em 0}
+.hero{background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 10%,var(--surface)),
+color-mix(in srgb,var(--acc2) 8%,var(--surface)));border:1px solid var(--line);border-radius:20px;
+padding:34px 28px;margin:8px 0 28px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 10px}
+.hero .lead{color:var(--sub);font-size:15.5px;max-width:640px}
+.badgerow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.badge{font-size:12px;font-weight:700;letter-spacing:.04em;padding:4px 12px;border-radius:999px;
+background:color-mix(in srgb,var(--acc) 12%,transparent);color:var(--acc)}
+.cta{display:inline-block;margin:16px 10px 0 0;padding:11px 20px;border-radius:10px;font-weight:700;
+text-decoration:none;font-size:14.5px}
+.cta.p{background:var(--acc);color:#fff}.cta.p:hover{opacity:.92}
+.cta.s{border:1.5px solid var(--line);color:var(--fg);background:var(--surface)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+box-shadow:var(--shadow)}
+.tile .k{font-size:12px;color:var(--sub);letter-spacing:.03em}
+.tile .v{font-size:24px;font-weight:800;letter-spacing:-.01em;margin-top:4px;font-variant-numeric:tabular-nums}
+.tile .v.up{color:var(--ok)}.tile .v.down{color:var(--bad)}
+.tile .s{font-size:11.5px;color:var(--sub);margin-top:2px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+margin:14px 0;box-shadow:var(--shadow);transition:transform .12s ease}
+.card:hover{transform:translateY(-2px)}
+.card a{text-decoration:none;font-weight:700;font-size:15.5px;line-height:1.6;display:block}
+.card .meta{margin-top:6px}
+.cbadge{display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:999px;margin-bottom:8px}
+.cbadge.j{background:color-mix(in srgb,var(--acc2) 14%,transparent);color:var(--acc2)}
+.cbadge.a{background:color-mix(in srgb,var(--acc) 12%,transparent);color:var(--acc)}
+.promise{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:18px 0}
+.promise .card{margin:0}
+.promise b{display:block;margin-bottom:4px;font-size:15px}
+.promise span{font-size:13px;color:var(--sub)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;display:block;overflow-x:auto;
+border-radius:12px}
+th{background:var(--box);font-size:13px;color:var(--sub)}
+th,td{border:1px solid var(--line);padding:9px 14px;text-align:right;font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--box) 45%,transparent)}
+.meta{color:var(--sub);font-size:13px}
+.note{background:var(--box);border:1px solid var(--line);border-radius:12px;padding:14px 18px;
+font-size:12.5px;color:var(--sub);margin-top:44px;line-height:1.8}
+.pr{background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 6%,var(--surface)),var(--surface));
+border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:26px 0;box-shadow:var(--shadow)}
+.pr .tag{font-size:10.5px;color:var(--sub);letter-spacing:.14em;margin-bottom:4px}
+input,select{font:inherit;padding:9px 12px;margin:4px 0;border:1.5px solid var(--line);
+border-radius:9px;background:var(--bg);color:var(--fg);width:min(220px,100%)}
+button{font:inherit;font-weight:700;padding:11px 22px;border:0;border-radius:10px;
+background:var(--acc);color:#fff;cursor:pointer;margin-top:8px}
+button:hover{opacity:.92}
+.result{font-size:18px;font-weight:700;margin-top:14px;line-height:1.7}
+footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface)}
+.fwrap{max-width:820px;margin:0 auto;padding:22px 20px;font-size:12px;color:var(--sub)}
+</style></head><body>
+<header><div class="hwrap"><a class="t" href="/autoquant-lab/?v=20260806154115"><span class="logo">AQ</span>オートクオンツ研究所</a>
+<nav><a href="/autoquant-lab/?v=20260806154115">ホーム</a><a href="/autoquant-lab/posts/?v=20260806154115">記事一覧</a><a href="/autoquant-lab/tools/?v=20260806154115">ツール</a>
+<a href="/autoquant-lab/hikaku.html?v=20260806154115">証券会社比較</a><a href="/autoquant-lab/data.html?v=20260806154115">Data (EN)</a>
+<a href="/autoquant-lab/about.html?v=20260806154115">このサイトについて</a></nav></div></header>
+<main><h1>請求書作成（インボイス制度対応・登録不要）</h1><p>適格請求書の記載要件を満たした請求書を作れます。消費税は税率ごとに1回だけ端数処理する正しい計算方式です。入力内容はブラウザの外に出ないため、取引先名や金額が送信されません。</p><div class='card'><b>自社情報（請求元）</b><br>
+事業者名 <input id=from placeholder="株式会社サンプル" style="width:min(320px,100%)"><br>
+登録番号 <input id=reg placeholder="T1234567890123" style="width:min(240px,100%)">
+<span id=regchk class=meta></span><br>
+住所・連絡先 <input id=fromaddr placeholder="東京都..." style="width:min(420px,100%)"><br>
+振込先 <input id=bank placeholder="○○銀行 △△支店 普通 1234567" style="width:min(420px,100%)">
+</div>
+<div class='card'><b>請求先・日付</b><br>
+請求先名 <input id=to placeholder="株式会社取引先" style="width:min(320px,100%)"><br>
+請求書番号 <input id=no placeholder="2026-0001" style="width:160px">
+取引年月日 <input id=date type=date><br>
+支払期限 <input id=due type=date>
+</div>
+<div class='card'><b>明細</b>
+<div class=meta>単価は円単位。軽減税率(8%)の行は自動で「※」が付きます。</div>
+<div id=rows></div>
+<button onclick=addRow()>行を追加</button>
+<label style="margin-left:14px;font-size:14px">
+<input type=checkbox id=incl onchange=calc()> 単価は税込で入力</label>
+<label style="margin-left:14px;font-size:14px">端数処理
+<select id=mode onchange=calc()><option value=floor>切り捨て</option>
+<option value=round>四捨五入</option><option value=ceil>切り上げ</option></select></label>
+<div class=tiles id=totals></div>
+</div>
+<div class='card'><button onclick=window.print()>印刷 / PDFで保存</button>
+<span class=meta style="margin-left:10px">ブラウザの印刷機能でPDF保存できます</span></div>
+<div id=preview></div>
+<style>
+#preview{background:#fff;color:#111;padding:34px;border-radius:14px;margin-top:18px;
+border:1px solid var(--line)}
+#preview h2{color:#111;border:0;padding:0;margin:0 0 18px;font-size:24px}
+#preview table{width:100%;font-size:13px;color:#111}
+#preview th,#preview td{border:1px solid #ccc;padding:6px 10px}
+#preview th{background:#f0f0f4;color:#333}
+#preview .ptop{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+#preview .pbox{font-size:13px;line-height:1.9}
+@media print{
+ header,footer,.note,.card,h1,p.lead{display:none !important}
+ body{background:#fff}main{max-width:100%;padding:0}
+ #preview{border:0;border-radius:0;padding:0;margin:0}
+}
+</style><p class='note'>このツールはすべてブラウザ内だけで動作します。入力した内容やファイルがサーバーに送信されることはありません。</p><p class='note'>本ツールは記載要件の入力を補助するものです。適格請求書発行事業者の登録有無や、個別の取引の税務上の取扱いについては、国税庁の公表資料または税理士にご確認ください。</p><script>var RATE_MATH={0.1:{excl:[10,100],incl:[10,110]},0.08:{excl:[8,100],incl:[8,108]}};
+function yen(n){return Number(n).toLocaleString('ja-JP')}
+function addRow(name,qty,price,rate){
+var i=document.querySelectorAll('#rows .lrow').length;
+var d=document.createElement('div');d.className='lrow';d.style.margin='6px 0';
+d.innerHTML='<input placeholder="品目" class=lname style="width:min(240px,42%)"> '+
+'<input type=number class=lqty value="'+(qty||1)+'" style="width:74px" title="数量"> '+
+'<input type=number class=lprice value="'+(price||0)+'" style="width:110px" title="単価"> '+
+'<select class=lrate><option value=0.1>10%</option><option value=0.08>8%(軽減)</option></select> '+
+'<button onclick="this.parentNode.remove();calc()" style="padding:6px 12px;background:transparent;color:var(--sub);border:1px solid var(--line)">削除</button>';
+document.getElementById('rows').appendChild(d);
+if(name)d.querySelector('.lname').value=name;
+if(rate==0.08)d.querySelector('.lrate').value='0.08';
+d.querySelectorAll('input,select').forEach(function(e){e.addEventListener('input',calc)});
+calc();}
+function corporateCheckDigit(b){var s=0;
+for(var n=1;n<=12;n++){s+=Number(b[12-n])*(n%2===1?1:2)}return 9-(s%9)}
+function validateReg(v){var t=String(v).replace(/[\s-]/g,'').replace(/^T/i,'');
+if(t==='')return {state:'',msg:''};
+if(!/^\d{13}$/.test(t))return {state:'ng',msg:'13桁の数字を入力してください'};
+return Number(t[0])===corporateCheckDigit(t.slice(1))
+ ?{state:'ok',msg:'検査用数字OK（T'+t+'）'}
+ :{state:'ng',msg:'検査用数字が一致しません。桁の入力ミスの可能性があります'};}
+function tile(k,v,s){return "<div class='tile'><div class='k'>"+k+
+"</div><div class='v'>"+v+"</div><div class='s'>"+(s||"")+"</div></div>"}
+function totals(){
+var incl=document.getElementById('incl').checked;
+var mode=document.getElementById('mode').value;
+var round=function(x){return mode==='ceil'?Math.ceil(x):mode==='round'?Math.round(x):Math.floor(x)};
+var by={};var lines=[];
+document.querySelectorAll('#rows .lrow').forEach(function(r){
+var name=r.querySelector('.lname').value;
+var qty=Number(r.querySelector('.lqty').value)||0;
+var price=Number(r.querySelector('.lprice').value)||0;
+var rate=Number(r.querySelector('.lrate').value);
+if(!qty||!price)return;
+by[rate]=(by[rate]||0)+qty*price;
+lines.push({name:name,qty:qty,price:price,rate:rate});});
+var groups=Object.keys(by).map(Number).sort(function(a,b){return b-a}).map(function(rate){
+var amount=Math.round(by[rate]);var m=RATE_MATH[rate][incl?'incl':'excl'];
+var tax=round(amount*m[0]/m[1]);
+return incl?{rate:rate,net:amount-tax,tax:tax,gross:amount}
+           :{rate:rate,net:amount,tax:tax,gross:amount+tax};});
+var sum=function(k){return groups.reduce(function(s,g){return s+g[k]},0)};
+return {lines:lines,groups:groups,net:sum('net'),tax:sum('tax'),total:sum('gross'),incl:incl};}
+function calc(){
+var r=validateReg(document.getElementById('reg').value);
+var el=document.getElementById('regchk');el.textContent=r.msg;
+el.style.color=r.state==='ng'?'var(--bad)':'var(--ok)';
+var t=totals();
+document.getElementById('totals').innerHTML=
+tile('小計（税抜）',yen(t.net)+'円','')+
+tile('消費税',yen(t.tax)+'円','税率ごとに1回だけ端数処理')+
+tile('合計',yen(t.total)+'円','');
+var rows=t.lines.map(function(l){
+var g=l.qty*l.price;
+return '<tr><td>'+(l.name||'（品目未入力）')+(l.rate===0.08?' ※':'')+'</td><td style="text-align:right">'+
+yen(l.qty)+'</td><td style="text-align:right">'+yen(l.price)+'</td><td style="text-align:right">'+
+yen(g)+'</td></tr>'}).join('');
+var grows=t.groups.map(function(g){
+return '<tr><td>'+(g.rate*100)+'% 対象</td><td style="text-align:right">'+yen(g.net)+
+'</td><td style="text-align:right">'+yen(g.tax)+'</td></tr>'}).join('');
+var v=function(id){return document.getElementById(id).value};
+document.getElementById('preview').innerHTML=
+'<h2>請求書</h2><div class=ptop><div class=pbox><b>'+(v('to')||'（請求先）')+' 御中</b><br><br>'+
+'下記の通りご請求申し上げます。<br><br>'+
+'<span style="font-size:20px;font-weight:700">ご請求金額　'+yen(t.total)+' 円</span><br>'+
+(v('due')?'お支払期限：'+v('due'):'')+'</div>'+
+'<div class=pbox style="text-align:right">請求書番号：'+(v('no')||'-')+'<br>'+
+'取引年月日：'+(v('date')||'-')+'<br><br><b>'+(v('from')||'（自社名）')+'</b><br>'+
+(v('fromaddr')||'')+'<br>登録番号：'+(v('reg')||'（未入力）')+'</div></div>'+
+'<table style="margin-top:20px"><tr><th>品目</th><th>数量</th><th>単価</th><th>金額</th></tr>'+
+(rows||'<tr><td colspan=4>明細を入力してください</td></tr>')+'</table>'+
+'<table style="margin-top:14px;width:min(420px,100%);margin-left:auto">'+
+'<tr><th>区分</th><th>税抜金額</th><th>消費税額</th></tr>'+grows+
+'<tr><th>合計</th><th style="text-align:right">'+yen(t.net)+'</th><th style="text-align:right">'+
+yen(t.tax)+'</th></tr></table>'+
+'<div style="text-align:right;font-size:18px;font-weight:700;margin-top:10px">'+
+'合計 '+yen(t.total)+' 円</div>'+
+(v('bank')?'<div style="margin-top:18px;font-size:13px">お振込先：'+v('bank')+'</div>':'')+
+'<div style="margin-top:14px;font-size:12px;color:#666">※は軽減税率(8%)対象品目です。'+
+'消費税額は税率ごとに1回のみ端数処理しています。</div>';}
+['from','reg','fromaddr','bank','to','no','date','due'].forEach(function(id){
+document.getElementById(id).addEventListener('input',calc)});
+document.getElementById('date').value=new Date().toISOString().slice(0,10);
+addRow('',1,10000,0.1);</script>
+<div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
+<footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
+記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
+<script>(function(){var B="20260806154115";
+var q=new URLSearchParams(location.search);
+if(q.get("v")===B){q.delete("v");var s=q.toString();
+history.replaceState(null,"",location.pathname+(s?"?"+s:"")+location.hash);}
+fetch("/autoquant-lab/v.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()})
+.then(function(v){if(!v.build||v.build===B)return;
+var lt=+sessionStorage.getItem("aq_t")||0;if(Date.now()-lt<45000)return;
+sessionStorage.setItem("aq_t",String(Date.now()));
+q.set("v",v.build);location.replace(location.pathname+"?"+q.toString()+location.hash);
+}).catch(function(){});})();</script>
+</body></html>

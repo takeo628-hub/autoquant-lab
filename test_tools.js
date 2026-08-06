@@ -180,5 +180,93 @@ function checkBool(name, cond, detail) {
   checkBool("furusato is monotonic in salary", him > got, `10M -> ${him.toLocaleString()} vs 6M -> ${got.toLocaleString()}`);
 }
 
+// ---------------- invoice (the SHIPPED page, not a copy) ----------------
+// invoice_logic_test.js pins the rules; this proves the deployed page
+// implements the same ones. Rows live in the DOM, so they are stubbed.
+{
+  const code = extract("docs/tools/invoice.html");
+  const runTotals = (rows, opts = {}) => {
+    const fields = {};
+    const el = (id) => (fields[id] = fields[id] || {
+      value: opts[id] ?? "", textContent: "", innerHTML: "", style: {},
+      checked: !!opts[id], addEventListener() {}, appendChild() {},
+    });
+    const fakeRows = rows.map((r) => ({
+      querySelector: (sel) => ({
+        value: { ".lname": r.name ?? "", ".lqty": String(r.qty),
+                 ".lprice": String(r.price), ".lrate": String(r.rate) }[sel],
+      }),
+      querySelectorAll: () => [],
+    }));
+    const doc = {
+      getElementById: el,
+      querySelectorAll: (sel) => (sel === "#rows .lrow" ? fakeRows : []),
+      createElement: () => ({ style: {}, innerHTML: "", className: "",
+                              querySelector: () => ({ value: "" }),
+                              querySelectorAll: () => [], appendChild() {} }),
+    };
+    return new Function("document", `${code}\n;return totals();`)(doc);
+  };
+
+  // same case as invoice_logic_test.js: rounding once per rate gives 601, not 600
+  const t = runTotals([
+    { qty: 1, price: 1001, rate: 0.1 },
+    { qty: 1, price: 2003, rate: 0.1 },
+    { qty: 1, price: 3007, rate: 0.1 },
+  ], { mode: "floor" });
+  check("shipped invoice: subtotal 6,011", String(t.net), "6011");
+  check("shipped invoice: tax rounded once per rate = 601", String(t.tax), "601");
+  check("shipped invoice: total 6,612", String(t.total), "6612");
+
+  // mixed rates form two groups, each rounded once
+  const m = runTotals([
+    { qty: 3, price: 333, rate: 0.1 },
+    { qty: 3, price: 111, rate: 0.08 },
+  ], { mode: "floor" });
+  check("shipped invoice: two rate groups", String(m.groups.length), "2");
+  check("shipped invoice: 10% tax 99", String(m.groups[0].tax), "99");
+  check("shipped invoice: 8% tax 26", String(m.groups[1].tax), "26");
+
+  // tax-included input must not lose a yen to floating point
+  const inc = runTotals([{ qty: 1, price: 1100, rate: 0.1 }],
+    { mode: "floor", incl: true });
+  checkBool("shipped invoice: tax-included 1,100 -> net 1,000 / tax 100 / total 1,100",
+    inc.net === 1000 && inc.tax === 100 && inc.total === 1100,
+    `net ${inc.net}, tax ${inc.tax}, total ${inc.total}`);
+
+  // registration-number check digit, in the shipped page
+  const reg = (v) => {
+    const doc = {
+      getElementById: () => ({ value: v, textContent: "", innerHTML: "", style: {},
+                              checked: false, addEventListener() {}, appendChild() {} }),
+      querySelectorAll: () => [],
+      createElement: () => ({ style: {}, querySelector: () => ({ value: "" }),
+                              querySelectorAll: () => [], appendChild() {} }),
+    };
+    return new Function("document", `${code}\n;return validateReg(${JSON.stringify(v)});`)(doc);
+  };
+  check("shipped invoice: Toyota number is accepted", reg("T1180301018771").state, "ok");
+  check("shipped invoice: NTA number is accepted", reg("7000012050002").state, "ok");
+  check("shipped invoice: one altered digit is rejected", reg("T1180301018772").state, "ng");
+}
+
+// ---------------- corporate number checker page ----------------
+{
+  const code = extract("docs/tools/corp-number.html");
+  const run = (v) => {
+    const store = {};
+    const el = (id) => (store[id] = store[id] || {
+      value: id === "n" ? v : "", textContent: "", style: {},
+      addEventListener() {}, appendChild() {},
+    });
+    new Function("document", `${code}`)({ getElementById: el });
+    return { out: store.out?.textContent ?? "", detail: store.detail?.textContent ?? "" };
+  };
+  check("corp checker: valid number", run("1180301018771").out, "有効な番号です");
+  check("corp checker: returns the T form", run("1180301018771").detail, "T1180301018771");
+  check("corp checker: bad check digit", run("1180301018772").out, "検査用数字が一致しません");
+  check("corp checker: wrong length", run("11803010187").out, "形式が不正です");
+}
+
 console.log(fails === 0 ? "\nALL TOOL LOGIC TESTS PASS" : `\n${fails} FAILURES`);
 process.exit(fails === 0 ? 0 : 1);

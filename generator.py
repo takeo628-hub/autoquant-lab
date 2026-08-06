@@ -377,6 +377,12 @@ def _tcard(href, name, note):
             f"<div class='meta'>{note}</div></div>")
 
 
+BIZ_TOOLS = "".join([
+    _tcard("/tools/invoice.html", "請求書作成（インボイス対応）",
+           "税率ごとに1回だけ端数処理する正しい計算・登録不要"),
+    _tcard("/tools/corp-number.html", "法人番号・登録番号チェッカー",
+           "検査用数字で打ち間違いを数学的に検出"),
+])
 UTIL_TOOLS = "".join([
     _tcard("/tools/moji-count.html", "文字数カウント", "原稿用紙換算・SNS残り字数・読了時間つき"),
     _tcard("/tools/image-compress.html", "画像の圧縮・リサイズ", "アップロード不要。ブラウザ内で完結"),
@@ -484,6 +490,9 @@ def build() -> None:
     toolsec = ("<h2>予測しないで増やす（制度・税の計算）</h2>"
                "<p class='meta'>相場予測は当たるか分かりませんが、制度の節税は確実です。</p>"
                "<div class='grid2'>" + CERTAIN_TOOLS + "</div>"
+               "<h2>事業者向け（インボイス制度対応）</h2>"
+               "<p class='meta'>請求書の入力内容は送信されません。取引先名や金額が"
+               "外に出ない作りです。</p><div class='grid2'>" + BIZ_TOOLS + "</div>"
                "<h2>無料ツール（登録不要・ブラウザ内で完結）</h2>"
                "<p class='meta'>入力内容やファイルはサーバーに送信されません。</p>"
                "<div class='grid2'>" + UTIL_TOOLS + "</div>"
@@ -675,6 +684,10 @@ def build() -> None:
              "<p class='meta'>相場の予測は当たるか分かりませんが、制度による節税は確実です。"
              "当ラボの検証では、どの売買戦略の超過リターンよりNISAの非課税効果の方が大きく、"
              "しかも確実でした。</p><div class='grid2'>" + CERTAIN_TOOLS + "</div>"
+             "<h2>事業者向け（インボイス制度）</h2>"
+             "<p class='meta'>消費税の端数処理は「一の請求書につき税率ごとに1回」が"
+             "正しい方式です。既知の正解23件でテストしたロジックを使っています。</p>"
+             "<div class='grid2'>" + BIZ_TOOLS + "</div>"
              "<h2>くらしの実用ツール</h2><div class='grid2'>" + UTIL_TOOLS + "</div>"
              "<h2>投資の計算ツール</h2><div class='grid2'>" + MONEY_TOOLS + "</div>")
     with open(os.path.join(DOCS, "tools", "index.html"), "w", encoding="utf-8") as f:
@@ -697,7 +710,8 @@ def build() -> None:
             f"{BASE_URL}/tools/wareki.html", f"{BASE_URL}/tools/date-calc.html",
             f"{BASE_URL}/tools/image-compress.html", f"{BASE_URL}/tools/nisa.html",
             f"{BASE_URL}/tools/ideco.html", f"{BASE_URL}/tools/furusato.html",
-            f"{BASE_URL}/data.html"] + \
+            f"{BASE_URL}/data.html", f"{BASE_URL}/tools/invoice.html",
+            f"{BASE_URL}/tools/corp-number.html"] + \
            [f"{BASE_URL}/posts/{p['slug']}.html" for p in posts]
     with open(os.path.join(DOCS, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write("<?xml version='1.0' encoding='UTF-8'?>"
@@ -1003,6 +1017,179 @@ document.getElementById('n2').textContent=
 '寄付先サイトの正式なシミュレーターで確認してください。';}
 calc1();calc2();""",
               PRIVACY)
+
+    # ---------------- 請求書ジェネレーター ---------------------------------
+    # Tax math is the version pinned by invoice_logic_test.js (23 known-answer
+    # cases). Rounding happens once per tax rate, as the qualified-invoice
+    # rules require, and tax-included input uses integer arithmetic because
+    # dividing by (1 + rate) in floating point loses a yen.
+    tool_page("invoice.html", "請求書作成（インボイス制度対応・登録不要）",
+              "適格請求書の記載要件を満たした請求書を作れます。消費税は税率ごとに1回だけ端数処理する"
+              "正しい計算方式です。入力内容はブラウザの外に出ないため、取引先名や金額が送信されません。",
+              """<div class='card'><b>自社情報（請求元）</b><br>
+事業者名 <input id=from placeholder="株式会社サンプル" style="width:min(320px,100%)"><br>
+登録番号 <input id=reg placeholder="T1234567890123" style="width:min(240px,100%)">
+<span id=regchk class=meta></span><br>
+住所・連絡先 <input id=fromaddr placeholder="東京都..." style="width:min(420px,100%)"><br>
+振込先 <input id=bank placeholder="○○銀行 △△支店 普通 1234567" style="width:min(420px,100%)">
+</div>
+<div class='card'><b>請求先・日付</b><br>
+請求先名 <input id=to placeholder="株式会社取引先" style="width:min(320px,100%)"><br>
+請求書番号 <input id=no placeholder="2026-0001" style="width:160px">
+取引年月日 <input id=date type=date><br>
+支払期限 <input id=due type=date>
+</div>
+<div class='card'><b>明細</b>
+<div class=meta>単価は円単位。軽減税率(8%)の行は自動で「※」が付きます。</div>
+<div id=rows></div>
+<button onclick=addRow()>行を追加</button>
+<label style="margin-left:14px;font-size:14px">
+<input type=checkbox id=incl onchange=calc()> 単価は税込で入力</label>
+<label style="margin-left:14px;font-size:14px">端数処理
+<select id=mode onchange=calc()><option value=floor>切り捨て</option>
+<option value=round>四捨五入</option><option value=ceil>切り上げ</option></select></label>
+<div class=tiles id=totals></div>
+</div>
+<div class='card'><button onclick=window.print()>印刷 / PDFで保存</button>
+<span class=meta style="margin-left:10px">ブラウザの印刷機能でPDF保存できます</span></div>
+<div id=preview></div>
+<style>
+#preview{background:#fff;color:#111;padding:34px;border-radius:14px;margin-top:18px;
+border:1px solid var(--line)}
+#preview h2{color:#111;border:0;padding:0;margin:0 0 18px;font-size:24px}
+#preview table{width:100%;font-size:13px;color:#111}
+#preview th,#preview td{border:1px solid #ccc;padding:6px 10px}
+#preview th{background:#f0f0f4;color:#333}
+#preview .ptop{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+#preview .pbox{font-size:13px;line-height:1.9}
+@media print{
+ header,footer,.note,.card,h1,p.lead{display:none !important}
+ body{background:#fff}main{max-width:100%;padding:0}
+ #preview{border:0;border-radius:0;padding:0;margin:0}
+}
+</style>""",
+              """var RATE_MATH={0.1:{excl:[10,100],incl:[10,110]},0.08:{excl:[8,100],incl:[8,108]}};
+function yen(n){return Number(n).toLocaleString('ja-JP')}
+function addRow(name,qty,price,rate){
+var i=document.querySelectorAll('#rows .lrow').length;
+var d=document.createElement('div');d.className='lrow';d.style.margin='6px 0';
+d.innerHTML='<input placeholder="品目" class=lname style="width:min(240px,42%)"> '+
+'<input type=number class=lqty value="'+(qty||1)+'" style="width:74px" title="数量"> '+
+'<input type=number class=lprice value="'+(price||0)+'" style="width:110px" title="単価"> '+
+'<select class=lrate><option value=0.1>10%</option><option value=0.08>8%(軽減)</option></select> '+
+'<button onclick="this.parentNode.remove();calc()" style="padding:6px 12px;background:transparent;color:var(--sub);border:1px solid var(--line)">削除</button>';
+document.getElementById('rows').appendChild(d);
+if(name)d.querySelector('.lname').value=name;
+if(rate==0.08)d.querySelector('.lrate').value='0.08';
+d.querySelectorAll('input,select').forEach(function(e){e.addEventListener('input',calc)});
+calc();}
+function corporateCheckDigit(b){var s=0;
+for(var n=1;n<=12;n++){s+=Number(b[12-n])*(n%2===1?1:2)}return 9-(s%9)}
+function validateReg(v){var t=String(v).replace(/[\\s-]/g,'').replace(/^T/i,'');
+if(t==='')return {state:'',msg:''};
+if(!/^\\d{13}$/.test(t))return {state:'ng',msg:'13桁の数字を入力してください'};
+return Number(t[0])===corporateCheckDigit(t.slice(1))
+ ?{state:'ok',msg:'検査用数字OK（T'+t+'）'}
+ :{state:'ng',msg:'検査用数字が一致しません。桁の入力ミスの可能性があります'};}
+function tile(k,v,s){return "<div class='tile'><div class='k'>"+k+
+"</div><div class='v'>"+v+"</div><div class='s'>"+(s||"")+"</div></div>"}
+function totals(){
+var incl=document.getElementById('incl').checked;
+var mode=document.getElementById('mode').value;
+var round=function(x){return mode==='ceil'?Math.ceil(x):mode==='round'?Math.round(x):Math.floor(x)};
+var by={};var lines=[];
+document.querySelectorAll('#rows .lrow').forEach(function(r){
+var name=r.querySelector('.lname').value;
+var qty=Number(r.querySelector('.lqty').value)||0;
+var price=Number(r.querySelector('.lprice').value)||0;
+var rate=Number(r.querySelector('.lrate').value);
+if(!qty||!price)return;
+by[rate]=(by[rate]||0)+qty*price;
+lines.push({name:name,qty:qty,price:price,rate:rate});});
+var groups=Object.keys(by).map(Number).sort(function(a,b){return b-a}).map(function(rate){
+var amount=Math.round(by[rate]);var m=RATE_MATH[rate][incl?'incl':'excl'];
+var tax=round(amount*m[0]/m[1]);
+return incl?{rate:rate,net:amount-tax,tax:tax,gross:amount}
+           :{rate:rate,net:amount,tax:tax,gross:amount+tax};});
+var sum=function(k){return groups.reduce(function(s,g){return s+g[k]},0)};
+return {lines:lines,groups:groups,net:sum('net'),tax:sum('tax'),total:sum('gross'),incl:incl};}
+function calc(){
+var r=validateReg(document.getElementById('reg').value);
+var el=document.getElementById('regchk');el.textContent=r.msg;
+el.style.color=r.state==='ng'?'var(--bad)':'var(--ok)';
+var t=totals();
+document.getElementById('totals').innerHTML=
+tile('小計（税抜）',yen(t.net)+'円','')+
+tile('消費税',yen(t.tax)+'円','税率ごとに1回だけ端数処理')+
+tile('合計',yen(t.total)+'円','');
+var rows=t.lines.map(function(l){
+var g=l.qty*l.price;
+return '<tr><td>'+(l.name||'（品目未入力）')+(l.rate===0.08?' ※':'')+'</td><td style="text-align:right">'+
+yen(l.qty)+'</td><td style="text-align:right">'+yen(l.price)+'</td><td style="text-align:right">'+
+yen(g)+'</td></tr>'}).join('');
+var grows=t.groups.map(function(g){
+return '<tr><td>'+(g.rate*100)+'% 対象</td><td style="text-align:right">'+yen(g.net)+
+'</td><td style="text-align:right">'+yen(g.tax)+'</td></tr>'}).join('');
+var v=function(id){return document.getElementById(id).value};
+document.getElementById('preview').innerHTML=
+'<h2>請求書</h2><div class=ptop><div class=pbox><b>'+(v('to')||'（請求先）')+' 御中</b><br><br>'+
+'下記の通りご請求申し上げます。<br><br>'+
+'<span style="font-size:20px;font-weight:700">ご請求金額　'+yen(t.total)+' 円</span><br>'+
+(v('due')?'お支払期限：'+v('due'):'')+'</div>'+
+'<div class=pbox style="text-align:right">請求書番号：'+(v('no')||'-')+'<br>'+
+'取引年月日：'+(v('date')||'-')+'<br><br><b>'+(v('from')||'（自社名）')+'</b><br>'+
+(v('fromaddr')||'')+'<br>登録番号：'+(v('reg')||'（未入力）')+'</div></div>'+
+'<table style="margin-top:20px"><tr><th>品目</th><th>数量</th><th>単価</th><th>金額</th></tr>'+
+(rows||'<tr><td colspan=4>明細を入力してください</td></tr>')+'</table>'+
+'<table style="margin-top:14px;width:min(420px,100%);margin-left:auto">'+
+'<tr><th>区分</th><th>税抜金額</th><th>消費税額</th></tr>'+grows+
+'<tr><th>合計</th><th style="text-align:right">'+yen(t.net)+'</th><th style="text-align:right">'+
+yen(t.tax)+'</th></tr></table>'+
+'<div style="text-align:right;font-size:18px;font-weight:700;margin-top:10px">'+
+'合計 '+yen(t.total)+' 円</div>'+
+(v('bank')?'<div style="margin-top:18px;font-size:13px">お振込先：'+v('bank')+'</div>':'')+
+'<div style="margin-top:14px;font-size:12px;color:#666">※は軽減税率(8%)対象品目です。'+
+'消費税額は税率ごとに1回のみ端数処理しています。</div>';}
+['from','reg','fromaddr','bank','to','no','date','due'].forEach(function(id){
+document.getElementById(id).addEventListener('input',calc)});
+document.getElementById('date').value=new Date().toISOString().slice(0,10);
+addRow('',1,10000,0.1);""",
+              PRIVACY + "<p class='note'>本ツールは記載要件の入力を補助するものです。"
+              "適格請求書発行事業者の登録有無や、個別の取引の税務上の取扱いについては、"
+              "国税庁の公表資料または税理士にご確認ください。</p>")
+
+    # ---------------- 法人番号バリデーター ---------------------------------
+    tool_page("corp-number.html", "法人番号・インボイス登録番号チェッカー",
+              "法人番号（13桁）とインボイス登録番号（T＋13桁）が数学的に正しいかを検証します。"
+              "法人番号には検査用数字が含まれているため、桁の打ち間違いをその場で検出できます。",
+              """<div class='card'>法人番号 または 登録番号<br>
+<input id=n placeholder="T1180301018771" style="width:min(320px,100%);font-size:18px">
+<button onclick=chk()>検証する</button>
+<div class=result id=out></div><div class=meta id=detail></div></div>
+<div class='card'><b>検査用数字のしくみ</b>
+<p class=meta>法人番号13桁の先頭1桁は検査用数字で、残り12桁から計算されます。
+計算式は「9 −（下位12桁の各数字 × 重み の合計 ÷ 9 の余り）」で、重みは右から数えて
+奇数桁が1、偶数桁が2です。国税庁が公表している方式で、1桁の打ち間違いや
+隣接する桁の入れ替えを検出できます。</p></div>""",
+              """function corporateCheckDigit(b){var s=0;
+for(var n=1;n<=12;n++){s+=Number(b[12-n])*(n%2===1?1:2)}return 9-(s%9)}
+function chk(){var raw=document.getElementById('n').value;
+var t=String(raw).replace(/[\\s-]/g,'').replace(/^T/i,'');
+var out=document.getElementById('out'),det=document.getElementById('detail');
+if(t===''){out.textContent='番号を入力してください';det.textContent='';return}
+if(!/^\\d{13}$/.test(t)){out.textContent='形式が不正です';out.style.color='var(--bad)';
+det.textContent='13桁の数字（先頭のTは任意）で入力してください。入力された数字部分: '+t.length+'桁';return}
+var exp=corporateCheckDigit(t.slice(1)),got=Number(t[0]);
+if(exp===got){out.textContent='有効な番号です';out.style.color='var(--ok)';
+det.textContent='法人番号: '+t+' ／ インボイス登録番号: T'+t+
+'　（検査用数字 '+got+' が計算値と一致）';}
+else{out.textContent='検査用数字が一致しません';out.style.color='var(--bad)';
+det.textContent='先頭の桁は '+exp+' になるはずです（入力は '+got+
+'）。どこかの桁が誤っている可能性があります。';}}
+document.getElementById('n').addEventListener('input',chk);chk();""",
+              PRIVACY + "<p class='note'>検査用数字が一致することは「番号の形式が正しい」ことを"
+              "示すもので、その事業者が実際に登録されているかは示しません。実在と登録状況は"
+              "国税庁の法人番号公表サイト・適格請求書発行事業者公表サイトでご確認ください。</p>")
 
     # ---------------- 画像圧縮 -------------------------------------------
     tool_page("image-compress.html", "画像の圧縮・リサイズ（アップロード不要）",
