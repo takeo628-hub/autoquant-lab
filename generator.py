@@ -149,9 +149,15 @@ def page(title: str, body: str, desc: str = "", meta: dict | None = None) -> str
 <footer><div class="fwrap">© {dt.date.today().year} {SITE} ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
 <script>(function(){{var B="{BUILD_ID}";
+var q=new URLSearchParams(location.search);
+if(q.get("v")===B){{q.delete("v");var s=q.toString();
+history.replaceState(null,"",location.pathname+(s?"?"+s:"")+location.hash);}}
 fetch("{BASE_PATH}/v.json?t="+Date.now(),{{cache:"no-store"}}).then(function(r){{return r.json()}})
-.then(function(v){{if(v.build&&v.build!==B&&sessionStorage.getItem("aq_r")!==v.build){{
-sessionStorage.setItem("aq_r",v.build);location.reload();}}}}).catch(function(){{}});}})();</script>
+.then(function(v){{if(!v.build||v.build===B)return;
+var lt=+sessionStorage.getItem("aq_t")||0;if(Date.now()-lt<45000)return;
+sessionStorage.setItem("aq_t",String(Date.now()));
+q.set("v",v.build);location.replace(location.pathname+"?"+q.toString()+location.hash);
+}}).catch(function(){{}});}})();</script>
 </body></html>"""
     # prefix every root-relative internal link with the Pages subpath
     return doc.replace('href="/', f'href="{BASE_PATH}/').replace("href='/", f"href='{BASE_PATH}/")
