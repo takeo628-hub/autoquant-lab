@@ -1,12 +1,12 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ネット証券6社比較（自動売買目線） | オートクオンツ研究所</title>
-<meta name="description" content="主要ネット証券6社を手数料・自動売買適性で比較。手数料差が年率リターンに与える影響を15年の実測データつきで解説します。">
+<title>和暦⇔西暦・年齢計算 | オートクオンツ研究所</title>
+<meta name="description" content="西暦と和暦（令和・平成・昭和・大正・明治）を正確に相互変換します。元号が切り替わる日付も日単位で判定。生年月日から満年齢・学年も同時に計算します。">
 <link rel="canonical" href="https://takeo628-hub.github.io/autoquant-lab/">
 <link rel="alternate" type="application/rss+xml" href="/autoquant-lab/feed.xml">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234338ca'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='30' font-weight='800' fill='white' text-anchor='middle'%3EAQ%3C/text%3E%3C/svg%3E">
 <meta name="google-site-verification" content="m12_RQ-zBJvqM2eH3OLYsZEMH0SPqbrsixEoZpn9gSc">
-<meta property="og:title" content="ネット証券6社比較（自動売買目線）"><meta property="og:description" content="主要ネット証券6社を手数料・自動売買適性で比較。手数料差が年率リターンに与える影響を15年の実測データつきで解説します。"><meta property="og:type" content="website"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary">
+<meta property="og:title" content="和暦⇔西暦・年齢計算"><meta property="og:description" content="西暦と和暦（令和・平成・昭和・大正・明治）を正確に相互変換します。元号が切り替わる日付も日単位で判定。生年月日から満年齢・学年も同時に計算します。"><meta property="og:type" content="website"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary">
 <style>
 :root{--bg:#f7f8fa;--surface:#ffffff;--fg:#17181c;--sub:#5b616e;--line:#e6e8ec;
 --acc:#4338ca;--acc2:#0ea5e9;--ok:#047857;--bad:#b91c1c;--box:#f1f3f7;
@@ -88,7 +88,44 @@ footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface
 <header><div class="hwrap"><a class="t" href="/autoquant-lab/?v=20260806130838"><span class="logo">AQ</span>オートクオンツ研究所</a>
 <nav><a href="/autoquant-lab/?v=20260806130838">ホーム</a><a href="/autoquant-lab/posts/?v=20260806130838">記事一覧</a><a href="/autoquant-lab/tools/?v=20260806130838">ツール</a>
 <a href="/autoquant-lab/hikaku.html?v=20260806130838">証券会社比較</a><a href="/autoquant-lab/about.html?v=20260806130838">このサイトについて</a></nav></div></header>
-<main><h1>ネット証券6社比較 — 自動売買・システムトレード目線＋実測データ</h1><p>証券会社選びで最も確実に効くのは手数料です。予測が当たるかは不確実ですが、コストは100%確実にリターンから引かれます。このページでは主要ネット証券6社を、一般的な軸に加えて<strong>「自動売買・システムトレードに向くか」という当ラボ独自の実体験軸</strong>で比較します。</p><p class='meta'>※料率・サービスは改定されます。2026年8月時点の調査に基づくため、申込前に必ず各社公式サイトで最新情報をご確認ください。</p><h2>総合比較表</h2><table><tr><th>証券会社</th><th>米国株手数料</th><th>国内株手数料</th><th>強み</th><th>自動化適性（当ラボ評）</th></tr><tr><td>moomoo証券</td><td><strong>0.088%</strong>（上限16.5ドル）</td><td>0円</td><td>米株手数料が大手の約1/5。アプリの銘柄分析が強力。24時間取引対応</td><td>◎ 低コストが高回転の自動戦略と好相性</td></tr><tr><td>SBI証券</td><td>0.495%（上限22ドル）</td><td>0円（ゼロ革命）</td><td>取扱商品の広さは国内随一。為替コストの安さも進む</td><td>○ 品揃え重視の長期自動積立向け</td></tr><tr><td>楽天証券</td><td>0.495%（上限22ドル）</td><td>0円（ゼロコース）</td><td>楽天経済圏との連携。取引ツールMARKETSPEEDが有名</td><td>◎ <strong>マーケットスピードRSS</strong>でExcel経由の発注自動化が可能（当ラボが実際に自動化で使用した唯一の公式ルート）</td></tr><tr><td>マネックス証券</td><td>0.495%（上限22ドル）</td><td>条件により0円〜</td><td>米国株の買付時為替手数料0銭。銘柄スカウターが優秀</td><td>○ 米株の分析・積立向け</td></tr><tr><td>松井証券</td><td>0.495%（上限22ドル）</td><td>1日50万円まで0円</td><td>シンプルな料金体系。サポート評価が高い</td><td>△ 少額デイトレ向き</td></tr><tr><td>IB証券（Interactive Brokers）</td><td>従量制（1株約0.005ドル・最低約1ドル）</td><td>取扱あり（従量制）</td><td>プロ・機関投資家標準。取扱市場が世界規模</td><td>◎ <strong>本格API</strong>あり。プログラム売買の最終形だが難易度高</td></tr></table><h2>当ラボの実測：手数料差は年率でどれだけ効くか</h2><p>同一の売買ルール（15.6年・コスト込みバックテスト）を手数料率だけ変えて回した結果、0.495%と0.088%の差は<strong>年率およそ1.5%</strong>の成績差になりました。複利で15年続くと最終資産で数十%の差です。売買頻度が高い運用ほど差は拡大します。<a href='/autoquant-lab/tools/fee-calc.html?v=20260806130838'>手数料計算機</a>で自分の取引パターンでの年間コストを試算できます。</p><h2>タイプ別の選び方</h2><div class='promise'><div class='card'><b>米国株を頻繁に売買する</b><span>手数料率が支配的。0.088%のmoomoo証券が計算上は最有力。</span></div><div class='card'><b>日本株の自動売買をしたい</b><span>公式に自動化ルート（マーケットスピードRSS）を持つ楽天証券が現実解。国内手数料も0円。</span></div><div class='card'><b>NISA中心の長期積立</b><span>主要ネット証券はNISA売買手数料0円が主流。品揃えのSBI・為替のマネックスなど強みで選ぶ。</span></div><div class='card'><b>プログラミングで本格運用</b><span>APIの自由度ならIB証券。ただし口座維持・操作の難易度は覚悟が必要。</span></div></div><h2>よくある質問</h2><h3>Q. 手数料より「使いやすさ」で選ぶのはダメ？</h3><p>短期売買をしないなら合理的です。年1〜2回の取引なら手数料差は誤差で、続けられるツールの方が価値があります。売買頻度が上がるほど手数料の重みが増します。</p><h3>Q. 為替コスト（ドル転）はどう考える？</h3><p>近年は0銭化が進みましたが、経路・タイミングで差が残ります。頻繁にドル転する運用では取引手数料と同等以上に効くことがあるため、必ず各社の最新条件を確認してください。</p><h3>Q. 複数口座の使い分けはあり？</h3><p>あり、というのが当ラボの結論です。実際に当ラボの検証でも「日本株=手数料0円の証券」「米国株=低率の証券」という役割分担を前提にしています。口座開設は無料なので、用途で分けるのが合理的です。</p><p class='meta'>本ページには広告リンクを含む場合があります（PR表記のあるもの）。掲載の有無・順序は比較内容・数値に影響しません。</p>
+<main><h1>和暦⇔西暦・年齢計算</h1><p>西暦と和暦（令和・平成・昭和・大正・明治）を正確に相互変換します。元号が切り替わる日付も日単位で判定。生年月日から満年齢・学年も同時に計算します。</p><div class='card'><b>日付から変換</b><br>
+<input id=d type=date value="1995-04-10"> <button onclick=conv()>変換する</button>
+<div class=result id=o1></div><div class=meta id=o2></div></div>
+<div class='card'><b>和暦から西暦へ</b><br>
+<select id=era><option>令和</option><option>平成</option><option>昭和</option>
+<option>大正</option><option>明治</option></select>
+<input id=y type=number value=7 style="width:90px"> 年
+<input id=m type=number value=4 min=1 max=12 style="width:80px"> 月
+<input id=dd type=number value=10 min=1 max=31 style="width:80px"> 日
+<button onclick=rev()>変換する</button><div class=result id=o3></div></div><p class='note'>このツールはすべてブラウザ内だけで動作します。入力した内容やファイルがサーバーに送信されることはありません。</p><script>var ERAS=[["令和","R",2019,5,1],["平成","H",1989,1,8],["昭和","S",1926,12,25],
+["大正","T",1912,7,30],["明治","M",1868,1,25]];
+function toWareki(dt){for(var i=0;i<ERAS.length;i++){var e=ERAS[i];
+var st=new Date(e[2],e[3]-1,e[4]);
+if(dt>=st){var n=dt.getFullYear()-e[2]+1;return [e[0],e[1],n===1?"元":n]}}
+return null}
+function conv(){var v=document.getElementById('d').value;if(!v)return;
+var p=v.split('-'),dt=new Date(+p[0],+p[1]-1,+p[2]);
+var w=toWareki(dt);
+if(!w){document.getElementById('o1').textContent='明治より前の日付には対応していません';
+document.getElementById('o2').textContent='';return}
+document.getElementById('o1').textContent=w[0]+w[2]+'年'+(+p[1])+'月'+(+p[2])+'日 （'+w[1]+w[2]+'）';
+var t=new Date(),age=t.getFullYear()-dt.getFullYear();
+var md=(t.getMonth()-dt.getMonth())||(t.getDate()-dt.getDate());if(md<0)age--;
+var gy=dt.getMonth()+1<4?dt.getFullYear()-1:dt.getFullYear();
+document.getElementById('o2').textContent='満'+age+'歳 ／ 早生まれ判定: '+
+((dt.getMonth()+1<4||(dt.getMonth()+1===4&&dt.getDate()===1)?'早生まれ':'遅生まれ'))+
+' ／ 学年の基準年度: '+gy+'年度生';}
+function rev(){var e=document.getElementById('era').value;
+var yy=+document.getElementById('y').value,mm=+document.getElementById('m').value,
+dd=+document.getElementById('dd').value;
+var f=ERAS.filter(function(x){return x[0]===e})[0];
+var g=f[2]+yy-1;
+var dt=new Date(g,mm-1,dd);
+var chk=toWareki(dt);
+var warn=(chk&&chk[0]===e)?'':' ※この元号の期間外の可能性があります';
+document.getElementById('o3').textContent='西暦 '+g+'年'+mm+'月'+dd+'日（'+
+['日','月','火','水','木','金','土'][dt.getDay()]+'曜日）'+warn;}
+conv();rev();</script>
 <div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
 <footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>

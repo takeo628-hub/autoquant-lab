@@ -26,7 +26,7 @@ POSTS = os.path.join(ROOT, "content", "posts")
 DOCS = os.path.join(ROOT, "docs")
 TV2 = r"C:\Users\yukur\trading_v2"
 SITE = "オートクオンツ研究所"
-TAGLINE = "AIが構築・運用する全自動トレードシステムの公開検証ラボ"
+TAGLINE = "AIが無人で運営する実験ラボ。全自動トレードの検証記録・無料ツール・運営の全記録を公開"
 BASE_URL = "https://takeo628-hub.github.io/autoquant-lab"
 # GitHub Pages project sites live under a subpath; every internal href
 # written as "/..." must be prefixed with it or it 404s at the domain root.
@@ -371,6 +371,27 @@ AIが構築した全自動売買システム（日足・翌日寄付執行）の
     return slug
 
 
+def _tcard(href, name, note):
+    return (f"<div class='card'><a href='{href}'>{name}</a>"
+            f"<div class='meta'>{note}</div></div>")
+
+
+UTIL_TOOLS = "".join([
+    _tcard("/tools/moji-count.html", "文字数カウント", "原稿用紙換算・SNS残り字数・読了時間つき"),
+    _tcard("/tools/image-compress.html", "画像の圧縮・リサイズ", "アップロード不要。ブラウザ内で完結"),
+    _tcard("/tools/date-calc.html", "日付計算・営業日カウント", "日本の祝日2020〜2031年を内蔵"),
+    _tcard("/tools/wareki.html", "和暦⇔西暦・年齢計算", "元号の切替日も日単位で正確に判定"),
+])
+MONEY_TOOLS = "".join([
+    _tcard("/tools/fukuri.html", "複利計算機", "積立×利回り×年数"),
+    _tcard("/tools/drawdown.html", "ドローダウン回復計算機", "-30%を戻すには+43%必要"),
+    _tcard("/tools/fee-calc.html", "年間手数料計算機", "証券会社別の年間コスト試算"),
+    _tcard("/tools/position-size.html", "ポジションサイズ計算機", "許容損失から株数を逆算"),
+    _tcard("/tools/jpy-return.html", "円建てリターン計算機", "為替込みの実質損益"),
+    _tcard("/glossary.html", "投資検証の用語集", "過適合・DD・ケリー基準など14語"),
+])
+
+
 def live_stats() -> dict | None:
     try:
         with open(os.path.join(TV2, "state", "paper_state.json"), encoding="utf-8") as f:
@@ -436,13 +457,12 @@ def build() -> None:
 
     s = live_stats()
     hero = ("<div class='hero'><div class='badgerow'><span class='badge'>公開実験</span>"
-            "<span class='badge'>毎日自動更新</span><span class='badge'>全実績 事後公開</span></div>"
-            "<h1>AIがひとりで作り、運用し、記録する。<br>全自動トレードの公開検証ラボ</h1>"
-            "<p class='lead'>戦略の設計・実装・毎日の売買・この記事の執筆まで、人間の手を介さない"
-            "実験プロジェクト。バックテストの嘘（過適合・ルックアヘッド）と向き合いながら、"
-            "本物の期待値だけを積み上げられるかを毎日検証しています。</p>"
-            "<a class='cta p' href='/posts/'>最新の検証記録を見る</a>"
-            "<a class='cta s' href='/posts/kabt-overfit-anatomy.html'>「年利+360%」が嘘だった話</a></div>")
+            "<span class='badge'>毎日自動更新</span><span class='badge'>全記録を公開</span></div>"
+            "<h1>AIがひとりで作り、運用し、記録する。<br>無人運営の実験ラボ</h1>"
+            "<p class='lead'>戦略の設計から毎日の売買、ツールの開発、この文章の執筆、サイトの公開まで"
+            "人間の手を介さない実験プロジェクトです。うまくいったことも失敗も、数字ごと全部公開します。</p>"
+            "<a class='cta p' href='/posts/'>最新の記録を見る</a>"
+            "<a class='cta s' href='/tools/'>無料ツールを使う</a></div>")
     tiles = stat_tiles(s) if s else ""
     promises = ("<h2>この実験の3つの約束</h2><div class='promise'>"
                 "<div class='card'><b>事後公開のみ</b><span>売買の推奨はしません。"
@@ -452,21 +472,12 @@ def build() -> None:
                 "<div class='card'><b>検証5チェック</b><span>資金制約・異常値・約定再計算などの"
                 "検証を通らない数字は掲載しません。</span></div></div>")
     latest = "<h2>最新の記録</h2>" + "".join(card(p) for p in posts[:6])
-    toolsec = ("<h2>計算ツール</h2><div class='grid2'>"
-               "<div class='card'><a href='/tools/fukuri.html'>複利計算機</a>"
-               "<div class='meta'>積立×利回り×年数のシミュレーション</div></div>"
-               "<div class='card'><a href='/tools/position-size.html'>ポジションサイズ計算機</a>"
-               "<div class='meta'>許容損失から適正な株数を逆算</div></div>"
-               "<div class='card'><a href='/tools/jpy-return.html'>円建てリターン計算機</a>"
-               "<div class='meta'>為替込みの実質損益を計算</div></div>"
-               "<div class='card'><a href='/tools/drawdown.html'>ドローダウン回復計算機</a>"
-               "<div class='meta'>-30%を戻すには+43%必要</div></div>"
-               "<div class='card'><a href='/tools/fee-calc.html'>年間手数料計算機</a>"
-               "<div class='meta'>証券会社別の年間コスト試算</div></div>"
-               "<div class='card'><a href='/hikaku.html'>ネット証券6社比較</a>"
-               "<div class='meta'>自動売買目線＋実測データつき</div></div>"
-               "<div class='card'><a href='/glossary.html'>投資検証の用語集</a>"
-               "<div class='meta'>実務目線の短い定義14語</div></div></div>")
+    toolsec = ("<h2>無料ツール（登録不要・ブラウザ内で完結）</h2>"
+               "<p class='meta'>入力内容やファイルはサーバーに送信されません。</p>"
+               "<div class='grid2'>" + UTIL_TOOLS + "</div>"
+               "<h2>投資・お金のツール</h2><div class='grid2'>" + MONEY_TOOLS +
+               _tcard("/hikaku.html", "ネット証券6社比較", "自動売買目線＋実測データつき") +
+               "</div>")
     with open(os.path.join(DOCS, "index.html"), "w", encoding="utf-8") as f:
         f.write(page("ホーム", hero + tiles + promises + latest + toolsec + aff, TAGLINE))
 
@@ -582,19 +593,11 @@ def build() -> None:
         f.write(page("このサイトについて", about))
 
     tools()
-    tlist = ("<h1>計算ツール</h1><div class='grid2'>"
-             "<div class='card'><a href='/tools/fukuri.html'>複利計算機</a>"
-             "<div class='meta'>積立×利回り×年数</div></div>"
-             "<div class='card'><a href='/tools/position-size.html'>ポジションサイズ計算機</a>"
-             "<div class='meta'>許容損失から株数を逆算</div></div>"
-             "<div class='card'><a href='/tools/jpy-return.html'>円建てリターン計算機</a>"
-             "<div class='meta'>為替込みの実質損益</div></div>"
-             "<div class='card'><a href='/tools/drawdown.html'>ドローダウン回復計算機</a>"
-             "<div class='meta'>-30%を戻すには+43%必要</div></div>"
-             "<div class='card'><a href='/tools/fee-calc.html'>年間手数料計算機</a>"
-             "<div class='meta'>証券会社別の年間コスト試算</div></div>"
-             "<div class='card'><a href='/glossary.html'>投資検証の用語集</a>"
-             "<div class='meta'>過適合・DD・ケリー基準など14語</div></div></div>")
+    tlist = ("<h1>無料ツール</h1>"
+             "<p>すべて<strong>ブラウザ内だけで動作</strong>します。入力内容やファイルが"
+             "サーバーに送信されることはありません。登録も不要です。</p>"
+             "<h2>くらしの実用ツール</h2><div class='grid2'>" + UTIL_TOOLS + "</div>"
+             "<h2>投資・お金のツール</h2><div class='grid2'>" + MONEY_TOOLS + "</div>")
     with open(os.path.join(DOCS, "tools", "index.html"), "w", encoding="utf-8") as f:
         f.write(page("計算ツール", tlist))
 
@@ -611,7 +614,9 @@ def build() -> None:
             f"{BASE_URL}/hikaku.html", f"{BASE_URL}/about.html", f"{BASE_URL}/glossary.html",
             f"{BASE_URL}/tools/fukuri.html", f"{BASE_URL}/tools/position-size.html",
             f"{BASE_URL}/tools/jpy-return.html", f"{BASE_URL}/tools/drawdown.html",
-            f"{BASE_URL}/tools/fee-calc.html"] + \
+            f"{BASE_URL}/tools/fee-calc.html", f"{BASE_URL}/tools/moji-count.html",
+            f"{BASE_URL}/tools/wareki.html", f"{BASE_URL}/tools/date-calc.html",
+            f"{BASE_URL}/tools/image-compress.html"] + \
            [f"{BASE_URL}/posts/{p['slug']}.html" for p in posts]
     with open(os.path.join(DOCS, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write("<?xml version='1.0' encoding='UTF-8'?>"
@@ -634,10 +639,154 @@ def build() -> None:
 
 
 def tools() -> None:
-    def tool_page(fn, title, desc, body_html, js):
-        b = f"<h1>{title}</h1><p>{desc}</p>{body_html}<script>{js}</script>"
+    def tool_page(fn, title, desc, body_html, js, extra=""):
+        b = f"<h1>{title}</h1><p>{desc}</p>{body_html}{extra}<script>{js}</script>"
         with open(os.path.join(DOCS, "tools", fn), "w", encoding="utf-8") as f:
             f.write(page(title, b, desc))
+
+    PRIVACY = ("<p class='note'>このツールはすべてブラウザ内だけで動作します。"
+               "入力した内容やファイルがサーバーに送信されることはありません。</p>")
+
+    # ---------------- 文字数カウント -------------------------------------
+    tool_page("moji-count.html", "文字数カウント（原稿用紙・SNS対応）",
+              "入力した文章の文字数を即座に数えます。空白を除いた数、原稿用紙の枚数、SNSの残り文字数、読了時間の目安も同時に表示します。",
+              """<div class='card'><textarea id=t rows=9 style="width:100%;font:inherit;
+padding:12px;border:1.5px solid var(--line);border-radius:9px;background:var(--bg);
+color:var(--fg)" placeholder="ここに文章を貼り付けてください"></textarea>
+<div class=tiles id=out></div></div>""",
+              """function tile(k,v,s){return "<div class='tile'><div class='k'>"+k+
+"</div><div class='v'>"+v+"</div><div class='s'>"+(s||"")+"</div></div>"}
+function calc(){var s=document.getElementById('t').value;
+var all=Array.from(s).length;
+var nospace=Array.from(s.replace(/[\\s\\u3000]/g,'')).length;
+var lines=s===''?0:s.split(/\\n/).length;
+var sheets=(all/400);var minutes=Math.max(1,Math.round(nospace/500));
+var x=140-all;
+document.getElementById('out').innerHTML=
+tile('文字数',all.toLocaleString(),'改行・空白を含む')+
+tile('空白を除く',nospace.toLocaleString(),'実質の文字数')+
+tile('原稿用紙',sheets.toFixed(2)+'枚','400字換算')+
+tile('行数',lines.toLocaleString(),'改行の数')+
+tile('読了時間','約'+minutes+'分','毎分500字で計算')+
+tile('X(旧Twitter)',(x>=0?'残り'+x:'超過'+(-x)),'140字基準');}
+document.getElementById('t').addEventListener('input',calc);calc();""",
+              PRIVACY)
+
+    # ---------------- 和暦・年齢 -----------------------------------------
+    tool_page("wareki.html", "和暦⇔西暦・年齢計算",
+              "西暦と和暦（令和・平成・昭和・大正・明治）を正確に相互変換します。元号が切り替わる日付も日単位で判定。生年月日から満年齢・学年も同時に計算します。",
+              """<div class='card'><b>日付から変換</b><br>
+<input id=d type=date value="1995-04-10"> <button onclick=conv()>変換する</button>
+<div class=result id=o1></div><div class=meta id=o2></div></div>
+<div class='card'><b>和暦から西暦へ</b><br>
+<select id=era><option>令和</option><option>平成</option><option>昭和</option>
+<option>大正</option><option>明治</option></select>
+<input id=y type=number value=7 style="width:90px"> 年
+<input id=m type=number value=4 min=1 max=12 style="width:80px"> 月
+<input id=dd type=number value=10 min=1 max=31 style="width:80px"> 日
+<button onclick=rev()>変換する</button><div class=result id=o3></div></div>""",
+              """var ERAS=[["令和","R",2019,5,1],["平成","H",1989,1,8],["昭和","S",1926,12,25],
+["大正","T",1912,7,30],["明治","M",1868,1,25]];
+function toWareki(dt){for(var i=0;i<ERAS.length;i++){var e=ERAS[i];
+var st=new Date(e[2],e[3]-1,e[4]);
+if(dt>=st){var n=dt.getFullYear()-e[2]+1;return [e[0],e[1],n===1?"元":n]}}
+return null}
+function conv(){var v=document.getElementById('d').value;if(!v)return;
+var p=v.split('-'),dt=new Date(+p[0],+p[1]-1,+p[2]);
+var w=toWareki(dt);
+if(!w){document.getElementById('o1').textContent='明治より前の日付には対応していません';
+document.getElementById('o2').textContent='';return}
+document.getElementById('o1').textContent=w[0]+w[2]+'年'+(+p[1])+'月'+(+p[2])+'日 （'+w[1]+w[2]+'）';
+var t=new Date(),age=t.getFullYear()-dt.getFullYear();
+var md=(t.getMonth()-dt.getMonth())||(t.getDate()-dt.getDate());if(md<0)age--;
+var gy=dt.getMonth()+1<4?dt.getFullYear()-1:dt.getFullYear();
+document.getElementById('o2').textContent='満'+age+'歳 ／ 早生まれ判定: '+
+((dt.getMonth()+1<4||(dt.getMonth()+1===4&&dt.getDate()===1)?'早生まれ':'遅生まれ'))+
+' ／ 学年の基準年度: '+gy+'年度生';}
+function rev(){var e=document.getElementById('era').value;
+var yy=+document.getElementById('y').value,mm=+document.getElementById('m').value,
+dd=+document.getElementById('dd').value;
+var f=ERAS.filter(function(x){return x[0]===e})[0];
+var g=f[2]+yy-1;
+var dt=new Date(g,mm-1,dd);
+var chk=toWareki(dt);
+var warn=(chk&&chk[0]===e)?'':' ※この元号の期間外の可能性があります';
+document.getElementById('o3').textContent='西暦 '+g+'年'+mm+'月'+dd+'日（'+
+['日','月','火','水','木','金','土'][dt.getDay()]+'曜日）'+warn;}
+conv();rev();""",
+              PRIVACY)
+
+    # ---------------- 日付・営業日計算 -----------------------------------
+    with open(os.path.join(ROOT, "jp_holidays.json"), encoding="utf-8") as f:
+        holi = f.read()
+    tool_page("date-calc.html", "日付計算・営業日カウント（日本の祝日対応）",
+              "「30日後は何日？」「営業日で10日後は？」を計算します。日本の祝日（2020〜2031年）を内蔵しているため、土日だけでなく祝日も正しく除外できます。2つの日付の間の日数・営業日数も数えられます。",
+              """<div class='card'><b>基準日から前後に進める</b><br>
+<input id=b type=date> <input id=n type=number value=30 style="width:100px"> 日
+<select id=mode><option value=cal>暦日で</option><option value=biz>営業日で</option></select>
+<button onclick=addDays()>計算する</button><div class=result id=r1></div></div>
+<div class='card'><b>2つの日付の間を数える</b><br>
+<input id=s type=date> 〜 <input id=e type=date>
+<button onclick=between()>計算する</button><div class=result id=r2></div></div>""",
+              """var H=new Set(""" + holi + """);
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+
+String(d.getDate()).padStart(2,'0')}
+function isBiz(d){var w=d.getDay();return w!==0&&w!==6&&!H.has(iso(d))}
+function fmt(d){return iso(d)+'（'+['日','月','火','水','木','金','土'][d.getDay()]+'）'}
+function today(){var t=new Date();return iso(t)}
+document.getElementById('b').value=today();
+document.getElementById('s').value=today();
+document.getElementById('e').value=today();
+function addDays(){var v=document.getElementById('b').value;if(!v)return;
+var p=v.split('-'),d=new Date(+p[0],+p[1]-1,+p[2]),n=+document.getElementById('n').value;
+var mode=document.getElementById('mode').value,step=n<0?-1:1,left=Math.abs(n);
+if(mode==='cal'){d.setDate(d.getDate()+n)}
+else{while(left>0){d.setDate(d.getDate()+step);if(isBiz(d))left--}}
+document.getElementById('r1').textContent=fmt(d)+(mode==='biz'?' ／ 土日祝を除いた営業日で計算':'');}
+function between(){var a=document.getElementById('s').value,b=document.getElementById('e').value;
+if(!a||!b)return;var pa=a.split('-'),pb=b.split('-');
+var d1=new Date(+pa[0],+pa[1]-1,+pa[2]),d2=new Date(+pb[0],+pb[1]-1,+pb[2]);
+if(d2<d1){var t=d1;d1=d2;d2=t}
+var days=Math.round((d2-d1)/86400000),biz=0,c=new Date(d1);
+while(c<d2){c.setDate(c.getDate()+1);if(isBiz(c))biz++}
+document.getElementById('r2').textContent=days.toLocaleString()+'日間 ／ うち営業日 '+
+biz.toLocaleString()+'日（土日祝を除く）';}
+addDays();""",
+              PRIVACY)
+
+    # ---------------- 画像圧縮 -------------------------------------------
+    tool_page("image-compress.html", "画像の圧縮・リサイズ（アップロード不要）",
+              "写真のファイルサイズを小さくします。処理はすべてあなたのブラウザ内で完結するため、画像がどこかに送信されることは一切ありません。メール添付やフリマ出品の容量制限対策に。",
+              """<div class='card'><input type=file id=f accept="image/*"><br>
+最大の長辺 <input id=mx type=number value=1600 style="width:110px"> px
+画質 <input id=q type=range min=40 max=95 value=80 style="width:160px">
+<span id=qv>80</span>%<br>
+<button onclick=go()>変換する</button>
+<div class=result id=st></div><div id=dl style="margin-top:10px"></div>
+<div style="margin-top:14px"><img id=prev style="max-width:100%;border-radius:10px;display:none"></div>
+</div>""",
+              """var q=document.getElementById('q');q.oninput=function(){
+document.getElementById('qv').textContent=q.value};
+function go(){var f=document.getElementById('f').files[0];
+if(!f){document.getElementById('st').textContent='画像ファイルを選んでください';return}
+var mx=+document.getElementById('mx').value,qq=+q.value/100;
+var img=new Image(),url=URL.createObjectURL(f);
+img.onload=function(){var w=img.width,h=img.height,sc=Math.min(1,mx/Math.max(w,h));
+var cw=Math.round(w*sc),ch=Math.round(h*sc);
+var c=document.createElement('canvas');c.width=cw;c.height=ch;
+c.getContext('2d').drawImage(img,0,0,cw,ch);
+c.toBlob(function(b){var o=URL.createObjectURL(b);
+document.getElementById('prev').src=o;document.getElementById('prev').style.display='block';
+var r=(1-b.size/f.size)*100;
+document.getElementById('st').textContent=
+(f.size/1024).toFixed(0)+'KB ('+w+'×'+h+') → '+(b.size/1024).toFixed(0)+'KB ('+cw+'×'+ch+')　'+
+(r>0?r.toFixed(0)+'% 削減':'削減できませんでした');
+var name=(f.name.replace(/\\.[^.]+$/,''))+'_compressed.jpg';
+document.getElementById('dl').innerHTML='<a class="cta p" href="'+o+'" download="'+name+
+'">圧縮した画像を保存</a>';URL.revokeObjectURL(url);},'image/jpeg',qq)};
+img.onerror=function(){document.getElementById('st').textContent='この形式は読み込めませんでした'};
+img.src=url;}""",
+              PRIVACY)
 
     tool_page("fukuri.html", "複利計算機",
               "毎月の積立額・想定利回り・運用年数から、複利での最終資産を計算します。",

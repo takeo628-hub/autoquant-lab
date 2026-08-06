@@ -1,12 +1,12 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ネット証券6社比較（自動売買目線） | オートクオンツ研究所</title>
-<meta name="description" content="主要ネット証券6社を手数料・自動売買適性で比較。手数料差が年率リターンに与える影響を15年の実測データつきで解説します。">
+<title>日付計算・営業日カウント（日本の祝日対応） | オートクオンツ研究所</title>
+<meta name="description" content="「30日後は何日？」「営業日で10日後は？」を計算します。日本の祝日（2020〜2031年）を内蔵しているため、土日だけでなく祝日も正しく除外できます。2つの日付の間の日数・営業日数も数えられます。">
 <link rel="canonical" href="https://takeo628-hub.github.io/autoquant-lab/">
 <link rel="alternate" type="application/rss+xml" href="/autoquant-lab/feed.xml">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234338ca'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='30' font-weight='800' fill='white' text-anchor='middle'%3EAQ%3C/text%3E%3C/svg%3E">
 <meta name="google-site-verification" content="m12_RQ-zBJvqM2eH3OLYsZEMH0SPqbrsixEoZpn9gSc">
-<meta property="og:title" content="ネット証券6社比較（自動売買目線）"><meta property="og:description" content="主要ネット証券6社を手数料・自動売買適性で比較。手数料差が年率リターンに与える影響を15年の実測データつきで解説します。"><meta property="og:type" content="website"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary">
+<meta property="og:title" content="日付計算・営業日カウント（日本の祝日対応）"><meta property="og:description" content="「30日後は何日？」「営業日で10日後は？」を計算します。日本の祝日（2020〜2031年）を内蔵しているため、土日だけでなく祝日も正しく除外できます。2つの日付の間の日数・営業日数も数えられます。"><meta property="og:type" content="website"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary">
 <style>
 :root{--bg:#f7f8fa;--surface:#ffffff;--fg:#17181c;--sub:#5b616e;--line:#e6e8ec;
 --acc:#4338ca;--acc2:#0ea5e9;--ok:#047857;--bad:#b91c1c;--box:#f1f3f7;
@@ -88,7 +88,36 @@ footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface
 <header><div class="hwrap"><a class="t" href="/autoquant-lab/?v=20260806130838"><span class="logo">AQ</span>オートクオンツ研究所</a>
 <nav><a href="/autoquant-lab/?v=20260806130838">ホーム</a><a href="/autoquant-lab/posts/?v=20260806130838">記事一覧</a><a href="/autoquant-lab/tools/?v=20260806130838">ツール</a>
 <a href="/autoquant-lab/hikaku.html?v=20260806130838">証券会社比較</a><a href="/autoquant-lab/about.html?v=20260806130838">このサイトについて</a></nav></div></header>
-<main><h1>ネット証券6社比較 — 自動売買・システムトレード目線＋実測データ</h1><p>証券会社選びで最も確実に効くのは手数料です。予測が当たるかは不確実ですが、コストは100%確実にリターンから引かれます。このページでは主要ネット証券6社を、一般的な軸に加えて<strong>「自動売買・システムトレードに向くか」という当ラボ独自の実体験軸</strong>で比較します。</p><p class='meta'>※料率・サービスは改定されます。2026年8月時点の調査に基づくため、申込前に必ず各社公式サイトで最新情報をご確認ください。</p><h2>総合比較表</h2><table><tr><th>証券会社</th><th>米国株手数料</th><th>国内株手数料</th><th>強み</th><th>自動化適性（当ラボ評）</th></tr><tr><td>moomoo証券</td><td><strong>0.088%</strong>（上限16.5ドル）</td><td>0円</td><td>米株手数料が大手の約1/5。アプリの銘柄分析が強力。24時間取引対応</td><td>◎ 低コストが高回転の自動戦略と好相性</td></tr><tr><td>SBI証券</td><td>0.495%（上限22ドル）</td><td>0円（ゼロ革命）</td><td>取扱商品の広さは国内随一。為替コストの安さも進む</td><td>○ 品揃え重視の長期自動積立向け</td></tr><tr><td>楽天証券</td><td>0.495%（上限22ドル）</td><td>0円（ゼロコース）</td><td>楽天経済圏との連携。取引ツールMARKETSPEEDが有名</td><td>◎ <strong>マーケットスピードRSS</strong>でExcel経由の発注自動化が可能（当ラボが実際に自動化で使用した唯一の公式ルート）</td></tr><tr><td>マネックス証券</td><td>0.495%（上限22ドル）</td><td>条件により0円〜</td><td>米国株の買付時為替手数料0銭。銘柄スカウターが優秀</td><td>○ 米株の分析・積立向け</td></tr><tr><td>松井証券</td><td>0.495%（上限22ドル）</td><td>1日50万円まで0円</td><td>シンプルな料金体系。サポート評価が高い</td><td>△ 少額デイトレ向き</td></tr><tr><td>IB証券（Interactive Brokers）</td><td>従量制（1株約0.005ドル・最低約1ドル）</td><td>取扱あり（従量制）</td><td>プロ・機関投資家標準。取扱市場が世界規模</td><td>◎ <strong>本格API</strong>あり。プログラム売買の最終形だが難易度高</td></tr></table><h2>当ラボの実測：手数料差は年率でどれだけ効くか</h2><p>同一の売買ルール（15.6年・コスト込みバックテスト）を手数料率だけ変えて回した結果、0.495%と0.088%の差は<strong>年率およそ1.5%</strong>の成績差になりました。複利で15年続くと最終資産で数十%の差です。売買頻度が高い運用ほど差は拡大します。<a href='/autoquant-lab/tools/fee-calc.html?v=20260806130838'>手数料計算機</a>で自分の取引パターンでの年間コストを試算できます。</p><h2>タイプ別の選び方</h2><div class='promise'><div class='card'><b>米国株を頻繁に売買する</b><span>手数料率が支配的。0.088%のmoomoo証券が計算上は最有力。</span></div><div class='card'><b>日本株の自動売買をしたい</b><span>公式に自動化ルート（マーケットスピードRSS）を持つ楽天証券が現実解。国内手数料も0円。</span></div><div class='card'><b>NISA中心の長期積立</b><span>主要ネット証券はNISA売買手数料0円が主流。品揃えのSBI・為替のマネックスなど強みで選ぶ。</span></div><div class='card'><b>プログラミングで本格運用</b><span>APIの自由度ならIB証券。ただし口座維持・操作の難易度は覚悟が必要。</span></div></div><h2>よくある質問</h2><h3>Q. 手数料より「使いやすさ」で選ぶのはダメ？</h3><p>短期売買をしないなら合理的です。年1〜2回の取引なら手数料差は誤差で、続けられるツールの方が価値があります。売買頻度が上がるほど手数料の重みが増します。</p><h3>Q. 為替コスト（ドル転）はどう考える？</h3><p>近年は0銭化が進みましたが、経路・タイミングで差が残ります。頻繁にドル転する運用では取引手数料と同等以上に効くことがあるため、必ず各社の最新条件を確認してください。</p><h3>Q. 複数口座の使い分けはあり？</h3><p>あり、というのが当ラボの結論です。実際に当ラボの検証でも「日本株=手数料0円の証券」「米国株=低率の証券」という役割分担を前提にしています。口座開設は無料なので、用途で分けるのが合理的です。</p><p class='meta'>本ページには広告リンクを含む場合があります（PR表記のあるもの）。掲載の有無・順序は比較内容・数値に影響しません。</p>
+<main><h1>日付計算・営業日カウント（日本の祝日対応）</h1><p>「30日後は何日？」「営業日で10日後は？」を計算します。日本の祝日（2020〜2031年）を内蔵しているため、土日だけでなく祝日も正しく除外できます。2つの日付の間の日数・営業日数も数えられます。</p><div class='card'><b>基準日から前後に進める</b><br>
+<input id=b type=date> <input id=n type=number value=30 style="width:100px"> 日
+<select id=mode><option value=cal>暦日で</option><option value=biz>営業日で</option></select>
+<button onclick=addDays()>計算する</button><div class=result id=r1></div></div>
+<div class='card'><b>2つの日付の間を数える</b><br>
+<input id=s type=date> 〜 <input id=e type=date>
+<button onclick=between()>計算する</button><div class=result id=r2></div></div><p class='note'>このツールはすべてブラウザ内だけで動作します。入力した内容やファイルがサーバーに送信されることはありません。</p><script>var H=new Set(["2020-01-01", "2020-01-13", "2020-02-11", "2020-02-23", "2020-02-24", "2020-03-20", "2020-04-29", "2020-05-03", "2020-05-04", "2020-05-05", "2020-05-06", "2020-07-23", "2020-07-24", "2020-08-10", "2020-09-21", "2020-09-22", "2020-11-03", "2020-11-23", "2021-01-01", "2021-01-11", "2021-02-11", "2021-02-23", "2021-03-20", "2021-04-29", "2021-05-03", "2021-05-04", "2021-05-05", "2021-07-22", "2021-07-23", "2021-08-08", "2021-08-09", "2021-09-20", "2021-09-23", "2021-11-03", "2021-11-23", "2022-01-01", "2022-01-10", "2022-02-11", "2022-02-23", "2022-03-21", "2022-04-29", "2022-05-03", "2022-05-04", "2022-05-05", "2022-07-18", "2022-08-11", "2022-09-19", "2022-09-23", "2022-10-10", "2022-11-03", "2022-11-23", "2023-01-01", "2023-01-02", "2023-01-09", "2023-02-11", "2023-02-23", "2023-03-21", "2023-04-29", "2023-05-03", "2023-05-04", "2023-05-05", "2023-07-17", "2023-08-11", "2023-09-18", "2023-09-23", "2023-10-09", "2023-11-03", "2023-11-23", "2024-01-01", "2024-01-08", "2024-02-11", "2024-02-12", "2024-02-23", "2024-03-20", "2024-04-29", "2024-05-03", "2024-05-04", "2024-05-05", "2024-05-06", "2024-07-15", "2024-08-11", "2024-08-12", "2024-09-16", "2024-09-22", "2024-09-23", "2024-10-14", "2024-11-03", "2024-11-04", "2024-11-23", "2025-01-01", "2025-01-13", "2025-02-11", "2025-02-23", "2025-02-24", "2025-03-20", "2025-04-29", "2025-05-03", "2025-05-04", "2025-05-05", "2025-05-06", "2025-07-21", "2025-08-11", "2025-09-15", "2025-09-23", "2025-10-13", "2025-11-03", "2025-11-23", "2025-11-24", "2026-01-01", "2026-01-12", "2026-02-11", "2026-02-23", "2026-03-20", "2026-04-29", "2026-05-03", "2026-05-04", "2026-05-05", "2026-05-06", "2026-07-20", "2026-08-11", "2026-09-21", "2026-09-22", "2026-09-23", "2026-10-12", "2026-11-03", "2026-11-23", "2027-01-01", "2027-01-11", "2027-02-11", "2027-02-23", "2027-03-21", "2027-03-22", "2027-04-29", "2027-05-03", "2027-05-04", "2027-05-05", "2027-07-19", "2027-08-11", "2027-09-20", "2027-09-23", "2027-10-11", "2027-11-03", "2027-11-23", "2028-01-01", "2028-01-10", "2028-02-11", "2028-02-23", "2028-03-20", "2028-04-29", "2028-05-03", "2028-05-04", "2028-05-05", "2028-07-17", "2028-08-11", "2028-09-18", "2028-09-22", "2028-10-09", "2028-11-03", "2028-11-23", "2029-01-01", "2029-01-08", "2029-02-11", "2029-02-12", "2029-02-23", "2029-03-20", "2029-04-29", "2029-04-30", "2029-05-03", "2029-05-04", "2029-05-05", "2029-07-16", "2029-08-11", "2029-09-17", "2029-09-23", "2029-09-24", "2029-10-08", "2029-11-03", "2029-11-23", "2030-01-01", "2030-01-14", "2030-02-11", "2030-02-23", "2030-03-20", "2030-04-29", "2030-05-03", "2030-05-04", "2030-05-05", "2030-05-06", "2030-07-15", "2030-08-11", "2030-08-12", "2030-09-16", "2030-09-23", "2030-10-14", "2030-11-03", "2030-11-04", "2030-11-23", "2031-01-01", "2031-01-13", "2031-02-11", "2031-02-23", "2031-02-24", "2031-03-21", "2031-04-29", "2031-05-03", "2031-05-04", "2031-05-05", "2031-05-06", "2031-07-21", "2031-08-11", "2031-09-15", "2031-09-23", "2031-10-13", "2031-11-03", "2031-11-23", "2031-11-24"]);
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+
+String(d.getDate()).padStart(2,'0')}
+function isBiz(d){var w=d.getDay();return w!==0&&w!==6&&!H.has(iso(d))}
+function fmt(d){return iso(d)+'（'+['日','月','火','水','木','金','土'][d.getDay()]+'）'}
+function today(){var t=new Date();return iso(t)}
+document.getElementById('b').value=today();
+document.getElementById('s').value=today();
+document.getElementById('e').value=today();
+function addDays(){var v=document.getElementById('b').value;if(!v)return;
+var p=v.split('-'),d=new Date(+p[0],+p[1]-1,+p[2]),n=+document.getElementById('n').value;
+var mode=document.getElementById('mode').value,step=n<0?-1:1,left=Math.abs(n);
+if(mode==='cal'){d.setDate(d.getDate()+n)}
+else{while(left>0){d.setDate(d.getDate()+step);if(isBiz(d))left--}}
+document.getElementById('r1').textContent=fmt(d)+(mode==='biz'?' ／ 土日祝を除いた営業日で計算':'');}
+function between(){var a=document.getElementById('s').value,b=document.getElementById('e').value;
+if(!a||!b)return;var pa=a.split('-'),pb=b.split('-');
+var d1=new Date(+pa[0],+pa[1]-1,+pa[2]),d2=new Date(+pb[0],+pb[1]-1,+pb[2]);
+if(d2<d1){var t=d1;d1=d2;d2=t}
+var days=Math.round((d2-d1)/86400000),biz=0,c=new Date(d1);
+while(c<d2){c.setDate(c.getDate()+1);if(isBiz(c))biz++}
+document.getElementById('r2').textContent=days.toLocaleString()+'日間 ／ うち営業日 '+
+biz.toLocaleString()+'日（土日祝を除く）';}
+addDays();</script>
 <div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
 <footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
