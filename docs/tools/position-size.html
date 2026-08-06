@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ポジションサイズ計算機 | オートクオンツ研究所</title>
+<meta name="description" content="「1回の取引で口座の何%まで失ってよいか」から、適正な株数を逆算します。リスク管理の基本ツールです。">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml">
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--sub:#555;--line:#e5e5e5;--acc:#0b5fff;--box:#f6f8fa}
+@media(prefers-color-scheme:dark){:root{--bg:#111417;--fg:#e8e8e8;--sub:#9aa;--line:#2a2f35;--acc:#6ea8ff;--box:#1a1f24}}
+*{box-sizing:border-box}body{margin:0;font-family:'Hiragino Sans','Yu Gothic UI',Meiryo,sans-serif;
+background:var(--bg);color:var(--fg);line-height:1.9}
+main{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+header{border-bottom:1px solid var(--line)}
+.hwrap{max-width:760px;margin:0 auto;padding:14px 16px;display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+.hwrap a{color:var(--fg);text-decoration:none}.hwrap .t{font-weight:700;font-size:18px}
+nav a{color:var(--sub);text-decoration:none;margin-right:14px;font-size:14px}
+h1{font-size:26px;line-height:1.5}h2{font-size:20px;margin-top:2em;border-left:4px solid var(--acc);padding-left:10px}
+h3{font-size:17px}a{color:var(--acc)}
+table{border-collapse:collapse;width:100%;font-size:14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:right}th:first-child,td:first-child{text-align:left}
+.meta{color:var(--sub);font-size:13px}
+.note{background:var(--box);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--sub);margin-top:40px}
+.pr{background:var(--box);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:24px 0}
+.pr .tag{font-size:11px;color:var(--sub);letter-spacing:.1em}
+.card{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
+.card a{text-decoration:none;font-weight:600}
+input,select{font:inherit;padding:6px 8px;margin:4px 0;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+button{font:inherit;padding:8px 16px;border:0;border-radius:6px;background:var(--acc);color:#fff;cursor:pointer}
+.result{font-size:18px;font-weight:700;margin-top:12px}
+footer{border-top:1px solid var(--line);margin-top:48px}
+.fwrap{max-width:760px;margin:0 auto;padding:20px 16px;font-size:12px;color:var(--sub)}
+</style></head><body>
+<header><div class="hwrap"><a class="t" href="/">オートクオンツ研究所</a>
+<nav><a href="/">ホーム</a><a href="/posts/">記事一覧</a><a href="/tools/">ツール</a>
+<a href="/about.html">このサイトについて</a></nav></div></header>
+<main><h1>ポジションサイズ計算機</h1><p>「1回の取引で口座の何%まで失ってよいか」から、適正な株数を逆算します。リスク管理の基本ツールです。</p><div class='card'>口座資金 <input id=c type=number value=1000000>円<br>
+許容リスク <input id=k type=number value=1 step=0.1>%（1回の損失上限）<br>
+エントリー価格 <input id=e type=number value=3000>円<br>
+損切り価格 <input id=s type=number value=2850>円<br>
+<button onclick=calc()>計算する</button><div class=result id=out></div></div><script>function calc(){let c=+document.getElementById('c').value,k=+document.getElementById('k').value/100,
+e=+document.getElementById('e').value,s=+document.getElementById('s').value,d=e-s;
+if(d<=0){document.getElementById('out').textContent='損切り価格はエントリーより下に設定してください';return}
+let sh=Math.floor(c*k/d);document.getElementById('out').textContent='適正株数: '+sh.toLocaleString()+'株（想定損失 '
++Math.round(sh*d).toLocaleString()+'円 = 口座の'+(sh*d/c*100).toFixed(2)+'%、必要資金 '+Math.round(sh*e).toLocaleString()+'円）'}</script>
+<div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
+<footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
+記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
+</body></html>

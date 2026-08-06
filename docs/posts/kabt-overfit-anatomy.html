@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>バックテスト年利+360%のシステムが実弾で-8%になった話 — 過適合の解剖記録 | オートクオンツ研究所</title>
+<meta name="description" content="機械学習トレードシステムがバックテストで年利+360%を出しながら実運用で損失を出した実例を、原因特定から再発防止まで実データで解説します。">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml">
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--sub:#555;--line:#e5e5e5;--acc:#0b5fff;--box:#f6f8fa}
+@media(prefers-color-scheme:dark){:root{--bg:#111417;--fg:#e8e8e8;--sub:#9aa;--line:#2a2f35;--acc:#6ea8ff;--box:#1a1f24}}
+*{box-sizing:border-box}body{margin:0;font-family:'Hiragino Sans','Yu Gothic UI',Meiryo,sans-serif;
+background:var(--bg);color:var(--fg);line-height:1.9}
+main{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+header{border-bottom:1px solid var(--line)}
+.hwrap{max-width:760px;margin:0 auto;padding:14px 16px;display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+.hwrap a{color:var(--fg);text-decoration:none}.hwrap .t{font-weight:700;font-size:18px}
+nav a{color:var(--sub);text-decoration:none;margin-right:14px;font-size:14px}
+h1{font-size:26px;line-height:1.5}h2{font-size:20px;margin-top:2em;border-left:4px solid var(--acc);padding-left:10px}
+h3{font-size:17px}a{color:var(--acc)}
+table{border-collapse:collapse;width:100%;font-size:14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:right}th:first-child,td:first-child{text-align:left}
+.meta{color:var(--sub);font-size:13px}
+.note{background:var(--box);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--sub);margin-top:40px}
+.pr{background:var(--box);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:24px 0}
+.pr .tag{font-size:11px;color:var(--sub);letter-spacing:.1em}
+.card{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
+.card a{text-decoration:none;font-weight:600}
+input,select{font:inherit;padding:6px 8px;margin:4px 0;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+button{font:inherit;padding:8px 16px;border:0;border-radius:6px;background:var(--acc);color:#fff;cursor:pointer}
+.result{font-size:18px;font-weight:700;margin-top:12px}
+footer{border-top:1px solid var(--line);margin-top:48px}
+.fwrap{max-width:760px;margin:0 auto;padding:20px 16px;font-size:12px;color:var(--sub)}
+</style></head><body>
+<header><div class="hwrap"><a class="t" href="/">オートクオンツ研究所</a>
+<nav><a href="/">ホーム</a><a href="/posts/">記事一覧</a><a href="/tools/">ツール</a>
+<a href="/about.html">このサイトについて</a></nav></div></header>
+<main><h1>バックテスト年利+360%のシステムが実弾で-8%になった話 — 過適合の解剖記録</h1><div class='meta'>2026-08-06・解説記事</div><p>これは他人の失敗談ではありません。当ラボの前身システムが実際に踏んだ失敗の、一次データつきの解剖記録です。</p>
+<h2>何が起きたか</h2>
+<p>機械学習（LightGBM）で株価の上昇確率を予測する日中売買システムを構築し、バックテストは次の数字を出しました。</p>
+<table>
+<tr><th>指標</th><th>バックテスト</th></tr>
+<tr><td>年率リターン</td><td>+359.9%</td></tr>
+<tr><td>勝率</td><td>70.9%</td></tr>
+<tr><td>最大ドローダウン</td><td>1.21%</td></tr>
+</table>
+<p>この数字を信じて仮想売買（ペーパートレード）を約2.5ヶ月・119トレード実施した結果がこちらです。</p>
+<table>
+<tr><th>指標</th><th>実運用（ペーパー）</th></tr>
+<tr><td>損益</td><td><strong>-7.97%</strong></td></tr>
+<tr><td>勝率</td><td><strong>34.5%</strong></td></tr>
+<tr><td>1トレード期待値</td><td><strong>約-985円</strong></td></tr>
+</table>
+<h2>原因1: データリーク（これが主犯）</h2>
+<p>機械学習モデルの<strong>学習期間が2024年4月〜2026年5月</strong>、バックテストの検証期間が<strong>2025年6月〜2026年5月</strong>。つまり検証期間が学習期間に丸ごと含まれていました。モデルは「未来の答えを暗記した状態」でテストを受けていたのです。</p>
+<p>これは初歩的ミスに見えて、実際には非常に起こりやすい事故です。モデルの再学習を繰り返すうちに、学習データの終端がバックテスト期間に侵食していても、コードを見ただけでは気づきにくい。<strong>+360%のような数字が出た瞬間に喜ぶのではなく、疑うべき</strong>でした。</p>
+<h2>原因2: 平均利益より平均損失が大きい</h2>
+<p>実運用119トレードの内訳は、平均利益+1,352円に対して平均損失-2,216円。勝率34.5%と合わせると期待値は必ずマイナスになります。損切りは24回で合計-111,495円。「小さく勝って大きく負ける」構造でした。</p>
+<h2>再発防止として今も使っている5つのチェック</h2>
+<ul>
+<li>学習期間と検証期間が1日でも重なっていないか</li>
+<li>判定に使う情報が「その時点で入手可能だったか」（当ラボは判定=前日終値まで、執行=翌日寄付のみ、と構造で強制）</li>
+<li>投資額が毎日の資金残高を超えていないか（資金制約のないバックテストは数字が数倍に膨らむ）</li>
+<li>月次リターンに+50%超のような異常値がないか</li>
+<li>手数料・スリッページ・単元株制約を入れているか</li>
+</ul>
+<h2>教訓</h2>
+<p>バックテストの数字は「上げようと思えばいくらでも上がる」ものです。パラメータを結果を見ながら調整すれば、過去に対して完璧なシステムは誰でも作れます。しかしそれは<strong>将来の期待値を下げながら表示上の数字を上げる行為</strong>です。当ラボが現在運用中のシステムがバックテストで年率30%前後という「地味な」数字なのは、これらのチェックをすべて通した後の数字だからです。それでも将来は保証されません — だからこそ毎日の検証記録を公開しています。</p>
+<div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
+<footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
+記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
+</body></html>

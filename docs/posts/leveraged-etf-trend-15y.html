@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>レバレッジETFは「持ちっぱなし」と「トレンドフィルタ」でどう変わるか — 15年・コスト込み検証 | オートクオンツ研究所</title>
+<meta name="description" content="TQQQのような3倍レバレッジETFを買い持ちした場合と200日移動平均フィルタで運用した場合を、手数料・スリッページ込みの15年データで比較検証しました。">
+<link rel="alternate" type="application/rss+xml" href="/feed.xml">
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--sub:#555;--line:#e5e5e5;--acc:#0b5fff;--box:#f6f8fa}
+@media(prefers-color-scheme:dark){:root{--bg:#111417;--fg:#e8e8e8;--sub:#9aa;--line:#2a2f35;--acc:#6ea8ff;--box:#1a1f24}}
+*{box-sizing:border-box}body{margin:0;font-family:'Hiragino Sans','Yu Gothic UI',Meiryo,sans-serif;
+background:var(--bg);color:var(--fg);line-height:1.9}
+main{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+header{border-bottom:1px solid var(--line)}
+.hwrap{max-width:760px;margin:0 auto;padding:14px 16px;display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+.hwrap a{color:var(--fg);text-decoration:none}.hwrap .t{font-weight:700;font-size:18px}
+nav a{color:var(--sub);text-decoration:none;margin-right:14px;font-size:14px}
+h1{font-size:26px;line-height:1.5}h2{font-size:20px;margin-top:2em;border-left:4px solid var(--acc);padding-left:10px}
+h3{font-size:17px}a{color:var(--acc)}
+table{border-collapse:collapse;width:100%;font-size:14px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:right}th:first-child,td:first-child{text-align:left}
+.meta{color:var(--sub);font-size:13px}
+.note{background:var(--box);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--sub);margin-top:40px}
+.pr{background:var(--box);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:24px 0}
+.pr .tag{font-size:11px;color:var(--sub);letter-spacing:.1em}
+.card{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
+.card a{text-decoration:none;font-weight:600}
+input,select{font:inherit;padding:6px 8px;margin:4px 0;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+button{font:inherit;padding:8px 16px;border:0;border-radius:6px;background:var(--acc);color:#fff;cursor:pointer}
+.result{font-size:18px;font-weight:700;margin-top:12px}
+footer{border-top:1px solid var(--line);margin-top:48px}
+.fwrap{max-width:760px;margin:0 auto;padding:20px 16px;font-size:12px;color:var(--sub)}
+</style></head><body>
+<header><div class="hwrap"><a class="t" href="/">オートクオンツ研究所</a>
+<nav><a href="/">ホーム</a><a href="/posts/">記事一覧</a><a href="/tools/">ツール</a>
+<a href="/about.html">このサイトについて</a></nav></div></header>
+<main><h1>レバレッジETFは「持ちっぱなし」と「トレンドフィルタ」でどう変わるか — 15年・コスト込み検証</h1><div class='meta'>2026-08-06・解説記事</div><p>「レバナス」「TQQQ」のようなレバレッジETFは、SNSでは夢の商品か地獄の商品かの両極端で語られがちです。当ラボの検証エンジン（手数料・スリッページ・単元株制約込み、円建て）で15.6年分を計測した実数を置いておきます。</p>
+<h2>検証条件</h2>
+<ul>
+<li>期間: 2011年1月〜2026年8月（15.6年）</li>
+<li>円建て評価（為替の影響込み）、元本100万円</li>
+<li>執行は翌営業日の寄付成行のみ、往復コスト込み</li>
+</ul>
+<h2>結果: 買い持ち（Buy &amp; Hold）</h2>
+<table>
+<tr><th>対象</th><th>年率</th><th>最大ドローダウン</th><th>2022年単年</th></tr>
+<tr><td>QQQ（ナスダック100・等倍）</td><td>+24.1%</td><td>-30.8%</td><td>-22.9%</td></tr>
+<tr><td>TQQQ（同・3倍）</td><td>+46.3%</td><td><strong>-78.6%</strong></td><td><strong>-76.5%</strong></td></tr>
+</table>
+<p>TQQQの買い持ちは年率だけ見れば圧勝ですが、<strong>資産が5分の1になる年</strong>を途中で経験します。2022年に-76.5%を食らって握り続けられる人は、統計上ほとんどいません。しかもこの15年はナスダック史上有数の強気相場であり、この年率を将来に外挿するのは危険です。</p>
+<h2>結果: 200日移動平均フィルタ＋ボラティリティ調整</h2>
+<p>「QQQが200日移動平均より上にある時だけTQQQを保有し、変動が激しい時は保有量を自動で減らす」という機械的ルールにすると、性質が大きく変わります。</p>
+<table>
+<tr><th>運用</th><th>年率</th><th>最大ドローダウン</th><th>2022年単年</th></tr>
+<tr><td>TQQQ買い持ち</td><td>+46.3%</td><td>-78.6%</td><td>-76.5%</td></tr>
+<tr><td>トレンドフィルタ運用（当ラボ検証）</td><td>約+12〜16%（配分次第）</td><td>-30%前後</td><td>ほぼ横ばい</td></tr>
+</table>
+<p>年率は下がりますが、<strong>破滅的ドローダウンを回避できる</strong>のがトレンドフィルタの価値です。一方で弱点も明確で、2011年や2015-16年のような方向感のない相場では「ダマシ」による小さな損失が積み重なります。万能ではありません。</p>
+<h2>実務上の注意点</h2>
+<ul>
+<li>レバレッジETFには経費率と減価（ボラティリティ・ドラッグ）が組み込まれており、横ばい相場では等倍より不利です</li>
+<li>円建てで見ると、円安局面はリターンを押し上げ、円高局面は逆風になります。ドル建ての成績と混同しないこと</li>
+<li>手数料は成績を大きく削ります。当ラボの計測では、売買頻度の高い戦略で手数料率0.495%と0.088%の差が<strong>年率1.5%以上</strong>の差になりました</li>
+</ul>
+<h2>結論</h2>
+<p>レバレッジETFは「買い持ちで夢を見る商品」ではなく、「機械的な退出ルールとセットで初めて扱える道具」というのが15年分のデータの答えです。当ラボでは複数戦略への分散の一部として、ボラティリティ調整つきで運用しています。その毎日の記録は<a href="/posts/">検証ジャーナル</a>で公開中です。</p>
+<div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
+<footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
+記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
+</body></html>
