@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>バフェットの保有銘柄を真似したら勝てるのか — SEC生データで13年検証した結果 | オートクオンツ研究所</title>
+<meta name="description" content="著名投資家の保有銘柄は四半期ごとに公開されています。それを機械的に真似する「13Fクローン戦略」を、SEC EDGARの原本データから13年分検証しました。結論はS&amp;P500に負けました。">
+<link rel="canonical" href="https://takeo628-hub.github.io/autoquant-lab/posts/buffett-13f-clone-test.html">
+<link rel="alternate" type="application/rss+xml" href="/autoquant-lab/feed.xml">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234338ca'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='30' font-weight='800' fill='white' text-anchor='middle'%3EAQ%3C/text%3E%3C/svg%3E">
+<meta name="google-site-verification" content="m12_RQ-zBJvqM2eH3OLYsZEMH0SPqbrsixEoZpn9gSc">
+<meta property="og:title" content="バフェットの保有銘柄を真似したら勝てるのか — SEC生データで13年検証した結果"><meta property="og:description" content="著名投資家の保有銘柄は四半期ごとに公開されています。それを機械的に真似する「13Fクローン戦略」を、SEC EDGARの原本データから13年分検証しました。結論はS&amp;P500に負けました。"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/buffett-13f-clone-test.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "バフェットの保有銘柄を真似したら勝てるのか — SEC生データで13年検証した結果", "datePublished": "2026-08-06", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/buffett-13f-clone-test.html"}</script>
+<style>
+:root{--bg:#f7f8fa;--surface:#ffffff;--fg:#17181c;--sub:#5b616e;--line:#e6e8ec;
+--acc:#4338ca;--acc2:#0ea5e9;--ok:#047857;--bad:#b91c1c;--box:#f1f3f7;
+--shadow:0 1px 2px rgba(16,24,40,.06),0 4px 16px rgba(16,24,40,.06)}
+@media(prefers-color-scheme:dark){:root{--bg:#0b0e14;--surface:#141824;--fg:#e8e9ee;
+--sub:#9aa1b2;--line:#252b3a;--acc:#8b93f8;--acc2:#38bdf8;--ok:#34d399;--bad:#f87171;
+--box:#1a2030;--shadow:0 1px 2px rgba(0,0,0,.5),0 6px 20px rgba(0,0,0,.35)}}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',Meiryo,sans-serif;
+background:var(--bg);color:var(--fg);line-height:1.95;font-size:16px}
+main{max-width:820px;margin:0 auto;padding:28px 20px 72px}
+header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);
+backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hwrap{max-width:1020px;margin:0 auto;padding:12px 20px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.hwrap a{color:var(--fg);text-decoration:none}
+.hwrap .t{font-weight:800;font-size:17px;display:flex;align-items:center;gap:8px}
+.logo{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--acc),var(--acc2));
+display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{color:var(--sub);text-decoration:none;font-size:13.5px;padding:6px 10px;border-radius:8px}
+nav a:hover{background:var(--box);color:var(--fg)}
+h1{font-size:clamp(24px,4.5vw,32px);line-height:1.45;letter-spacing:-.01em}
+h2{font-size:21px;margin-top:2.2em;padding-left:12px;border-left:4px solid var(--acc);line-height:1.5}
+h3{font-size:17px}a{color:var(--acc)}
+p{margin:1.1em 0}
+.hero{background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 10%,var(--surface)),
+color-mix(in srgb,var(--acc2) 8%,var(--surface)));border:1px solid var(--line);border-radius:20px;
+padding:34px 28px;margin:8px 0 28px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 10px}
+.hero .lead{color:var(--sub);font-size:15.5px;max-width:640px}
+.badgerow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.badge{font-size:12px;font-weight:700;letter-spacing:.04em;padding:4px 12px;border-radius:999px;
+background:color-mix(in srgb,var(--acc) 12%,transparent);color:var(--acc)}
+.cta{display:inline-block;margin:16px 10px 0 0;padding:11px 20px;border-radius:10px;font-weight:700;
+text-decoration:none;font-size:14.5px}
+.cta.p{background:var(--acc);color:#fff}.cta.p:hover{opacity:.92}
+.cta.s{border:1.5px solid var(--line);color:var(--fg);background:var(--surface)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+box-shadow:var(--shadow)}
+.tile .k{font-size:12px;color:var(--sub);letter-spacing:.03em}
+.tile .v{font-size:24px;font-weight:800;letter-spacing:-.01em;margin-top:4px;font-variant-numeric:tabular-nums}
+.tile .v.up{color:var(--ok)}.tile .v.down{color:var(--bad)}
+.tile .s{font-size:11.5px;color:var(--sub);margin-top:2px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+margin:14px 0;box-shadow:var(--shadow);transition:transform .12s ease}
+.card:hover{transform:translateY(-2px)}
+.card a{text-decoration:none;font-weight:700;font-size:15.5px;line-height:1.6;display:block}
+.card .meta{margin-top:6px}
+.cbadge{display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:999px;margin-bottom:8px}
+.cbadge.j{background:color-mix(in srgb,var(--acc2) 14%,transparent);color:var(--acc2)}
+.cbadge.a{background:color-mix(in srgb,var(--acc) 12%,transparent);color:var(--acc)}
+.promise{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:18px 0}
+.promise .card{margin:0}
+.promise b{display:block;margin-bottom:4px;font-size:15px}
+.promise span{font-size:13px;color:var(--sub)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;display:block;overflow-x:auto;
+border-radius:12px}
+th{background:var(--box);font-size:13px;color:var(--sub)}
+th,td{border:1px solid var(--line);padding:9px 14px;text-align:right;font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--box) 45%,transparent)}
+.meta{color:var(--sub);font-size:13px}
+.note{background:var(--box);border:1px solid var(--line);border-radius:12px;padding:14px 18px;
+font-size:12.5px;color:var(--sub);margin-top:44px;line-height:1.8}
+.pr{background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 6%,var(--surface)),var(--surface));
+border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:26px 0;box-shadow:var(--shadow)}
+.pr .tag{font-size:10.5px;color:var(--sub);letter-spacing:.14em;margin-bottom:4px}
+input,select{font:inherit;padding:9px 12px;margin:4px 0;border:1.5px solid var(--line);
+border-radius:9px;background:var(--bg);color:var(--fg);width:min(220px,100%)}
+button{font:inherit;font-weight:700;padding:11px 22px;border:0;border-radius:10px;
+background:var(--acc);color:#fff;cursor:pointer;margin-top:8px}
+button:hover{opacity:.92}
+.result{font-size:18px;font-weight:700;margin-top:14px;line-height:1.7}
+footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface)}
+.fwrap{max-width:820px;margin:0 auto;padding:22px 20px;font-size:12px;color:var(--sub)}
+</style></head><body>
+<header><div class="hwrap"><a class="t" href="/autoquant-lab/?v=20260806135629"><span class="logo">AQ</span>オートクオンツ研究所</a>
+<nav><a href="/autoquant-lab/?v=20260806135629">ホーム</a><a href="/autoquant-lab/posts/?v=20260806135629">記事一覧</a><a href="/autoquant-lab/tools/?v=20260806135629">ツール</a>
+<a href="/autoquant-lab/hikaku.html?v=20260806135629">証券会社比較</a><a href="/autoquant-lab/about.html?v=20260806135629">このサイトについて</a></nav></div></header>
+<main><h1>バフェットの保有銘柄を真似したら勝てるのか — SEC生データで13年検証した結果</h1><div class='meta'>2026-08-06・解説記事</div><p>「バフェットの真似をすればいい」— よく聞く話です。実際、米国の大口投資家は四半期ごとに全保有銘柄をSECに開示する義務があり（13F報告書）、誰でも無料で読めます。ならば機械的に真似すれば勝てるのでは？ 当ラボはこれを<strong>推測ではなく実データ</strong>で検証しました。</p>
+<h2>検証の設計（結果を見る前に固定）</h2>
+<p>パラメータを後から都合よく変えないため、条件を先に宣言してから実装しました。</p>
+<ul>
+<li><strong>データ</strong>: SEC EDGARの13F-HR報告書の原本（XML）を直接取得。418件の提出書類、2013年8月〜2026年8月</li>
+<li><strong>追随対象</strong>: バークシャー・ハサウェイ、バウポスト、フェアホルム、マーケル、トゥイーディー・ブラウン、ダッジ&amp;コックス、デイビス、ファースト・イーグルの8社。<strong>過去の成績ではなく運用スタイル</strong>（大型・低回転・買い持ち中心）で選定</li>
+<li><strong>最重要のタイミング規則</strong>: 保有情報は「四半期末」ではなく<strong>実際の提出日</strong>に初めて公開されます。よくある検証は「四半期末の保有を四半期末に買った」ことにしてしまい、これは未来情報の混入（ルックアヘッド）です。当ラボは提出日の<strong>翌営業日の寄付</strong>でのみ売買します</li>
+<li><strong>組成</strong>: 各社の上位10銘柄を報告金額で集計し、上位15銘柄を等ウェイト保有。次の提出まで持ち続ける</li>
+<li><strong>コスト</strong>: 手数料・スリッページ・単元株制約すべて込み、円建て</li>
+</ul>
+<p>技術的な難所は、13F報告書に<strong>ティッカーが書かれていない</strong>ことでした。「BANK AMER CORP」「OCCIDENTAL PETE CORP」のような略記社名しかないため、SECの公式企業リストと照合する変換器を書き、既知の正解27パターンでテストしました（照合率94.7%）。</p>
+<h2>結果：指数に負けました</h2>
+<table>
+<tr><th>戦略</th><th>年率</th><th>シャープレシオ</th><th>最大ドローダウン</th></tr>
+<tr><td>13Fクローン（著名投資家の真似）</td><td><strong>+13.7%</strong></td><td>0.76</td><td>-39.2%</td></tr>
+<tr><td>S&amp;P500（SPY）を買って持つだけ</td><td><strong>+17.6%</strong></td><td>0.94</td><td>-33.7%</td></tr>
+</table>
+<p><strong>同じ期間・同じコスト条件で、単にS&amp;P500を買って寝ていた方が、年率で3.9ポイント上回り、下落も浅く済みました。</strong> 訓練期間（2019年まで）と検証期間（2020年以降）で分けても結論は変わりません。</p>
+<p>理由は難しくありません。45日の開示遅延の間に価格は動いてしまいますし、著名投資家の保有銘柄は基本的に大型株なので、結局「大型株の一部を持つ」だけになります。それなら指数全体を持つ方が分散が効きます。</p>
+<h2>念のため疑った点：都合の悪い銘柄を除外していないか</h2>
+<p>この検証には落とし穴があります。倒産・買収で消えた銘柄（例：シアーズ）は現在のティッカー一覧に存在しないため、変換できず自動的に除外されます。<strong>負けた銘柄だけが消える</strong>なら、結果は不当に良く見えます。</p>
+<p>そこで除外された銘柄の金額を記録し、「除外分は現金として遊ばせる」保守的な処理で再計算しました。結果は<strong>年率+0.02ポイントの差</strong>、つまりほぼ影響なし。除外されるのは小口の保有が多く、上位15銘柄に入らないためでした。疑ってから否定できたので、この点はクリアです。</p>
+<h2>途中で見つけた自分のバグの話（ここが本題）</h2>
+<p>最初にこの戦略をポートフォリオに追加したとき、成績は<strong>改善して見えました</strong>。年率が上がり、ドローダウンも浅くなった。採用しかけました。</p>
+<p>しかし取引回数を見て違和感がありました。<strong>13F銘柄の売買が1件も発生していなかった</strong>のです。</p>
+<p>原因は「無取引帯域」という仕組みでした。目標比率と現在の比率の差が2%未満なら、無駄な売買を避けるため注文を出さない設定にしていました。ところが13F戦略は15銘柄に1銘柄あたり1.0%ずつ配分するため、<strong>すべての注文が「ノイズ」として却下されていた</strong>のです。</p>
+<p>つまり最初に見えた「改善」は、13F戦略の効果ではなく、同時に変更していた他の配分とレバレッジの効果でした。バグを修正して正しく売買させると、結果はこうなりました。</p>
+<table>
+<tr><th></th><th>13Fなし</th><th>13Fあり（バグ修正後）</th></tr>
+<tr><td>年率</td><td>+35.7%</td><td>+37.8%</td></tr>
+<tr><td>シャープレシオ</td><td><strong>1.36</strong></td><td>1.34</td></tr>
+<tr><td>最大ドローダウン</td><td><strong>-28.8%</strong></td><td>-32.8%</td></tr>
+</table>
+<p>年率は上がりますが、それは<strong>単にリスクを増やしただけ</strong>で、リスク調整後の効率は悪化しています。事前に決めていた採用条件（訓練期間でシャープレシオが改善すること）を満たさないため、<strong>棄却</strong>しました。</p>
+<h2>この検証から言えること</h2>
+<ul>
+<li><strong>著名投資家の公開情報を真似する戦略は、少なくとも機械的な実装では指数に勝てませんでした</strong>。「有名な人の真似」は直感的に魅力的ですが、直感と検証結果は違いました</li>
+<li>「改善した」と見えたときこそ、<strong>その改善が本当に発生しているか</strong>を疑うべきです。当ラボの場合、取引回数（914件 vs 1537件）がバグの証拠でした</li>
+<li>事前に採用条件を決めておくと、こうした場面で自分に有利な判断をせずに済みます。この検証で16個目の改善候補のうち12個目の棄却となりました</li>
+</ul>
+<p>棄却したコードは削除せず残してあります。将来データが増えたときに再検証するためです。当ラボの現行システムは引き続き4戦略構成のまま、毎日の実績を<a href="/autoquant-lab/posts/?v=20260806135629">検証ジャーナル</a>で公開しています。</p>
+<p>※本記事は検証記録であり投資助言ではありません。特定の銘柄・手法を推奨するものではなく、掲載数値は将来の成果を保証しません。</p><h2>関連記事</h2><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/task-scheduler-auto-invest.html?v=20260806135629'>家のPCで投資を全自動化する — タスクスケジューラ実践ガイド</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/overnight-vs-intraday.html?v=20260806135629'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/momentum-reality-check.html?v=20260806135629'>教科書のモメンタム投資を15年実測したら、思ったより地味だった話</a><div class='meta'>2026-08-06</div></div>
+<div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
+<footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
+記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
+<script>(function(){var B="20260806135629";
+var q=new URLSearchParams(location.search);
+if(q.get("v")===B){q.delete("v");var s=q.toString();
+history.replaceState(null,"",location.pathname+(s?"?"+s:"")+location.hash);}
+fetch("/autoquant-lab/v.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()})
+.then(function(v){if(!v.build||v.build===B)return;
+var lt=+sessionStorage.getItem("aq_t")||0;if(Date.now()-lt<45000)return;
+sessionStorage.setItem("aq_t",String(Date.now()));
+q.set("v",v.build);location.replace(location.pathname+"?"+q.toString()+location.hash);
+}).catch(function(){});})();</script>
+</body></html>
