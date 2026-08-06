@@ -36,30 +36,82 @@ DISCLAIMER = ("本サイトは投資助言ではなく、自動売買システ�
               "将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。")
 
 CSS = """
-:root{--bg:#fff;--fg:#1a1a1a;--sub:#555;--line:#e5e5e5;--acc:#0b5fff;--box:#f6f8fa}
-@media(prefers-color-scheme:dark){:root{--bg:#111417;--fg:#e8e8e8;--sub:#9aa;--line:#2a2f35;--acc:#6ea8ff;--box:#1a1f24}}
-*{box-sizing:border-box}body{margin:0;font-family:'Hiragino Sans','Yu Gothic UI',Meiryo,sans-serif;
-background:var(--bg);color:var(--fg);line-height:1.9}
-main{max-width:760px;margin:0 auto;padding:24px 16px 64px}
-header{border-bottom:1px solid var(--line)}
-.hwrap{max-width:760px;margin:0 auto;padding:14px 16px;display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
-.hwrap a{color:var(--fg);text-decoration:none}.hwrap .t{font-weight:700;font-size:18px}
-nav a{color:var(--sub);text-decoration:none;margin-right:14px;font-size:14px}
-h1{font-size:26px;line-height:1.5}h2{font-size:20px;margin-top:2em;border-left:4px solid var(--acc);padding-left:10px}
+:root{--bg:#f7f8fa;--surface:#ffffff;--fg:#17181c;--sub:#5b616e;--line:#e6e8ec;
+--acc:#4338ca;--acc2:#0ea5e9;--ok:#047857;--bad:#b91c1c;--box:#f1f3f7;
+--shadow:0 1px 2px rgba(16,24,40,.06),0 4px 16px rgba(16,24,40,.06)}
+@media(prefers-color-scheme:dark){:root{--bg:#0b0e14;--surface:#141824;--fg:#e8e9ee;
+--sub:#9aa1b2;--line:#252b3a;--acc:#8b93f8;--acc2:#38bdf8;--ok:#34d399;--bad:#f87171;
+--box:#1a2030;--shadow:0 1px 2px rgba(0,0,0,.5),0 6px 20px rgba(0,0,0,.35)}}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Hiragino Sans','Noto Sans JP','Yu Gothic UI',Meiryo,sans-serif;
+background:var(--bg);color:var(--fg);line-height:1.95;font-size:16px}
+main{max-width:820px;margin:0 auto;padding:28px 20px 72px}
+header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);
+backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hwrap{max-width:1020px;margin:0 auto;padding:12px 20px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.hwrap a{color:var(--fg);text-decoration:none}
+.hwrap .t{font-weight:800;font-size:17px;display:flex;align-items:center;gap:8px}
+.logo{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--acc),var(--acc2));
+display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{color:var(--sub);text-decoration:none;font-size:13.5px;padding:6px 10px;border-radius:8px}
+nav a:hover{background:var(--box);color:var(--fg)}
+h1{font-size:clamp(24px,4.5vw,32px);line-height:1.45;letter-spacing:-.01em}
+h2{font-size:21px;margin-top:2.2em;padding-left:12px;border-left:4px solid var(--acc);line-height:1.5}
 h3{font-size:17px}a{color:var(--acc)}
-table{border-collapse:collapse;width:100%;font-size:14px;display:block;overflow-x:auto}
-th,td{border:1px solid var(--line);padding:6px 10px;text-align:right}th:first-child,td:first-child{text-align:left}
+p{margin:1.1em 0}
+.hero{background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 10%,var(--surface)),
+color-mix(in srgb,var(--acc2) 8%,var(--surface)));border:1px solid var(--line);border-radius:20px;
+padding:34px 28px;margin:8px 0 28px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 10px}
+.hero .lead{color:var(--sub);font-size:15.5px;max-width:640px}
+.badgerow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.badge{font-size:12px;font-weight:700;letter-spacing:.04em;padding:4px 12px;border-radius:999px;
+background:color-mix(in srgb,var(--acc) 12%,transparent);color:var(--acc)}
+.cta{display:inline-block;margin:16px 10px 0 0;padding:11px 20px;border-radius:10px;font-weight:700;
+text-decoration:none;font-size:14.5px}
+.cta.p{background:var(--acc);color:#fff}.cta.p:hover{opacity:.92}
+.cta.s{border:1.5px solid var(--line);color:var(--fg);background:var(--surface)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+box-shadow:var(--shadow)}
+.tile .k{font-size:12px;color:var(--sub);letter-spacing:.03em}
+.tile .v{font-size:24px;font-weight:800;letter-spacing:-.01em;margin-top:4px;font-variant-numeric:tabular-nums}
+.tile .v.up{color:var(--ok)}.tile .v.down{color:var(--bad)}
+.tile .s{font-size:11.5px;color:var(--sub);margin-top:2px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+margin:14px 0;box-shadow:var(--shadow);transition:transform .12s ease}
+.card:hover{transform:translateY(-2px)}
+.card a{text-decoration:none;font-weight:700;font-size:15.5px;line-height:1.6;display:block}
+.card .meta{margin-top:6px}
+.cbadge{display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:999px;margin-bottom:8px}
+.cbadge.j{background:color-mix(in srgb,var(--acc2) 14%,transparent);color:var(--acc2)}
+.cbadge.a{background:color-mix(in srgb,var(--acc) 12%,transparent);color:var(--acc)}
+.promise{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:18px 0}
+.promise .card{margin:0}
+.promise b{display:block;margin-bottom:4px;font-size:15px}
+.promise span{font-size:13px;color:var(--sub)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;display:block;overflow-x:auto;
+border-radius:12px}
+th{background:var(--box);font-size:13px;color:var(--sub)}
+th,td{border:1px solid var(--line);padding:9px 14px;text-align:right;font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--box) 45%,transparent)}
 .meta{color:var(--sub);font-size:13px}
-.note{background:var(--box);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--sub);margin-top:40px}
-.pr{background:var(--box);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:24px 0}
-.pr .tag{font-size:11px;color:var(--sub);letter-spacing:.1em}
-.card{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
-.card a{text-decoration:none;font-weight:600}
-input,select{font:inherit;padding:6px 8px;margin:4px 0;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
-button{font:inherit;padding:8px 16px;border:0;border-radius:6px;background:var(--acc);color:#fff;cursor:pointer}
-.result{font-size:18px;font-weight:700;margin-top:12px}
-footer{border-top:1px solid var(--line);margin-top:48px}
-.fwrap{max-width:760px;margin:0 auto;padding:20px 16px;font-size:12px;color:var(--sub)}
+.note{background:var(--box);border:1px solid var(--line);border-radius:12px;padding:14px 18px;
+font-size:12.5px;color:var(--sub);margin-top:44px;line-height:1.8}
+.pr{background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 6%,var(--surface)),var(--surface));
+border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:26px 0;box-shadow:var(--shadow)}
+.pr .tag{font-size:10.5px;color:var(--sub);letter-spacing:.14em;margin-bottom:4px}
+input,select{font:inherit;padding:9px 12px;margin:4px 0;border:1.5px solid var(--line);
+border-radius:9px;background:var(--bg);color:var(--fg);width:min(220px,100%)}
+button{font:inherit;font-weight:700;padding:11px 22px;border:0;border-radius:10px;
+background:var(--acc);color:#fff;cursor:pointer;margin-top:8px}
+button:hover{opacity:.92}
+.result{font-size:18px;font-weight:700;margin-top:14px;line-height:1.7}
+footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface)}
+.fwrap{max-width:820px;margin:0 auto;padding:22px 20px;font-size:12px;color:var(--sub)}
 """
 
 
@@ -86,7 +138,7 @@ def page(title: str, body: str, desc: str = "", meta: dict | None = None) -> str
 <link rel="alternate" type="application/rss+xml" href="/feed.xml">
 {og}{jsonld}
 <style>{CSS}</style></head><body>
-<header><div class="hwrap"><a class="t" href="/">{SITE}</a>
+<header><div class="hwrap"><a class="t" href="/"><span class="logo">AQ</span>{SITE}</a>
 <nav><a href="/">ホーム</a><a href="/posts/">記事一覧</a><a href="/tools/">ツール</a>
 <a href="/hikaku.html">証券会社比較</a><a href="/about.html">このサイトについて</a></nav></div></header>
 <main>{body}
@@ -158,6 +210,9 @@ def md2html(md: str) -> str:
     out, in_ul, in_table = [], False, False
     for raw in md.splitlines():
         line = raw.rstrip()
+        if line.startswith("::"):          # build-time markers pass through raw
+            out.append(line)
+            continue
         if line.startswith("|") and line.endswith("|"):
             cells = [c.strip() for c in line.strip("|").split("|")]
             if all(re.fullmatch(r"-{2,}:?|:-{1,}:?", c) for c in cells):
@@ -263,14 +318,9 @@ desc: AI全自動トレードシステムの公開検証記録 {today:%Y-%m-%d}�
 ---
 AIが構築した全自動売買システム（日足・翌日寄付執行）の検証記録です。**すべて事後の記録**であり、これからの売買の推奨ではありません。
 
-## 現在の状態
-| 項目 | 値 |
-| --- | --- |
-| 仮想資産 | {cur['equity_jpy']:,}円 |
-| 開始からの損益 | {ret:+.2f}% |
-| 現金 | {cur['cash']:,.0f}円 |
+::STATS:: {json.dumps({"equity": cur["equity_jpy"], "ret": round(ret, 2), "days": len({e["data_date"] for e in hist}), "npos": len(pos), "date": cur["data_date"]})}
 
-保有: {pos_s}
+保有: {pos_s}（現金 {cur['cash']:,.0f}円）
 
 ## 直近の約定記録（事後）
 {fills_s}
@@ -293,6 +343,36 @@ AIが構築した全自動売買システム（日足・翌日寄付執行）の
     return slug
 
 
+def live_stats() -> dict | None:
+    try:
+        with open(os.path.join(TV2, "state", "paper_state.json"), encoding="utf-8") as f:
+            st = json.load(f)
+        h = st["history"]
+        cur = h[-1]
+        start = st.get("capital_jpy", 1_000_000)
+        return {"equity": cur["equity_jpy"],
+                "ret": (cur["equity_jpy"] / start - 1) * 100,
+                "days": len({e["data_date"] for e in h}),
+                "npos": len(cur.get("positions", {})),
+                "date": cur["data_date"]}
+    except Exception:
+        return None
+
+
+def stat_tiles(s: dict) -> str:
+    cls = "up" if s["ret"] > 0 else ("down" if s["ret"] < 0 else "")
+    return f"""<div class="tiles">
+<div class="tile"><div class="k">仮想資産（ペーパー）</div>
+<div class="v">¥{s['equity']:,}</div><div class="s">{s['date']} 時点</div></div>
+<div class="tile"><div class="k">累計リターン</div>
+<div class="v {cls}">{s['ret']:+.2f}%</div><div class="s">開始 ¥1,000,000</div></div>
+<div class="tile"><div class="k">検証日数</div>
+<div class="v">{s['days']}日</div><div class="s">毎朝07:30自動売買</div></div>
+<div class="tile"><div class="k">保有銘柄</div>
+<div class="v">{s['npos']}</div><div class="s">全約定を事後公開</div></div>
+</div>"""
+
+
 # ---------------------------------------------------------------- build
 def build() -> None:
     os.makedirs(os.path.join(DOCS, "posts"), exist_ok=True)
@@ -301,13 +381,20 @@ def build() -> None:
     aff = affiliate_box()
 
     chart = svg_equity()
+
+    def card(p):
+        b = ("<span class='cbadge j'>検証ジャーナル</span>" if p["type"] == "journal"
+             else "<span class='cbadge a'>解説記事</span>")
+        return (f"<div class='card'>{b}<a href='/posts/{p['slug']}.html'>"
+                f"{html.escape(p['title'])}</a><div class='meta'>{p['date']}</div></div>")
+
     for p in posts:
-        rendered = md2html(p["body"]).replace("<p>::EQUITY_CHART::</p>", chart)
+        rendered = md2html(p["body"])
+        rendered = rendered.replace("<p>::EQUITY_CHART::</p>", chart).replace("::EQUITY_CHART::", chart)
+        rendered = re.sub(r"::STATS::\s*(\{.*?\})",
+                          lambda m: stat_tiles(json.loads(m.group(1))), rendered)
         others = [q for q in posts if q["slug"] != p["slug"]][:3]
-        rel = ("<h2>関連記事</h2>" + "".join(
-            f"<div class='card'><a href='/posts/{q['slug']}.html'>"
-            f"{html.escape(q['title'])}</a><div class='meta'>{q['date']}</div></div>"
-            for q in others)) if others else ""
+        rel = ("<h2>関連記事</h2>" + "".join(card(q) for q in others)) if others else ""
         body = (f"<h1>{html.escape(p['title'])}</h1><div class='meta'>{p['date']}・"
                 f"{'検証ジャーナル' if p['type'] == 'journal' else '解説記事'}</div>"
                 + rendered + aff + rel)
@@ -315,26 +402,39 @@ def build() -> None:
         with open(os.path.join(DOCS, "posts", p["slug"] + ".html"), "w", encoding="utf-8") as f:
             f.write(page(p["title"], body, p["desc"], meta))
 
-    plist = "".join(f"<div class='card'><a href='/posts/{p['slug']}.html'>{html.escape(p['title'])}</a>"
-                    f"<div class='meta'>{p['date']}</div></div>" for p in posts)
+    plist = "".join(card(p) for p in posts)
     with open(os.path.join(DOCS, "posts", "index.html"), "w", encoding="utf-8") as f:
         f.write(page("記事一覧", f"<h1>記事一覧</h1>{plist}"))
 
-    latest = posts[:6]
-    llist = "".join(f"<div class='card'><a href='/posts/{p['slug']}.html'>{html.escape(p['title'])}</a>"
-                    f"<div class='meta'>{p['date']}</div></div>" for p in latest)
-    intro = (f"<h1>{SITE}</h1><p>{TAGLINE}。人間の裁量を排した自動売買システムが毎日ここに記録を"
-             "残します。バックテストの嘘（過適合・ルックアヘッド）を検証で暴きながら、"
-             "本物の期待値だけを積み上げる実験です。</p>"
-             "<h2>最新の記録</h2>" + llist +
-             "<h2>計算ツール</h2><div class='card'><a href='/tools/fukuri.html'>複利計算機</a>"
-             "<div class='meta'>積立×利回り×年数のシミュレーション</div></div>"
-             "<div class='card'><a href='/tools/position-size.html'>ポジションサイズ計算機</a>"
-             "<div class='meta'>許容損失から適正な株数を逆算</div></div>"
-             "<div class='card'><a href='/tools/jpy-return.html'>外貨投資の円建てリターン計算機</a>"
-             "<div class='meta'>為替込みの実質損益を計算</div></div>")
+    s = live_stats()
+    hero = ("<div class='hero'><div class='badgerow'><span class='badge'>公開実験</span>"
+            "<span class='badge'>毎日自動更新</span><span class='badge'>全実績 事後公開</span></div>"
+            "<h1>AIがひとりで作り、運用し、記録する。<br>全自動トレードの公開検証ラボ</h1>"
+            "<p class='lead'>戦略の設計・実装・毎日の売買・この記事の執筆まで、人間の手を介さない"
+            "実験プロジェクト。バックテストの嘘（過適合・ルックアヘッド）と向き合いながら、"
+            "本物の期待値だけを積み上げられるかを毎日検証しています。</p>"
+            "<a class='cta p' href='/posts/'>最新の検証記録を見る</a>"
+            "<a class='cta s' href='/posts/kabt-overfit-anatomy.html'>「年利+360%」が嘘だった話</a></div>")
+    tiles = stat_tiles(s) if s else ""
+    promises = ("<h2>この実験の3つの約束</h2><div class='promise'>"
+                "<div class='card'><b>事後公開のみ</b><span>売買の推奨はしません。"
+                "記事になるのは約定が終わった後の記録だけです。</span></div>"
+                "<div class='card'><b>負けも全部出す</b><span>都合の悪い日も自動で記録されます。"
+                "人間が編集で隠せない仕組みです。</span></div>"
+                "<div class='card'><b>検証5チェック</b><span>資金制約・異常値・約定再計算などの"
+                "検証を通らない数字は掲載しません。</span></div></div>")
+    latest = "<h2>最新の記録</h2>" + "".join(card(p) for p in posts[:6])
+    toolsec = ("<h2>計算ツール</h2><div class='grid2'>"
+               "<div class='card'><a href='/tools/fukuri.html'>複利計算機</a>"
+               "<div class='meta'>積立×利回り×年数のシミュレーション</div></div>"
+               "<div class='card'><a href='/tools/position-size.html'>ポジションサイズ計算機</a>"
+               "<div class='meta'>許容損失から適正な株数を逆算</div></div>"
+               "<div class='card'><a href='/tools/jpy-return.html'>円建てリターン計算機</a>"
+               "<div class='meta'>為替込みの実質損益を計算</div></div>"
+               "<div class='card'><a href='/hikaku.html'>証券会社の手数料比較</a>"
+               "<div class='meta'>手数料差=年率1.5%の実測データつき</div></div></div>")
     with open(os.path.join(DOCS, "index.html"), "w", encoding="utf-8") as f:
-        f.write(page("ホーム", intro + aff, TAGLINE))
+        f.write(page("ホーム", hero + tiles + promises + latest + toolsec + aff, TAGLINE))
 
     hikaku = ("<h1>証券会社の手数料比較 — 当ラボの実測データつき</h1>"
               "<p>証券会社選びで最も確実に効くのは手数料です。予測が当たるかは不確実ですが、"
