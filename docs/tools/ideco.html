@@ -1,12 +1,12 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>教科書のモメンタム投資を15年実測したら、思ったより地味だった話 | オートクオンツ研究所</title>
-<meta name="description" content="「上がっているものを買う」モメンタム戦略は数十年の研究がある王道ですが、コストと単元株制約込みで実測すると教科書とはかなり違う姿が見えます。">
-<link rel="canonical" href="https://takeo628-hub.github.io/autoquant-lab/posts/momentum-reality-check.html">
+<title>iDeCoの節税額計算機（所得控除でいくら戻るか） | オートクオンツ研究所</title>
+<meta name="description" content="iDeCoの掛金は全額が所得控除の対象です。あなたの課税所得に応じて、毎年いくら所得税・住民税が軽くなるかを計算します。">
+<link rel="canonical" href="https://takeo628-hub.github.io/autoquant-lab/">
 <link rel="alternate" type="application/rss+xml" href="/autoquant-lab/feed.xml">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234338ca'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='30' font-weight='800' fill='white' text-anchor='middle'%3EAQ%3C/text%3E%3C/svg%3E">
 <meta name="google-site-verification" content="m12_RQ-zBJvqM2eH3OLYsZEMH0SPqbrsixEoZpn9gSc">
-<meta property="og:title" content="教科書のモメンタム投資を15年実測したら、思ったより地味だった話"><meta property="og:description" content="「上がっているものを買う」モメンタム戦略は数十年の研究がある王道ですが、コストと単元株制約込みで実測すると教科書とはかなり違う姿が見えます。"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/momentum-reality-check.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "教科書のモメンタム投資を15年実測したら、思ったより地味だった話", "datePublished": "2026-08-06", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/momentum-reality-check.html"}</script>
+<meta property="og:title" content="iDeCoの節税額計算機（所得控除でいくら戻るか）"><meta property="og:description" content="iDeCoの掛金は全額が所得控除の対象です。あなたの課税所得に応じて、毎年いくら所得税・住民税が軽くなるかを計算します。"><meta property="og:type" content="website"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary">
 <style>
 :root{--bg:#f7f8fa;--surface:#ffffff;--fg:#17181c;--sub:#5b616e;--line:#e6e8ec;
 --acc:#4338ca;--acc2:#0ea5e9;--ok:#047857;--bad:#b91c1c;--box:#f1f3f7;
@@ -88,26 +88,40 @@ footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface
 <header><div class="hwrap"><a class="t" href="/autoquant-lab/?v=20260806140920"><span class="logo">AQ</span>オートクオンツ研究所</a>
 <nav><a href="/autoquant-lab/?v=20260806140920">ホーム</a><a href="/autoquant-lab/posts/?v=20260806140920">記事一覧</a><a href="/autoquant-lab/tools/?v=20260806140920">ツール</a>
 <a href="/autoquant-lab/hikaku.html?v=20260806140920">証券会社比較</a><a href="/autoquant-lab/about.html?v=20260806140920">このサイトについて</a></nav></div></header>
-<main><h1>教科書のモメンタム投資を15年実測したら、思ったより地味だった話</h1><div class='meta'>2026-08-06・解説記事</div><p>「モメンタム（上がっているものを買い続ける）は学術研究で最も頑健なアノマリー」— 投資本でよく見る記述です。当ラボはこれを鵜呑みにせず、<strong>手数料・スリッページ・単元株制約・資金制約をすべて入れた状態</strong>で15年分実測しました。結論から言うと、モメンタムは本物ですが、教科書の数字をそのまま期待すると失望します。</p>
-<h2>検証した戦略</h2>
-<p>株式・債券・金・商品など10種類の資産クラスETFを、直近3・6・12ヶ月の上昇率でランク付けし、月末に上位3つだけを保有する古典的なルール（いわゆるデュアルモメンタム系）です。パラメータは文献の標準値で固定し、結果を見てからの調整は一切していません。</p>
-<h2>実測結果と「教科書との差」</h2>
-<ul>
-<li>論文の世界でこの種の戦略は「年率10%超・株式より浅いドローダウン」と紹介されがちです</li>
-<li>当ラボの実測（コスト込み・少額口座の単元株制約込み）では、<strong>単体の年率貢献は数%台</strong>にとどまりました</li>
-<li>差の正体は主に3つ: <strong>売買コスト</strong>（月次入替は回転率が高い）、<strong>単元株制約</strong>（少額だと理論配分どおり買えない）、<strong>近年の効きの弱まり</strong></li>
-</ul>
-<h2>それでも捨てなかった理由</h2>
-<p>成績が「地味」でも、モメンタム部分はポートフォリオ全体の<strong>下落を和らげる分散役</strong>として機能しました。単体の派手さではなく、組み合わせでの役割が本当の価値です。当ラボの現行システムでも、レバレッジ系戦略の暴れを抑える安定装置として組み込んでいます。</p>
-<h2>実測から得た3つの教訓</h2>
-<ul>
-<li><strong>論文の数字はコスト控除前・大口前提</strong>が多い。個人の実行環境で再計測しない数字は信用しない</li>
-<li>回転率を下げる工夫（当ラボは「上位5位以内なら保有継続」のヒステリシスを採用）だけで、年率1%以上コストが軽くなった</li>
-<li>戦略の評価は単体成績ではなく「ポートフォリオに入れたとき何が改善するか」で行う</li>
-</ul>
-<h2>まとめ</h2>
-<p>モメンタムは嘘ではありません。ただし「そのまま真似れば年10%」でもありません。この差を埋めるのが検証という作業で、当ラボはその過程を毎日<a href="/autoquant-lab/posts/?v=20260806140920">ジャーナル</a>で公開しています。理屈より記録を信じる方針です。</p>
-<p>※本記事は一般的な検証記録の共有であり、特定の売買や銘柄を推奨するものではありません。</p><h2>関連記事</h2><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/tax-alpha-beats-strategy-alpha.html?v=20260806140920'>予測で勝つより制度で勝つ方が確実だった — 検証して分かった順序の間違い</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/task-scheduler-auto-invest.html?v=20260806140920'>家のPCで投資を全自動化する — タスクスケジューラ実践ガイド</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/overnight-vs-intraday.html?v=20260806140920'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div>
+<main><h1>iDeCoの節税額計算機（所得控除でいくら戻るか）</h1><p>iDeCoの掛金は全額が所得控除の対象です。あなたの課税所得に応じて、毎年いくら所得税・住民税が軽くなるかを計算します。</p><div class='card'>毎月の掛金 <input id=m type=number value=23000>円<br>
+課税所得（年） <input id=t type=number value=3000000>円
+<select id=preset onchange=setp()>
+<option value="">目安から選ぶ</option>
+<option value=1950000>年収450万くらい</option>
+<option value=3000000>年収600万くらい</option>
+<option value=5000000>年収850万くらい</option>
+<option value=7000000>年収1100万くらい</option></select><br>
+加入年数 <input id=y type=number value=20>年<br>
+<button onclick=calc()>計算する</button>
+<div class=tiles id=out></div>
+<div class=meta id=note style="margin-top:10px"></div></div><p class='note'>このツールはすべてブラウザ内だけで動作します。入力した内容やファイルがサーバーに送信されることはありません。</p><script>function tile(k,v,s){return "<div class='tile'><div class='k'>"+k+
+"</div><div class='v'>"+v+"</div><div class='s'>"+(s||"")+"</div></div>"}
+function setp(){var v=document.getElementById('preset').value;
+if(v)document.getElementById('t').value=v;calc()}
+function rate(t){
+if(t<=1950000)return 0.05; if(t<=3300000)return 0.10; if(t<=6950000)return 0.20;
+if(t<=9000000)return 0.23; if(t<=18000000)return 0.33; if(t<=40000000)return 0.40;
+return 0.45}
+function calc(){var m=+document.getElementById('m').value,
+t=+document.getElementById('t').value,y=+document.getElementById('y').value;
+var ir=rate(t), yearly=m*12;
+var save=yearly*(ir*1.021+0.10);
+document.getElementById('out').innerHTML=
+tile('年間の掛金',yearly.toLocaleString()+'円','全額が所得控除')+
+tile('適用される所得税率',(ir*100).toFixed(0)+'%','課税所得から判定')+
+tile('年間の節税額',Math.round(save).toLocaleString()+'円','所得税+住民税10%')+
+tile(y+'年の累計',Math.round(save*y).toLocaleString()+'円','拠出を続けた場合');
+document.getElementById('note').textContent=
+'所得税(復興特別所得税1.021倍を含む)と住民税10%の軽減額です。運用益も非課税ですが、'+
+'受取時には退職所得控除・公的年金等控除の範囲で課税判定があります。掛金上限は職業や'+
+'企業年金の有無で異なるため（会社員は月2.0〜2.3万円、自営業は月6.8万円が目安）、'+
+'加入前に必ず最新の制度と上限をご確認ください。';}
+calc();</script>
 <div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
 <footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>

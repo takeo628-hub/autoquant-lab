@@ -1,12 +1,12 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>教科書のモメンタム投資を15年実測したら、思ったより地味だった話 | オートクオンツ研究所</title>
-<meta name="description" content="「上がっているものを買う」モメンタム戦略は数十年の研究がある王道ですが、コストと単元株制約込みで実測すると教科書とはかなり違う姿が見えます。">
-<link rel="canonical" href="https://takeo628-hub.github.io/autoquant-lab/posts/momentum-reality-check.html">
+<title>ふるさと納税の上限額計算機（住民税通知書から正確に） | オートクオンツ研究所</title>
+<meta name="description" content="自己負担2,000円で済む寄付の上限額を計算します。住民税決定通知書の「所得割額」を入力すれば正確に、年収からの概算も選べます。">
+<link rel="canonical" href="https://takeo628-hub.github.io/autoquant-lab/">
 <link rel="alternate" type="application/rss+xml" href="/autoquant-lab/feed.xml">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234338ca'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='30' font-weight='800' fill='white' text-anchor='middle'%3EAQ%3C/text%3E%3C/svg%3E">
 <meta name="google-site-verification" content="m12_RQ-zBJvqM2eH3OLYsZEMH0SPqbrsixEoZpn9gSc">
-<meta property="og:title" content="教科書のモメンタム投資を15年実測したら、思ったより地味だった話"><meta property="og:description" content="「上がっているものを買う」モメンタム戦略は数十年の研究がある王道ですが、コストと単元株制約込みで実測すると教科書とはかなり違う姿が見えます。"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/momentum-reality-check.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "教科書のモメンタム投資を15年実測したら、思ったより地味だった話", "datePublished": "2026-08-06", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/momentum-reality-check.html"}</script>
+<meta property="og:title" content="ふるさと納税の上限額計算機（住民税通知書から正確に）"><meta property="og:description" content="自己負担2,000円で済む寄付の上限額を計算します。住民税決定通知書の「所得割額」を入力すれば正確に、年収からの概算も選べます。"><meta property="og:type" content="website"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary">
 <style>
 :root{--bg:#f7f8fa;--surface:#ffffff;--fg:#17181c;--sub:#5b616e;--line:#e6e8ec;
 --acc:#4338ca;--acc2:#0ea5e9;--ok:#047857;--bad:#b91c1c;--box:#f1f3f7;
@@ -88,26 +88,51 @@ footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface
 <header><div class="hwrap"><a class="t" href="/autoquant-lab/?v=20260806140920"><span class="logo">AQ</span>オートクオンツ研究所</a>
 <nav><a href="/autoquant-lab/?v=20260806140920">ホーム</a><a href="/autoquant-lab/posts/?v=20260806140920">記事一覧</a><a href="/autoquant-lab/tools/?v=20260806140920">ツール</a>
 <a href="/autoquant-lab/hikaku.html?v=20260806140920">証券会社比較</a><a href="/autoquant-lab/about.html?v=20260806140920">このサイトについて</a></nav></div></header>
-<main><h1>教科書のモメンタム投資を15年実測したら、思ったより地味だった話</h1><div class='meta'>2026-08-06・解説記事</div><p>「モメンタム（上がっているものを買い続ける）は学術研究で最も頑健なアノマリー」— 投資本でよく見る記述です。当ラボはこれを鵜呑みにせず、<strong>手数料・スリッページ・単元株制約・資金制約をすべて入れた状態</strong>で15年分実測しました。結論から言うと、モメンタムは本物ですが、教科書の数字をそのまま期待すると失望します。</p>
-<h2>検証した戦略</h2>
-<p>株式・債券・金・商品など10種類の資産クラスETFを、直近3・6・12ヶ月の上昇率でランク付けし、月末に上位3つだけを保有する古典的なルール（いわゆるデュアルモメンタム系）です。パラメータは文献の標準値で固定し、結果を見てからの調整は一切していません。</p>
-<h2>実測結果と「教科書との差」</h2>
-<ul>
-<li>論文の世界でこの種の戦略は「年率10%超・株式より浅いドローダウン」と紹介されがちです</li>
-<li>当ラボの実測（コスト込み・少額口座の単元株制約込み）では、<strong>単体の年率貢献は数%台</strong>にとどまりました</li>
-<li>差の正体は主に3つ: <strong>売買コスト</strong>（月次入替は回転率が高い）、<strong>単元株制約</strong>（少額だと理論配分どおり買えない）、<strong>近年の効きの弱まり</strong></li>
-</ul>
-<h2>それでも捨てなかった理由</h2>
-<p>成績が「地味」でも、モメンタム部分はポートフォリオ全体の<strong>下落を和らげる分散役</strong>として機能しました。単体の派手さではなく、組み合わせでの役割が本当の価値です。当ラボの現行システムでも、レバレッジ系戦略の暴れを抑える安定装置として組み込んでいます。</p>
-<h2>実測から得た3つの教訓</h2>
-<ul>
-<li><strong>論文の数字はコスト控除前・大口前提</strong>が多い。個人の実行環境で再計測しない数字は信用しない</li>
-<li>回転率を下げる工夫（当ラボは「上位5位以内なら保有継続」のヒステリシスを採用）だけで、年率1%以上コストが軽くなった</li>
-<li>戦略の評価は単体成績ではなく「ポートフォリオに入れたとき何が改善するか」で行う</li>
-</ul>
-<h2>まとめ</h2>
-<p>モメンタムは嘘ではありません。ただし「そのまま真似れば年10%」でもありません。この差を埋めるのが検証という作業で、当ラボはその過程を毎日<a href="/autoquant-lab/posts/?v=20260806140920">ジャーナル</a>で公開しています。理屈より記録を信じる方針です。</p>
-<p>※本記事は一般的な検証記録の共有であり、特定の売買や銘柄を推奨するものではありません。</p><h2>関連記事</h2><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/tax-alpha-beats-strategy-alpha.html?v=20260806140920'>予測で勝つより制度で勝つ方が確実だった — 検証して分かった順序の間違い</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/task-scheduler-auto-invest.html?v=20260806140920'>家のPCで投資を全自動化する — タスクスケジューラ実践ガイド</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/overnight-vs-intraday.html?v=20260806140920'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div>
+<main><h1>ふるさと納税の上限額計算機（住民税通知書から正確に）</h1><p>自己負担2,000円で済む寄付の上限額を計算します。住民税決定通知書の「所得割額」を入力すれば正確に、年収からの概算も選べます。</p><div class='card'><b>方法1：住民税の所得割額から（正確）</b><br>
+<span class=meta>住民税決定通知書（毎年6月頃に届く）の「所得割額」の合計を入力</span><br>
+住民税所得割額 <input id=w type=number value=200000>円<br>
+課税所得（所得税率の判定用） <input id=t2 type=number value=3000000>円<br>
+<button onclick=calc1()>計算する</button><div class=result id=r1></div></div>
+<div class='card'><b>方法2：給与収入からの概算（目安）</b><br>
+給与収入（年） <input id=inc type=number value=6000000>円<br>
+<select id=fam><option value=1>独身または共働き</option>
+<option value=2>共働き＋高校生の子1人</option>
+<option value=3>専業主婦(夫)＋高校生の子1人</option></select>
+<button onclick=calc2()>概算する</button><div class=result id=r2></div>
+<div class=meta id=n2></div></div><p class='note'>このツールはすべてブラウザ内だけで動作します。入力した内容やファイルがサーバーに送信されることはありません。</p><script>function rate(t){
+if(t<=1950000)return 0.05; if(t<=3300000)return 0.10; if(t<=6950000)return 0.20;
+if(t<=9000000)return 0.23; if(t<=18000000)return 0.33; if(t<=40000000)return 0.40;
+return 0.45}
+function limitFromWari(w,t){
+// 上限 = 所得割額×20% ÷ (90% - 所得税率×1.021) + 2000
+return w*0.2/(0.9-rate(t)*1.021)+2000}
+function calc1(){var w=+document.getElementById('w').value,
+t=+document.getElementById('t2').value;
+var L=limitFromWari(w,t);
+document.getElementById('r1').textContent='上限の目安：約'+
+(Math.floor(L/1000)*1000).toLocaleString()+'円（自己負担2,000円で済む範囲）';}
+function calc2(){var inc=+document.getElementById('inc').value,
+fam=+document.getElementById('fam').value;
+// 給与所得控除
+var d;
+if(inc<=1625000)d=550000; else if(inc<=1800000)d=inc*0.4-100000;
+else if(inc<=3600000)d=inc*0.3+80000; else if(inc<=6600000)d=inc*0.2+440000;
+else if(inc<=8500000)d=inc*0.1+1100000; else d=1950000;
+var sal=inc-d;
+var shakai=inc*0.15;             // 社会保険料の概算（約15%）
+var kiso=430000, kisoJu=430000;  // 基礎控除（所得税48万/住民税43万だが概算で圧縮）
+var extra=(fam>=2?380000:0)+(fam>=3?330000:0);
+var taxable=Math.max(0,sal-shakai-480000-extra);        // 所得税の課税所得
+var taxableJu=Math.max(0,sal-shakai-kisoJu-extra);      // 住民税の課税所得
+var wari=taxableJu*0.10;
+var L=limitFromWari(wari,taxable);
+document.getElementById('r2').textContent='上限の概算：約'+
+(Math.floor(L/1000)*1000).toLocaleString()+'円';
+document.getElementById('n2').textContent=
+'社会保険料を収入の15%と仮定した概算です。実際は扶養・医療費・住宅ローン控除などで'+
+'変わります。上限を超えた分は自己負担になるため、寄付前に必ず住民税決定通知書または'+
+'寄付先サイトの正式なシミュレーターで確認してください。';}
+calc1();calc2();</script>
 <div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
 <footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>

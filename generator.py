@@ -382,6 +382,14 @@ UTIL_TOOLS = "".join([
     _tcard("/tools/date-calc.html", "日付計算・営業日カウント", "日本の祝日2020〜2031年を内蔵"),
     _tcard("/tools/wareki.html", "和暦⇔西暦・年齢計算", "元号の切替日も日単位で正確に判定"),
 ])
+CERTAIN_TOOLS = "".join([
+    _tcard("/tools/nisa.html", "NISAでいくら得か計算機",
+           "運用益20.315%の税金を長期で守れる金額"),
+    _tcard("/tools/ideco.html", "iDeCoの節税額計算機",
+           "掛金の所得控除で毎年いくら戻るか"),
+    _tcard("/tools/furusato.html", "ふるさと納税の上限額計算機",
+           "住民税通知書から正確に／年収から概算も"),
+])
 MONEY_TOOLS = "".join([
     _tcard("/tools/fukuri.html", "複利計算機", "積立×利回り×年数"),
     _tcard("/tools/drawdown.html", "ドローダウン回復計算機", "-30%を戻すには+43%必要"),
@@ -472,7 +480,10 @@ def build() -> None:
                 "<div class='card'><b>検証5チェック</b><span>資金制約・異常値・約定再計算などの"
                 "検証を通らない数字は掲載しません。</span></div></div>")
     latest = "<h2>最新の記録</h2>" + "".join(card(p) for p in posts[:6])
-    toolsec = ("<h2>無料ツール（登録不要・ブラウザ内で完結）</h2>"
+    toolsec = ("<h2>予測しないで増やす（制度・税の計算）</h2>"
+               "<p class='meta'>相場予測は当たるか分かりませんが、制度の節税は確実です。</p>"
+               "<div class='grid2'>" + CERTAIN_TOOLS + "</div>"
+               "<h2>無料ツール（登録不要・ブラウザ内で完結）</h2>"
                "<p class='meta'>入力内容やファイルはサーバーに送信されません。</p>"
                "<div class='grid2'>" + UTIL_TOOLS + "</div>"
                "<h2>投資・お金のツール</h2><div class='grid2'>" + MONEY_TOOLS +
@@ -596,8 +607,12 @@ def build() -> None:
     tlist = ("<h1>無料ツール</h1>"
              "<p>すべて<strong>ブラウザ内だけで動作</strong>します。入力内容やファイルが"
              "サーバーに送信されることはありません。登録も不要です。</p>"
+             "<h2>予測しないで増やす（制度・税）</h2>"
+             "<p class='meta'>相場の予測は当たるか分かりませんが、制度による節税は確実です。"
+             "当ラボの検証では、どの売買戦略の超過リターンよりNISAの非課税効果の方が大きく、"
+             "しかも確実でした。</p><div class='grid2'>" + CERTAIN_TOOLS + "</div>"
              "<h2>くらしの実用ツール</h2><div class='grid2'>" + UTIL_TOOLS + "</div>"
-             "<h2>投資・お金のツール</h2><div class='grid2'>" + MONEY_TOOLS + "</div>")
+             "<h2>投資の計算ツール</h2><div class='grid2'>" + MONEY_TOOLS + "</div>")
     with open(os.path.join(DOCS, "tools", "index.html"), "w", encoding="utf-8") as f:
         f.write(page("計算ツール", tlist))
 
@@ -616,7 +631,8 @@ def build() -> None:
             f"{BASE_URL}/tools/jpy-return.html", f"{BASE_URL}/tools/drawdown.html",
             f"{BASE_URL}/tools/fee-calc.html", f"{BASE_URL}/tools/moji-count.html",
             f"{BASE_URL}/tools/wareki.html", f"{BASE_URL}/tools/date-calc.html",
-            f"{BASE_URL}/tools/image-compress.html"] + \
+            f"{BASE_URL}/tools/image-compress.html", f"{BASE_URL}/tools/nisa.html",
+            f"{BASE_URL}/tools/ideco.html", f"{BASE_URL}/tools/furusato.html"] + \
            [f"{BASE_URL}/posts/{p['slug']}.html" for p in posts]
     with open(os.path.join(DOCS, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write("<?xml version='1.0' encoding='UTF-8'?>"
@@ -631,6 +647,40 @@ def build() -> None:
           "解消することがあります。</p>")
     with open(os.path.join(DOCS, "404.html"), "w", encoding="utf-8") as f:
         f.write(page("ページが見つかりません", nf))
+    # ---- machine-readable endpoints -------------------------------------
+    # Human search traffic is being absorbed by AI answer engines, so the data
+    # behind the tools is published for agents to consume directly rather than
+    # only as rendered pages.
+    api = os.path.join(DOCS, "api")
+    os.makedirs(api, exist_ok=True)
+    with open(os.path.join(ROOT, "jp_holidays.json"), encoding="utf-8") as f:
+        holidays = json.load(f)
+    with open(os.path.join(api, "jp-holidays.json"), "w", encoding="utf-8") as f:
+        json.dump({"source": "generated with the jpholiday library",
+                   "years": "2020-2031", "count": len(holidays),
+                   "license": "CC0", "updated": BUILD_ID[:8],
+                   "holidays": holidays}, f, ensure_ascii=False)
+    with open(os.path.join(api, "broker-fees.json"), "w", encoding="utf-8") as f:
+        json.dump({"as_of": "2026-08", "currency": "USD",
+                   "note": "Rates change; verify with each broker before relying on this.",
+                   "us_stock": [
+                       {"broker": "moomoo Japan", "rate": 0.00088, "cap": 16.5},
+                       {"broker": "SBI", "rate": 0.00495, "cap": 22.0},
+                       {"broker": "Rakuten", "rate": 0.00495, "cap": 22.0},
+                       {"broker": "Monex", "rate": 0.00495, "cap": 22.0},
+                       {"broker": "Matsui", "rate": 0.00495, "cap": 22.0}],
+                   "measured_impact": {
+                       "description": "Same daily strategy, 15.6y backtest, costs included",
+                       "cagr_difference_pct": 1.5,
+                       "compared": ["0.495%", "0.088%"]}}, f, ensure_ascii=False)
+    with open(os.path.join(api, "index.json"), "w", encoding="utf-8") as f:
+        json.dump({"site": SITE, "url": BASE_URL + "/",
+                   "description": "Machine-readable data behind the site's tools",
+                   "endpoints": {
+                       "jp_holidays": BASE_URL + "/api/jp-holidays.json",
+                       "broker_fees": BASE_URL + "/api/broker-fees.json"}},
+                  f, ensure_ascii=False)
+
     with open(os.path.join(DOCS, "v.json"), "w", encoding="utf-8") as f:
         json.dump({"build": BUILD_ID}, f)
     with open(os.path.join(DOCS, ".nojekyll"), "w") as f:
@@ -752,6 +802,131 @@ while(c<d2){c.setDate(c.getDate()+1);if(isBiz(c))biz++}
 document.getElementById('r2').textContent=days.toLocaleString()+'日間 ／ うち営業日 '+
 biz.toLocaleString()+'日（土日祝を除く）';}
 addDays();""",
+              PRIVACY)
+
+    # ---------------- NISA vs 課税口座 -------------------------------------
+    tool_page("nisa.html", "NISAでいくら得か計算機（課税口座との生涯差額）",
+              "同じ運用をNISAでやった場合と課税口座でやった場合の差額を計算します。"
+              "運用益にかかる20.315%の税金が、長期でどれだけの金額になるかを確認できます。",
+              """<div class='card'>毎月の積立額 <input id=m type=number value=50000>円<br>
+想定年利 <input id=r type=number value=5 step=0.1>%<br>
+運用年数 <input id=y type=number value=25>年<br>
+<button onclick=calc()>計算する</button>
+<div class=tiles id=out></div>
+<div class=meta id=note style="margin-top:10px"></div></div>""",
+              """function tile(k,v,s){return "<div class='tile'><div class='k'>"+k+
+"</div><div class='v'>"+v+"</div><div class='s'>"+(s||"")+"</div></div>"}
+var TAX=0.20315;
+function calc(){var m=+document.getElementById('m').value,
+r=+document.getElementById('r').value/100/12,y=+document.getElementById('y').value*12;
+var v=0,paid=0;
+for(var i=0;i<y;i++){v=v*(1+r)+m;paid+=m}
+var gain=v-paid, tax=gain>0?gain*TAX:0;
+document.getElementById('out').innerHTML=
+tile('投資元本',Math.round(paid).toLocaleString()+'円','積み立てた合計')+
+tile('NISA(非課税)',Math.round(v).toLocaleString()+'円','税金ゼロ')+
+tile('課税口座',Math.round(v-tax).toLocaleString()+'円','利益に20.315%')+
+tile('差額',Math.round(tax).toLocaleString()+'円','NISAで守れる金額');
+var lim=1800*10000;
+document.getElementById('note').textContent=
+'運用益 '+Math.round(gain).toLocaleString()+'円 に対する税額が差額です。'+
+(paid>lim?('※投資元本が新NISAの生涯投資枠1,800万円を超えています（超過分は課税口座での計算が必要です）。'):
+'※新NISAの生涯投資枠1,800万円・年間上限360万円の範囲内で計算しています。')+
+' 制度内容は変更される場合があります。';}
+calc();""",
+              PRIVACY)
+
+    # ---------------- iDeCo 節税額 ---------------------------------------
+    tool_page("ideco.html", "iDeCoの節税額計算機（所得控除でいくら戻るか）",
+              "iDeCoの掛金は全額が所得控除の対象です。あなたの課税所得に応じて、"
+              "毎年いくら所得税・住民税が軽くなるかを計算します。",
+              """<div class='card'>毎月の掛金 <input id=m type=number value=23000>円<br>
+課税所得（年） <input id=t type=number value=3000000>円
+<select id=preset onchange=setp()>
+<option value="">目安から選ぶ</option>
+<option value=1950000>年収450万くらい</option>
+<option value=3000000>年収600万くらい</option>
+<option value=5000000>年収850万くらい</option>
+<option value=7000000>年収1100万くらい</option></select><br>
+加入年数 <input id=y type=number value=20>年<br>
+<button onclick=calc()>計算する</button>
+<div class=tiles id=out></div>
+<div class=meta id=note style="margin-top:10px"></div></div>""",
+              """function tile(k,v,s){return "<div class='tile'><div class='k'>"+k+
+"</div><div class='v'>"+v+"</div><div class='s'>"+(s||"")+"</div></div>"}
+function setp(){var v=document.getElementById('preset').value;
+if(v)document.getElementById('t').value=v;calc()}
+function rate(t){
+if(t<=1950000)return 0.05; if(t<=3300000)return 0.10; if(t<=6950000)return 0.20;
+if(t<=9000000)return 0.23; if(t<=18000000)return 0.33; if(t<=40000000)return 0.40;
+return 0.45}
+function calc(){var m=+document.getElementById('m').value,
+t=+document.getElementById('t').value,y=+document.getElementById('y').value;
+var ir=rate(t), yearly=m*12;
+var save=yearly*(ir*1.021+0.10);
+document.getElementById('out').innerHTML=
+tile('年間の掛金',yearly.toLocaleString()+'円','全額が所得控除')+
+tile('適用される所得税率',(ir*100).toFixed(0)+'%','課税所得から判定')+
+tile('年間の節税額',Math.round(save).toLocaleString()+'円','所得税+住民税10%')+
+tile(y+'年の累計',Math.round(save*y).toLocaleString()+'円','拠出を続けた場合');
+document.getElementById('note').textContent=
+'所得税(復興特別所得税1.021倍を含む)と住民税10%の軽減額です。運用益も非課税ですが、'+
+'受取時には退職所得控除・公的年金等控除の範囲で課税判定があります。掛金上限は職業や'+
+'企業年金の有無で異なるため（会社員は月2.0〜2.3万円、自営業は月6.8万円が目安）、'+
+'加入前に必ず最新の制度と上限をご確認ください。';}
+calc();""",
+              PRIVACY)
+
+    # ---------------- ふるさと納税 上限 -----------------------------------
+    tool_page("furusato.html", "ふるさと納税の上限額計算機（住民税通知書から正確に）",
+              "自己負担2,000円で済む寄付の上限額を計算します。住民税決定通知書の"
+              "「所得割額」を入力すれば正確に、年収からの概算も選べます。",
+              """<div class='card'><b>方法1：住民税の所得割額から（正確）</b><br>
+<span class=meta>住民税決定通知書（毎年6月頃に届く）の「所得割額」の合計を入力</span><br>
+住民税所得割額 <input id=w type=number value=200000>円<br>
+課税所得（所得税率の判定用） <input id=t2 type=number value=3000000>円<br>
+<button onclick=calc1()>計算する</button><div class=result id=r1></div></div>
+<div class='card'><b>方法2：給与収入からの概算（目安）</b><br>
+給与収入（年） <input id=inc type=number value=6000000>円<br>
+<select id=fam><option value=1>独身または共働き</option>
+<option value=2>共働き＋高校生の子1人</option>
+<option value=3>専業主婦(夫)＋高校生の子1人</option></select>
+<button onclick=calc2()>概算する</button><div class=result id=r2></div>
+<div class=meta id=n2></div></div>""",
+              """function rate(t){
+if(t<=1950000)return 0.05; if(t<=3300000)return 0.10; if(t<=6950000)return 0.20;
+if(t<=9000000)return 0.23; if(t<=18000000)return 0.33; if(t<=40000000)return 0.40;
+return 0.45}
+function limitFromWari(w,t){
+// 上限 = 所得割額×20% ÷ (90% - 所得税率×1.021) + 2000
+return w*0.2/(0.9-rate(t)*1.021)+2000}
+function calc1(){var w=+document.getElementById('w').value,
+t=+document.getElementById('t2').value;
+var L=limitFromWari(w,t);
+document.getElementById('r1').textContent='上限の目安：約'+
+(Math.floor(L/1000)*1000).toLocaleString()+'円（自己負担2,000円で済む範囲）';}
+function calc2(){var inc=+document.getElementById('inc').value,
+fam=+document.getElementById('fam').value;
+// 給与所得控除
+var d;
+if(inc<=1625000)d=550000; else if(inc<=1800000)d=inc*0.4-100000;
+else if(inc<=3600000)d=inc*0.3+80000; else if(inc<=6600000)d=inc*0.2+440000;
+else if(inc<=8500000)d=inc*0.1+1100000; else d=1950000;
+var sal=inc-d;
+var shakai=inc*0.15;             // 社会保険料の概算（約15%）
+var kiso=430000, kisoJu=430000;  // 基礎控除（所得税48万/住民税43万だが概算で圧縮）
+var extra=(fam>=2?380000:0)+(fam>=3?330000:0);
+var taxable=Math.max(0,sal-shakai-480000-extra);        // 所得税の課税所得
+var taxableJu=Math.max(0,sal-shakai-kisoJu-extra);      // 住民税の課税所得
+var wari=taxableJu*0.10;
+var L=limitFromWari(wari,taxable);
+document.getElementById('r2').textContent='上限の概算：約'+
+(Math.floor(L/1000)*1000).toLocaleString()+'円';
+document.getElementById('n2').textContent=
+'社会保険料を収入の15%と仮定した概算です。実際は扶養・医療費・住宅ローン控除などで'+
+'変わります。上限を超えた分は自己負担になるため、寄付前に必ず住民税決定通知書または'+
+'寄付先サイトの正式なシミュレーターで確認してください。';}
+calc1();calc2();""",
               PRIVACY)
 
     # ---------------- 画像圧縮 -------------------------------------------

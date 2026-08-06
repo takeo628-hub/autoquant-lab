@@ -1,0 +1,1 @@
+{"site": "オートクオンツ研究所", "url": "https://takeo628-hub.github.io/autoquant-lab/", "description": "Machine-readable data behind the site's tools", "endpoints": {"jp_holidays": "https://takeo628-hub.github.io/autoquant-lab/api/jp-holidays.json", "broker_fees": "https://takeo628-hub.github.io/autoquant-lab/api/broker-fees.json"}}
