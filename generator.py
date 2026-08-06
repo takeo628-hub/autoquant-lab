@@ -136,6 +136,7 @@ def page(title: str, body: str, desc: str = "", meta: dict | None = None) -> str
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)} | {SITE}</title>
 <meta name="description" content="{html.escape(desc or TAGLINE)}">
+<link rel="canonical" href="{url}">
 <link rel="alternate" type="application/rss+xml" href="/feed.xml">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234338ca'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='30' font-weight='800' fill='white' text-anchor='middle'%3EAQ%3C/text%3E%3C/svg%3E">
 <meta name="google-site-verification" content="m12_RQ-zBJvqM2eH3OLYsZEMH0SPqbrsixEoZpn9gSc">
@@ -159,8 +160,22 @@ sessionStorage.setItem("aq_t",String(Date.now()));
 q.set("v",v.build);location.replace(location.pathname+"?"+q.toString()+location.hash);
 }}).catch(function(){{}});}})();</script>
 </body></html>"""
-    # prefix every root-relative internal link with the Pages subpath
-    return doc.replace('href="/', f'href="{BASE_PATH}/').replace("href='/", f"href='{BASE_PATH}/")
+    return _fix_links(doc)
+
+
+def _fix_links(doc: str) -> str:
+    """Rewrite root-relative internal links: add the Pages subpath, and stamp
+    the build id so navigation can never be served a stale cached page
+    (GitHub Pages sends Cache-Control: max-age=600 on HTML). The build stamp
+    is removed from the address bar on load by the checker script."""
+    def rep(m):
+        q, path = m.group(1), m.group(2)
+        url = f"{BASE_PATH}/{path.lstrip('/')}"
+        if path.endswith((".xml", ".json", ".txt", ".png", ".svg", ".ico")):
+            return f"href={q}{url}{q}"
+        sep = "&" if "?" in url else "?"
+        return f"href={q}{url}{sep}v={BUILD_ID}{q}"
+    return re.sub(r"href=([\"'])/([^\"']*)\1", rep, doc)
 
 
 def svg_equity() -> str:
