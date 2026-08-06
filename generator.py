@@ -21,6 +21,7 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
+BUILD_ID = dt.datetime.now().strftime("%Y%m%d%H%M%S")
 POSTS = os.path.join(ROOT, "content", "posts")
 DOCS = os.path.join(ROOT, "docs")
 TV2 = r"C:\Users\yukur\trading_v2"
@@ -145,6 +146,10 @@ def page(title: str, body: str, desc: str = "", meta: dict | None = None) -> str
 <div class="note">{DISCLAIMER}</div></main>
 <footer><div class="fwrap">© {dt.date.today().year} {SITE} ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
+<script>(function(){{var B="{BUILD_ID}";
+fetch("{BASE_PATH}/v.json?t="+Date.now(),{{cache:"no-store"}}).then(function(r){{return r.json()}})
+.then(function(v){{if(v.build&&v.build!==B&&sessionStorage.getItem("aq_r")!==v.build){{
+sessionStorage.setItem("aq_r",v.build);location.reload();}}}}).catch(function(){{}});}})();</script>
 </body></html>"""
     # prefix every root-relative internal link with the Pages subpath
     return doc.replace('href="/', f'href="{BASE_PATH}/').replace("href='/", f"href='{BASE_PATH}/")
@@ -594,9 +599,11 @@ def build() -> None:
           "解消することがあります。</p>")
     with open(os.path.join(DOCS, "404.html"), "w", encoding="utf-8") as f:
         f.write(page("ページが見つかりません", nf))
+    with open(os.path.join(DOCS, "v.json"), "w", encoding="utf-8") as f:
+        json.dump({"build": BUILD_ID}, f)
     with open(os.path.join(DOCS, ".nojekyll"), "w") as f:
         f.write("")
-    print(f"built {len(posts)} posts -> docs/")
+    print(f"built {len(posts)} posts -> docs/ (build {BUILD_ID})")
 
 
 def tools() -> None:

@@ -107,4 +107,8 @@ footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface
 <div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
 <footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
+<script>(function(){var B="20260806114458";
+fetch("/autoquant-lab/v.json?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.json()})
+.then(function(v){if(v.build&&v.build!==B&&sessionStorage.getItem("aq_r")!==v.build){
+sessionStorage.setItem("aq_r",v.build);location.reload();}}).catch(function(){});})();</script>
 </body></html>
