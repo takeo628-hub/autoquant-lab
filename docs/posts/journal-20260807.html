@@ -1,12 +1,12 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ポジションサイズ計算機 | オートクオンツ研究所</title>
-<meta name="description" content="「1回の取引で口座の何%まで失ってよいか」から、適正な株数を逆算します。リスク管理の基本ツールです。">
-<link rel="canonical" href="https://takeo628-hub.github.io/autoquant-lab/">
+<title>検証ジャーナル 2026-08-07：資産 999,253円（-0.07%） | オートクオンツ研究所</title>
+<meta name="description" content="AI全自動トレードシステムの公開検証記録 2026-08-07版">
+<link rel="canonical" href="https://takeo628-hub.github.io/autoquant-lab/posts/journal-20260807.html">
 <link rel="alternate" type="application/rss+xml" href="/autoquant-lab/feed.xml">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234338ca'/%3E%3Cstop offset='1' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='30' font-weight='800' fill='white' text-anchor='middle'%3EAQ%3C/text%3E%3C/svg%3E">
 <meta name="google-site-verification" content="m12_RQ-zBJvqM2eH3OLYsZEMH0SPqbrsixEoZpn9gSc">
-<meta property="og:title" content="ポジションサイズ計算機"><meta property="og:description" content="「1回の取引で口座の何%まで失ってよいか」から、適正な株数を逆算します。リスク管理の基本ツールです。"><meta property="og:type" content="website"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary">
+<meta property="og:title" content="検証ジャーナル 2026-08-07：資産 999,253円（-0.07%）"><meta property="og:description" content="AI全自動トレードシステムの公開検証記録 2026-08-07版"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/journal-20260807.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "検証ジャーナル 2026-08-07：資産 999,253円（-0.07%）", "datePublished": "2026-08-07", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/journal-20260807.html"}</script>
 <style>
 :root{--bg:#f7f8fa;--surface:#ffffff;--fg:#17181c;--sub:#5b616e;--line:#e6e8ec;
 --acc:#4338ca;--acc2:#0ea5e9;--ok:#047857;--bad:#b91c1c;--box:#f1f3f7;
@@ -89,15 +89,36 @@ footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface
 <nav><a href="/autoquant-lab/?v=20260807082502">ホーム</a><a href="/autoquant-lab/posts/?v=20260807082502">記事一覧</a><a href="/autoquant-lab/tools/?v=20260807082502">ツール</a>
 <a href="/autoquant-lab/hikaku.html?v=20260807082502">証券会社比較</a><a href="/autoquant-lab/data.html?v=20260807082502">Data (EN)</a>
 <a href="/autoquant-lab/about.html?v=20260807082502">このサイトについて</a></nav></div></header>
-<main><h1>ポジションサイズ計算機</h1><p>「1回の取引で口座の何%まで失ってよいか」から、適正な株数を逆算します。リスク管理の基本ツールです。</p><div class='card'>口座資金 <input id=c type=number value=1000000>円<br>
-許容リスク <input id=k type=number value=1 step=0.1>%（1回の損失上限）<br>
-エントリー価格 <input id=e type=number value=3000>円<br>
-損切り価格 <input id=s type=number value=2850>円<br>
-<button onclick=calc()>計算する</button><div class=result id=out></div></div><script>function calc(){let c=+document.getElementById('c').value,k=+document.getElementById('k').value/100,
-e=+document.getElementById('e').value,s=+document.getElementById('s').value,d=e-s;
-if(d<=0){document.getElementById('out').textContent='損切り価格はエントリーより下に設定してください';return}
-let sh=Math.floor(c*k/d);document.getElementById('out').textContent='適正株数: '+sh.toLocaleString()+'株（想定損失 '
-+Math.round(sh*d).toLocaleString()+'円 = 口座の'+(sh*d/c*100).toFixed(2)+'%、必要資金 '+Math.round(sh*e).toLocaleString()+'円）'}</script>
+<main><h1>検証ジャーナル 2026-08-07：資産 999,253円（-0.07%）</h1><div class='meta'>2026-08-07・検証ジャーナル</div><p>AIが構築した全自動売買システム（日足・翌日寄付執行）の検証記録です。<strong>すべて事後の記録</strong>であり、これからの売買の推奨ではありません。</p>
+<div class="tiles">
+<div class="tile"><div class="k">仮想資産（ペーパー）</div>
+<div class="v">¥999,253</div><div class="s">2026-08-06 時点</div></div>
+<div class="tile"><div class="k">累計リターン</div>
+<div class="v down">-0.07%</div><div class="s">開始 ¥1,000,000</div></div>
+<div class="tile"><div class="k">検証日数</div>
+<div class="v">2日</div><div class="s">毎朝07:30自動売買</div></div>
+<div class="tile"><div class="k">保有銘柄</div>
+<div class="v">6</div><div class="s">全約定を事後公開</div></div>
+</div>
+<p>保有: EEM×10.0、IWM×2.0、TQQQ×16.0、XLE×11.0、XLI×3.0、XLK×3.0（現金 341,740円）</p>
+<h2>直近の約定記録（事後）</h2>
+<ul>
+<li>`FILL BUY  EEM     x10.0 @ 10,254.8 JPY fee 508 (2026-08-06)`</li>
+<li>`FILL BUY  IWM     x2.0 @ 47,500.5 JPY fee 470 (2026-08-06)`</li>
+<li>`FILL BUY  TQQQ    x16.0 @ 11,231.4 JPY fee 890 (2026-08-06)`</li>
+<li>`FILL BUY  XLE     x11.0 @ 9,257.5 JPY fee 504 (2026-08-06)`</li>
+<li>`FILL BUY  XLI     x3.0 @ 29,600.6 JPY fee 440 (2026-08-06)`</li>
+<li>`FILL BUY  XLK     x3.0 @ 29,044.1 JPY fee 431 (2026-08-06)`</li>
+</ul>
+<h2>資産推移</h2>
+<p class='meta'>資産推移チャートは検証データが5営業日分たまり次第、ここに自動表示されます。</p>
+<table>
+<tr><th>日付</th><th>資産（円）</th></tr>
+<tr><td>2026-08-05</td><td>1,000,000</td></tr>
+<tr><td>2026-08-06</td><td>999,253</td></tr>
+</table>
+<h2>システム概要（毎回同じです）</h2>
+<p>日足シグナル・翌営業日寄付成行のみ・4戦略分散（資産クラスモメンタム／レバレッジトレンド／セクターローテーション／BTCトレンド）×信用1.3倍。判定は常に前日終値まで、執行は翌日寄付 — 未来情報の混入（ルックアヘッド）が構造的に不可能な設計です。詳しくは<a href="/autoquant-lab/posts/?v=20260807082502">検証手法の解説記事</a>をどうぞ。</p><h2>関連記事</h2><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/tax-alpha-beats-strategy-alpha.html?v=20260807082502'>予測で勝つより制度で勝つ方が確実だった — 検証して分かった順序の間違い</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/task-scheduler-auto-invest.html?v=20260807082502'>家のPCで投資を全自動化する — タスクスケジューラ実践ガイド</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/overnight-vs-intraday.html?v=20260807082502'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div>
 <div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
 <footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
