@@ -27,6 +27,9 @@ TV2 = r"C:\Users\yukur\trading_v2"
 SITE = "オートクオンツ研究所"
 TAGLINE = "AIが構築・運用する全自動トレードシステムの公開検証ラボ"
 BASE_URL = "https://takeo628-hub.github.io/autoquant-lab"
+# GitHub Pages project sites live under a subpath; every internal href
+# written as "/..." must be prefixed with it or it 404s at the domain root.
+BASE_PATH = "/" + BASE_URL.split("//", 1)[-1].split("/", 1)[1] if "/" in BASE_URL.split("//", 1)[-1] else ""
 
 DISCLAIMER = ("本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の"
               "提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、"
@@ -76,7 +79,7 @@ def page(title: str, body: str, desc: str = "", meta: dict | None = None) -> str
             "headline": title, "datePublished": str(m["date"]),
             "author": {"@type": "Organization", "name": SITE},
             "mainEntityOfPage": url}, ensure_ascii=False) + "</script>")
-    return f"""<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+    doc = f"""<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)} | {SITE}</title>
 <meta name="description" content="{html.escape(desc or TAGLINE)}">
@@ -91,6 +94,8 @@ def page(title: str, body: str, desc: str = "", meta: dict | None = None) -> str
 <footer><div class="fwrap">© {dt.date.today().year} {SITE} ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
 </body></html>"""
+    # prefix every root-relative internal link with the Pages subpath
+    return doc.replace('href="/', f'href="{BASE_PATH}/').replace("href='/", f"href='{BASE_PATH}/")
 
 
 def svg_equity() -> str:

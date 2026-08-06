@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>その運用成績、実力と運をどう切り分けるか — ブートストラップ検証入門 | オートクオンツ研究所</title>
 <meta name="description" content="同じ運用戦略でも「歴史の順番」が違えば成績は大きく変わります。ブートストラップ法で当ラボの戦略の成績分布を推定した実例を公開します。">
-<link rel="alternate" type="application/rss+xml" href="/feed.xml">
+<link rel="alternate" type="application/rss+xml" href="/autoquant-lab/feed.xml">
 <meta property="og:title" content="その運用成績、実力と運をどう切り分けるか — ブートストラップ検証入門"><meta property="og:description" content="同じ運用戦略でも「歴史の順番」が違えば成績は大きく変わります。ブートストラップ法で当ラボの戦略の成績分布を推定した実例を公開します。"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/luck-vs-skill-bootstrap.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "その運用成績、実力と運をどう切り分けるか — ブートストラップ検証入門", "datePublished": "2026-08-06", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/luck-vs-skill-bootstrap.html"}</script>
 <style>
 :root{--bg:#fff;--fg:#1a1a1a;--sub:#555;--line:#e5e5e5;--acc:#0b5fff;--box:#f6f8fa}
@@ -30,9 +30,9 @@ button{font:inherit;padding:8px 16px;border:0;border-radius:6px;background:var(-
 footer{border-top:1px solid var(--line);margin-top:48px}
 .fwrap{max-width:760px;margin:0 auto;padding:20px 16px;font-size:12px;color:var(--sub)}
 </style></head><body>
-<header><div class="hwrap"><a class="t" href="/">オートクオンツ研究所</a>
-<nav><a href="/">ホーム</a><a href="/posts/">記事一覧</a><a href="/tools/">ツール</a>
-<a href="/hikaku.html">証券会社比較</a><a href="/about.html">このサイトについて</a></nav></div></header>
+<header><div class="hwrap"><a class="t" href="/autoquant-lab/">オートクオンツ研究所</a>
+<nav><a href="/autoquant-lab/">ホーム</a><a href="/autoquant-lab/posts/">記事一覧</a><a href="/autoquant-lab/tools/">ツール</a>
+<a href="/autoquant-lab/hikaku.html">証券会社比較</a><a href="/autoquant-lab/about.html">このサイトについて</a></nav></div></header>
 <main><h1>その運用成績、実力と運をどう切り分けるか — ブートストラップ検証入門</h1><div class='meta'>2026-08-06・解説記事</div><p>バックテストで「年率30%・最大ドローダウン30%」という結果が出たとします。この数字はどこまで信じてよいのでしょうか。当ラボが自分のシステムに対して行った「疑いの検証」を公開します。</p>
 <h2>方法：ブートストラップ（歴史のシャッフル）</h2>
 <p>戦略の日次リターン15.6年分を、約1ヶ月のブロック単位で並べ替えて「ありえたかもしれない別の歴史」を1,000通り作り、それぞれの成績を計測します。戦略の中身は全く同じで、<strong>出来事の順番だけが違う世界</strong>を大量に観察するわけです。</p>
@@ -51,7 +51,7 @@ footer{border-top:1px solid var(--line);margin-top:48px}
 <li>「年率○%を保証」という言葉を見たら、その瞬間に疑ってください。誠実な運用者が提示できるのは分布であって、点の数字ではありません</li>
 </ul>
 <h2>まとめ</h2>
-<p>検証の目的は自信を持つことではなく、<strong>自信の適切なサイズを知る</strong>ことです。当ラボは自システムのこの分布を公開した上で、毎日の実績を<a href="/posts/">検証ジャーナル</a>に記録し続けています。予測ではなく記録で語る、がこのサイトの方針です。</p><h2>関連記事</h2><div class='card'><a href='/posts/overnight-vs-intraday.html'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div><div class='card'><a href='/posts/leveraged-etf-trend-15y.html'>レバレッジETFは「持ちっぱなし」と「トレンドフィルタ」でどう変わるか — 15年・コスト込み検証</a><div class='meta'>2026-08-06</div></div><div class='card'><a href='/posts/kabt-overfit-anatomy.html'>バックテスト年利+360%のシステムが実弾で-8%になった話 — 過適合の解剖記録</a><div class='meta'>2026-08-06</div></div>
+<p>検証の目的は自信を持つことではなく、<strong>自信の適切なサイズを知る</strong>ことです。当ラボは自システムのこの分布を公開した上で、毎日の実績を<a href="/autoquant-lab/posts/">検証ジャーナル</a>に記録し続けています。予測ではなく記録で語る、がこのサイトの方針です。</p><h2>関連記事</h2><div class='card'><a href='/autoquant-lab/posts/overnight-vs-intraday.html'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div><div class='card'><a href='/autoquant-lab/posts/leveraged-etf-trend-15y.html'>レバレッジETFは「持ちっぱなし」と「トレンドフィルタ」でどう変わるか — 15年・コスト込み検証</a><div class='meta'>2026-08-06</div></div><div class='card'><a href='/autoquant-lab/posts/kabt-overfit-anatomy.html'>バックテスト年利+360%のシステムが実弾で-8%になった話 — 過適合の解剖記録</a><div class='meta'>2026-08-06</div></div>
 <div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
 <footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>
