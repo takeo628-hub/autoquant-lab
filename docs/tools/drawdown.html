@@ -1,9 +1,9 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>デイトレード必勝法を48通り検証したら、生き残りは1つだけだった | オートクオンツ研究所</title>
-<meta name="description" content="ギャップ逆張り・ブレイクアウト・押し目買いなど、デイトレードの定番手法7種×6銘柄をコスト込みで全数検証。48セル中47が不合格になった記録です。">
+<title>ドローダウン回復計算機 | オートクオンツ研究所</title>
+<meta name="description" content="資産が○%下落したとき、元に戻すには何%の上昇が必要か。損失の非対称性を体感するための計算機です。">
 <link rel="alternate" type="application/rss+xml" href="/autoquant-lab/feed.xml">
-<meta property="og:title" content="デイトレード必勝法を48通り検証したら、生き残りは1つだけだった"><meta property="og:description" content="ギャップ逆張り・ブレイクアウト・押し目買いなど、デイトレードの定番手法7種×6銘柄をコスト込みで全数検証。48セル中47が不合格になった記録です。"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/daytrade-48-hypotheses.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "デイトレード必勝法を48通り検証したら、生き残りは1つだけだった", "datePublished": "2026-08-06", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/daytrade-48-hypotheses.html"}</script>
+<meta property="og:title" content="ドローダウン回復計算機"><meta property="og:description" content="資産が○%下落したとき、元に戻すには何%の上昇が必要か。損失の非対称性を体感するための計算機です。"><meta property="og:type" content="website"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary">
 <style>
 :root{--bg:#f7f8fa;--surface:#ffffff;--fg:#17181c;--sub:#5b616e;--line:#e6e8ec;
 --acc:#4338ca;--acc2:#0ea5e9;--ok:#047857;--bad:#b91c1c;--box:#f1f3f7;
@@ -85,28 +85,14 @@ footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface
 <header><div class="hwrap"><a class="t" href="/autoquant-lab/"><span class="logo">AQ</span>オートクオンツ研究所</a>
 <nav><a href="/autoquant-lab/">ホーム</a><a href="/autoquant-lab/posts/">記事一覧</a><a href="/autoquant-lab/tools/">ツール</a>
 <a href="/autoquant-lab/hikaku.html">証券会社比較</a><a href="/autoquant-lab/about.html">このサイトについて</a></nav></div></header>
-<main><h1>デイトレード必勝法を48通り検証したら、生き残りは1つだけだった</h1><div class='meta'>2026-08-06・解説記事</div><p>「寄付で買って引けで売る」タイプのデイトレード手法を、思いつきではなく<strong>全数検証</strong>した記録です。よくある検証記事と違うのは、(1)仮説を検証前に固定し、後から都合よく追加しなかったこと、(2)手数料・スリッページを含めたこと、(3)期間の前半と後半の両方で機能することを合格条件にしたことです。</p>
-<h2>検証した仮説（事前宣言した7種）</h2>
-<ul>
-<li>ギャップダウン逆張り（大きく下げて始まった日に買う）</li>
-<li>ギャップアップ順張り（トレンド日の継続を狙う）</li>
-<li>前日売られすぎからの反発（RSI(2)ベース）</li>
-<li>前日陽線の翌日追随</li>
-<li>上昇相場で毎日「寄り買い引け売り」</li>
-<li>下落相場での戻り売り（ショート）</li>
-<li>ボラティリティ拡大日の反転狙い</li>
-</ul>
-<p>これを日米6銘柄（日経レバETF・TOPIX・日経225 ETF・SPY・QQQ・TQQQ）に適用し、<strong>合計48セル</strong>を判定しました。</p>
-<h2>結果</h2>
-<p><strong>47セルが不合格。</strong> 米国銘柄は手数料（往復0.28〜1.0%）が日中の小さなエッジ（数bp〜十数bp）を丸ごと食い潰し、全滅。日本銘柄は手数料0円でも、そもそも日中の期待リターン自体がほぼゼロ以下（<a href="/autoquant-lab/posts/overnight-vs-intraday.html">この記事</a>で分解データを公開しています）のため、大半がマイナスでした。</p>
-<p>唯一の生き残りは「上昇相場で前日に売られすぎた日経レバETFを、翌日寄付で買って引けで売る」という条件の限定的な手法で、それでも1回あたりの期待値は<strong>+0.23%</strong>、発生頻度は<strong>年12回程度</strong>。しかも直近数年はエッジがほぼ消えかけています。年間の期待貢献は良くて数%です。</p>
-<h2>この検証からの教訓</h2>
-<ul>
-<li>「デイトレで月利10%」のような話は、手数料とデータの現実の前ではまず成立しません</li>
-<li>検証は「勝てる手法を探す作業」ではなく「勝てない手法を捨てる作業」です。48分の47を捨てられたことがこの検証の成果です</li>
-<li>生き残った1手法も、当ラボでは「本物かどうかの追試」として少額の仮想売買で監視を続けています。その記録は<a href="/autoquant-lab/posts/">検証ジャーナル</a>で毎日公開しています</li>
-</ul>
-<p>なお、本記事は特定の売買を推奨するものではありません。過去に機能した条件が将来も機能する保証はありません。</p><h2>関連記事</h2><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/task-scheduler-auto-invest.html'>家のPCで投資を全自動化する — タスクスケジューラ実践ガイド</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/overnight-vs-intraday.html'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/momentum-reality-check.html'>教科書のモメンタム投資を15年実測したら、思ったより地味だった話</a><div class='meta'>2026-08-06</div></div>
+<main><h1>ドローダウン回復計算機</h1><p>資産が○%下落したとき、元に戻すには何%の上昇が必要か。損失の非対称性を体感するための計算機です。</p><div class='card'>下落率 <input id=d type=number value=30 min=1 max=99>%<br>
+<button onclick=calc()>計算する</button><div class=result id=out></div>
+<div class=meta id=tbl style='margin-top:14px'></div></div><script>function calc(){var d=+document.getElementById('d').value/100;
+var need=(1/(1-d)-1)*100;
+document.getElementById('out').textContent='-'+(d*100).toFixed(0)+'%の損失を取り戻すには +'+need.toFixed(1)+'% の上昇が必要です';
+var rows=[10,20,30,40,50,60,70,80,90].map(function(x){var n=(1/(1-x/100)-1)*100;
+return '-'+x+'% → +'+n.toFixed(0)+'%必要'});
+document.getElementById('tbl').innerHTML=rows.join('<br>')}calc();</script>
 <div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
 <footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>

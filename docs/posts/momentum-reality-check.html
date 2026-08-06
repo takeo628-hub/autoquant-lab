@@ -1,9 +1,9 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>デイトレード必勝法を48通り検証したら、生き残りは1つだけだった | オートクオンツ研究所</title>
-<meta name="description" content="ギャップ逆張り・ブレイクアウト・押し目買いなど、デイトレードの定番手法7種×6銘柄をコスト込みで全数検証。48セル中47が不合格になった記録です。">
+<title>教科書のモメンタム投資を15年実測したら、思ったより地味だった話 | オートクオンツ研究所</title>
+<meta name="description" content="「上がっているものを買う」モメンタム戦略は数十年の研究がある王道ですが、コストと単元株制約込みで実測すると教科書とはかなり違う姿が見えます。">
 <link rel="alternate" type="application/rss+xml" href="/autoquant-lab/feed.xml">
-<meta property="og:title" content="デイトレード必勝法を48通り検証したら、生き残りは1つだけだった"><meta property="og:description" content="ギャップ逆張り・ブレイクアウト・押し目買いなど、デイトレードの定番手法7種×6銘柄をコスト込みで全数検証。48セル中47が不合格になった記録です。"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/daytrade-48-hypotheses.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "デイトレード必勝法を48通り検証したら、生き残りは1つだけだった", "datePublished": "2026-08-06", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/daytrade-48-hypotheses.html"}</script>
+<meta property="og:title" content="教科書のモメンタム投資を15年実測したら、思ったより地味だった話"><meta property="og:description" content="「上がっているものを買う」モメンタム戦略は数十年の研究がある王道ですが、コストと単元株制約込みで実測すると教科書とはかなり違う姿が見えます。"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/momentum-reality-check.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "教科書のモメンタム投資を15年実測したら、思ったより地味だった話", "datePublished": "2026-08-06", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/momentum-reality-check.html"}</script>
 <style>
 :root{--bg:#f7f8fa;--surface:#ffffff;--fg:#17181c;--sub:#5b616e;--line:#e6e8ec;
 --acc:#4338ca;--acc2:#0ea5e9;--ok:#047857;--bad:#b91c1c;--box:#f1f3f7;
@@ -85,28 +85,26 @@ footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface
 <header><div class="hwrap"><a class="t" href="/autoquant-lab/"><span class="logo">AQ</span>オートクオンツ研究所</a>
 <nav><a href="/autoquant-lab/">ホーム</a><a href="/autoquant-lab/posts/">記事一覧</a><a href="/autoquant-lab/tools/">ツール</a>
 <a href="/autoquant-lab/hikaku.html">証券会社比較</a><a href="/autoquant-lab/about.html">このサイトについて</a></nav></div></header>
-<main><h1>デイトレード必勝法を48通り検証したら、生き残りは1つだけだった</h1><div class='meta'>2026-08-06・解説記事</div><p>「寄付で買って引けで売る」タイプのデイトレード手法を、思いつきではなく<strong>全数検証</strong>した記録です。よくある検証記事と違うのは、(1)仮説を検証前に固定し、後から都合よく追加しなかったこと、(2)手数料・スリッページを含めたこと、(3)期間の前半と後半の両方で機能することを合格条件にしたことです。</p>
-<h2>検証した仮説（事前宣言した7種）</h2>
+<main><h1>教科書のモメンタム投資を15年実測したら、思ったより地味だった話</h1><div class='meta'>2026-08-06・解説記事</div><p>「モメンタム（上がっているものを買い続ける）は学術研究で最も頑健なアノマリー」— 投資本でよく見る記述です。当ラボはこれを鵜呑みにせず、<strong>手数料・スリッページ・単元株制約・資金制約をすべて入れた状態</strong>で15年分実測しました。結論から言うと、モメンタムは本物ですが、教科書の数字をそのまま期待すると失望します。</p>
+<h2>検証した戦略</h2>
+<p>株式・債券・金・商品など10種類の資産クラスETFを、直近3・6・12ヶ月の上昇率でランク付けし、月末に上位3つだけを保有する古典的なルール（いわゆるデュアルモメンタム系）です。パラメータは文献の標準値で固定し、結果を見てからの調整は一切していません。</p>
+<h2>実測結果と「教科書との差」</h2>
 <ul>
-<li>ギャップダウン逆張り（大きく下げて始まった日に買う）</li>
-<li>ギャップアップ順張り（トレンド日の継続を狙う）</li>
-<li>前日売られすぎからの反発（RSI(2)ベース）</li>
-<li>前日陽線の翌日追随</li>
-<li>上昇相場で毎日「寄り買い引け売り」</li>
-<li>下落相場での戻り売り（ショート）</li>
-<li>ボラティリティ拡大日の反転狙い</li>
+<li>論文の世界でこの種の戦略は「年率10%超・株式より浅いドローダウン」と紹介されがちです</li>
+<li>当ラボの実測（コスト込み・少額口座の単元株制約込み）では、<strong>単体の年率貢献は数%台</strong>にとどまりました</li>
+<li>差の正体は主に3つ: <strong>売買コスト</strong>（月次入替は回転率が高い）、<strong>単元株制約</strong>（少額だと理論配分どおり買えない）、<strong>近年の効きの弱まり</strong></li>
 </ul>
-<p>これを日米6銘柄（日経レバETF・TOPIX・日経225 ETF・SPY・QQQ・TQQQ）に適用し、<strong>合計48セル</strong>を判定しました。</p>
-<h2>結果</h2>
-<p><strong>47セルが不合格。</strong> 米国銘柄は手数料（往復0.28〜1.0%）が日中の小さなエッジ（数bp〜十数bp）を丸ごと食い潰し、全滅。日本銘柄は手数料0円でも、そもそも日中の期待リターン自体がほぼゼロ以下（<a href="/autoquant-lab/posts/overnight-vs-intraday.html">この記事</a>で分解データを公開しています）のため、大半がマイナスでした。</p>
-<p>唯一の生き残りは「上昇相場で前日に売られすぎた日経レバETFを、翌日寄付で買って引けで売る」という条件の限定的な手法で、それでも1回あたりの期待値は<strong>+0.23%</strong>、発生頻度は<strong>年12回程度</strong>。しかも直近数年はエッジがほぼ消えかけています。年間の期待貢献は良くて数%です。</p>
-<h2>この検証からの教訓</h2>
+<h2>それでも捨てなかった理由</h2>
+<p>成績が「地味」でも、モメンタム部分はポートフォリオ全体の<strong>下落を和らげる分散役</strong>として機能しました。単体の派手さではなく、組み合わせでの役割が本当の価値です。当ラボの現行システムでも、レバレッジ系戦略の暴れを抑える安定装置として組み込んでいます。</p>
+<h2>実測から得た3つの教訓</h2>
 <ul>
-<li>「デイトレで月利10%」のような話は、手数料とデータの現実の前ではまず成立しません</li>
-<li>検証は「勝てる手法を探す作業」ではなく「勝てない手法を捨てる作業」です。48分の47を捨てられたことがこの検証の成果です</li>
-<li>生き残った1手法も、当ラボでは「本物かどうかの追試」として少額の仮想売買で監視を続けています。その記録は<a href="/autoquant-lab/posts/">検証ジャーナル</a>で毎日公開しています</li>
+<li><strong>論文の数字はコスト控除前・大口前提</strong>が多い。個人の実行環境で再計測しない数字は信用しない</li>
+<li>回転率を下げる工夫（当ラボは「上位5位以内なら保有継続」のヒステリシスを採用）だけで、年率1%以上コストが軽くなった</li>
+<li>戦略の評価は単体成績ではなく「ポートフォリオに入れたとき何が改善するか」で行う</li>
 </ul>
-<p>なお、本記事は特定の売買を推奨するものではありません。過去に機能した条件が将来も機能する保証はありません。</p><h2>関連記事</h2><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/task-scheduler-auto-invest.html'>家のPCで投資を全自動化する — タスクスケジューラ実践ガイド</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/overnight-vs-intraday.html'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/momentum-reality-check.html'>教科書のモメンタム投資を15年実測したら、思ったより地味だった話</a><div class='meta'>2026-08-06</div></div>
+<h2>まとめ</h2>
+<p>モメンタムは嘘ではありません。ただし「そのまま真似れば年10%」でもありません。この差を埋めるのが検証という作業で、当ラボはその過程を毎日<a href="/autoquant-lab/posts/">ジャーナル</a>で公開しています。理屈より記録を信じる方針です。</p>
+<p>※本記事は一般的な検証記録の共有であり、特定の売買や銘柄を推奨するものではありません。</p><h2>関連記事</h2><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/task-scheduler-auto-invest.html'>家のPCで投資を全自動化する — タスクスケジューラ実践ガイド</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/overnight-vs-intraday.html'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/luck-vs-skill-bootstrap.html'>その運用成績、実力と運をどう切り分けるか — ブートストラップ検証入門</a><div class='meta'>2026-08-06</div></div>
 <div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
 <footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>

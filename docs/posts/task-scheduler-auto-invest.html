@@ -1,9 +1,9 @@
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>デイトレード必勝法を48通り検証したら、生き残りは1つだけだった | オートクオンツ研究所</title>
-<meta name="description" content="ギャップ逆張り・ブレイクアウト・押し目買いなど、デイトレードの定番手法7種×6銘柄をコスト込みで全数検証。48セル中47が不合格になった記録です。">
+<title>家のPCで投資を全自動化する — タスクスケジューラ実践ガイド | オートクオンツ研究所</title>
+<meta name="description" content="クラウド不要・追加費用0円。Windowsのタスクスケジューラで投資の情報収集・記録・売買判定を毎日自動実行する方法を、実際に稼働中の構成で解説します。">
 <link rel="alternate" type="application/rss+xml" href="/autoquant-lab/feed.xml">
-<meta property="og:title" content="デイトレード必勝法を48通り検証したら、生き残りは1つだけだった"><meta property="og:description" content="ギャップ逆張り・ブレイクアウト・押し目買いなど、デイトレードの定番手法7種×6銘柄をコスト込みで全数検証。48セル中47が不合格になった記録です。"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/daytrade-48-hypotheses.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "デイトレード必勝法を48通り検証したら、生き残りは1つだけだった", "datePublished": "2026-08-06", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/daytrade-48-hypotheses.html"}</script>
+<meta property="og:title" content="家のPCで投資を全自動化する — タスクスケジューラ実践ガイド"><meta property="og:description" content="クラウド不要・追加費用0円。Windowsのタスクスケジューラで投資の情報収集・記録・売買判定を毎日自動実行する方法を、実際に稼働中の構成で解説します。"><meta property="og:type" content="article"><meta property="og:url" content="https://takeo628-hub.github.io/autoquant-lab/posts/task-scheduler-auto-invest.html"><meta property="og:site_name" content="オートクオンツ研究所"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "家のPCで投資を全自動化する — タスクスケジューラ実践ガイド", "datePublished": "2026-08-06", "author": {"@type": "Organization", "name": "オートクオンツ研究所"}, "mainEntityOfPage": "https://takeo628-hub.github.io/autoquant-lab/posts/task-scheduler-auto-invest.html"}</script>
 <style>
 :root{--bg:#f7f8fa;--surface:#ffffff;--fg:#17181c;--sub:#5b616e;--line:#e6e8ec;
 --acc:#4338ca;--acc2:#0ea5e9;--ok:#047857;--bad:#b91c1c;--box:#f1f3f7;
@@ -85,28 +85,43 @@ footer{border-top:1px solid var(--line);margin-top:56px;background:var(--surface
 <header><div class="hwrap"><a class="t" href="/autoquant-lab/"><span class="logo">AQ</span>オートクオンツ研究所</a>
 <nav><a href="/autoquant-lab/">ホーム</a><a href="/autoquant-lab/posts/">記事一覧</a><a href="/autoquant-lab/tools/">ツール</a>
 <a href="/autoquant-lab/hikaku.html">証券会社比較</a><a href="/autoquant-lab/about.html">このサイトについて</a></nav></div></header>
-<main><h1>デイトレード必勝法を48通り検証したら、生き残りは1つだけだった</h1><div class='meta'>2026-08-06・解説記事</div><p>「寄付で買って引けで売る」タイプのデイトレード手法を、思いつきではなく<strong>全数検証</strong>した記録です。よくある検証記事と違うのは、(1)仮説を検証前に固定し、後から都合よく追加しなかったこと、(2)手数料・スリッページを含めたこと、(3)期間の前半と後半の両方で機能することを合格条件にしたことです。</p>
-<h2>検証した仮説（事前宣言した7種）</h2>
+<main><h1>家のPCで投資を全自動化する — タスクスケジューラ実践ガイド</h1><div class='meta'>2026-08-06・解説記事</div><p>当ラボのシステムは、クラウドサーバーを1円も使わず、<strong>家庭用Windows PCのタスクスケジューラ</strong>だけで毎日全自動で動いています。実際に稼働中の構成をそのまま解説します。プログラムの中身ではなく「毎日確実に動かす仕組み」の話なので、自動化したい対象が家計簿でも語学学習でも応用できます。</p>
+<h2>全体像：時刻で役割を分ける</h2>
+<p>当ラボの実際のスケジュールです。</p>
+<table>
+<tr><th>時刻</th><th>タスク</th><th>役割</th></tr>
+<tr><td>毎日 07:30</td><td>売買判定</td><td>前日までのデータで判定し、注文を準備</td></tr>
+<tr><td>毎日 08:25</td><td>記録の公開</td><td>実績から記事を自動生成してサイト更新</td></tr>
+<tr><td>毎日 16:30</td><td>日次精算</td><td>当日の結果を記録</td></tr>
+<tr><td>日曜 09:05</td><td>健全性監査</td><td>データ品質・異常の自動チェック</td></tr>
+</table>
+<p>ポイントは「1つの巨大タスク」ではなく「<strong>小さいタスクを時刻で直列に</strong>」並べること。どれか1つが失敗しても、他は生き残ります。</p>
+<h2>手順1: 実行内容をバッチファイルにまとめる</h2>
+<p>タスクスケジューラから直接プログラムを呼ぶと、作業フォルダやログの扱いで事故が起きがちです。必ず`.bat`を1枚かませます。</p>
 <ul>
-<li>ギャップダウン逆張り（大きく下げて始まった日に買う）</li>
-<li>ギャップアップ順張り（トレンド日の継続を狙う）</li>
-<li>前日売られすぎからの反発（RSI(2)ベース）</li>
-<li>前日陽線の翌日追随</li>
-<li>上昇相場で毎日「寄り買い引け売り」</li>
-<li>下落相場での戻り売り（ショート）</li>
-<li>ボラティリティ拡大日の反転狙い</li>
+<li>1行目で作業フォルダに移動する（`cd /d C:\自分のフォルダ`）</li>
+<li>実行結果は必ずログファイルに追記する（`&gt;&gt; log.txt 2&gt;&amp;1`）</li>
 </ul>
-<p>これを日米6銘柄（日経レバETF・TOPIX・日経225 ETF・SPY・QQQ・TQQQ）に適用し、<strong>合計48セル</strong>を判定しました。</p>
-<h2>結果</h2>
-<p><strong>47セルが不合格。</strong> 米国銘柄は手数料（往復0.28〜1.0%）が日中の小さなエッジ（数bp〜十数bp）を丸ごと食い潰し、全滅。日本銘柄は手数料0円でも、そもそも日中の期待リターン自体がほぼゼロ以下（<a href="/autoquant-lab/posts/overnight-vs-intraday.html">この記事</a>で分解データを公開しています）のため、大半がマイナスでした。</p>
-<p>唯一の生き残りは「上昇相場で前日に売られすぎた日経レバETFを、翌日寄付で買って引けで売る」という条件の限定的な手法で、それでも1回あたりの期待値は<strong>+0.23%</strong>、発生頻度は<strong>年12回程度</strong>。しかも直近数年はエッジがほぼ消えかけています。年間の期待貢献は良くて数%です。</p>
-<h2>この検証からの教訓</h2>
+<p>ログがないと「昨日動いたのか」すら分からなくなります。<strong>自動化の価値の半分はログ</strong>です。</p>
+<h2>手順2: タスクスケジューラに登録する</h2>
+<p>コマンド1行で登録できます（管理者PowerShell）。</p>
+<p>`schtasks /Create /TN &quot;タスク名&quot; /TR &quot;C:\フォルダ\実行.bat&quot; /SC DAILY /ST 07:30`</p>
+<p>画面から作る場合は「基本タスクの作成」で毎日・時刻・プログラムの起動を選ぶだけです。</p>
+<h2>手順3: 失敗前提で設計する（ここが本番）</h2>
 <ul>
-<li>「デイトレで月利10%」のような話は、手数料とデータの現実の前ではまず成立しません</li>
-<li>検証は「勝てる手法を探す作業」ではなく「勝てない手法を捨てる作業」です。48分の47を捨てられたことがこの検証の成果です</li>
-<li>生き残った1手法も、当ラボでは「本物かどうかの追試」として少額の仮想売買で監視を続けています。その記録は<a href="/autoquant-lab/posts/">検証ジャーナル</a>で毎日公開しています</li>
+<li><strong>追いつき設計</strong>: PCが寝ていて実行が飛んでも、次回起動時に未処理分をまとめて処理できる作りにする（当ラボの全タスクはこの方式）</li>
+<li><strong>冪等性</strong>: 同じ日に2回動いても結果が壊れないようにする</li>
+<li><strong>監視の自動化</strong>: 週1回、ログとデータの健全性を機械的にチェックするタスクを別に置く</li>
 </ul>
-<p>なお、本記事は特定の売買を推奨するものではありません。過去に機能した条件が将来も機能する保証はありません。</p><h2>関連記事</h2><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/task-scheduler-auto-invest.html'>家のPCで投資を全自動化する — タスクスケジューラ実践ガイド</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/overnight-vs-intraday.html'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/momentum-reality-check.html'>教科書のモメンタム投資を15年実測したら、思ったより地味だった話</a><div class='meta'>2026-08-06</div></div>
+<h2>よくある失敗</h2>
+<ul>
+<li>スリープ中は実行されない → 電源設定で「スリープ解除タイマー」を許可するか、実行時刻にPCが起きている運用にする</li>
+<li>ネットワークドライブやOneDrive配下のファイルは開けないことがある → ローカルフォルダに置く</li>
+<li>「動いているはず」で放置 → 週次監査タスクで機械に見張らせる</li>
+</ul>
+<h2>まとめ</h2>
+<p>全自動化の本質は高度なプログラムではなく、<strong>失敗しても壊れない地味な設計</strong>です。当ラボはこの構成で売買から記事公開までを無人運転しており、その結果はすべて<a href="/autoquant-lab/posts/">検証ジャーナル</a>で公開しています。</p>
+<p>※本記事はPC自動化の技術解説であり、投資助言ではありません。自動売買を行う場合は、証券会社の規約と自己責任の範囲を必ず確認してください。</p><h2>関連記事</h2><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/overnight-vs-intraday.html'>株のリターンは「夜」に生まれている — 日中と夜間の分解、15年の実測</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/momentum-reality-check.html'>教科書のモメンタム投資を15年実測したら、思ったより地味だった話</a><div class='meta'>2026-08-06</div></div><div class='card'><span class='cbadge a'>解説記事</span><a href='/autoquant-lab/posts/luck-vs-skill-bootstrap.html'>その運用成績、実力と運をどう切り分けるか — ブートストラップ検証入門</a><div class='meta'>2026-08-06</div></div>
 <div class="note">本サイトは投資助言ではなく、自動売買システムの検証記録と一般的な金融教育情報の提供を目的としています。掲載する実績にはペーパートレード（仮想売買）を含み、将来の成果を保証するものではありません。投資判断はご自身の責任で行ってください。</div></main>
 <footer><div class="fwrap">© 2026 オートクオンツ研究所 ／ 本サイトの記事は自動売買システムの
 記録から自動生成されています。アフィリエイトリンクを含む場合はPR表記をしています。</div></footer>

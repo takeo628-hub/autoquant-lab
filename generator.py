@@ -431,32 +431,111 @@ def build() -> None:
                "<div class='meta'>許容損失から適正な株数を逆算</div></div>"
                "<div class='card'><a href='/tools/jpy-return.html'>円建てリターン計算機</a>"
                "<div class='meta'>為替込みの実質損益を計算</div></div>"
-               "<div class='card'><a href='/hikaku.html'>証券会社の手数料比較</a>"
-               "<div class='meta'>手数料差=年率1.5%の実測データつき</div></div></div>")
+               "<div class='card'><a href='/tools/drawdown.html'>ドローダウン回復計算機</a>"
+               "<div class='meta'>-30%を戻すには+43%必要</div></div>"
+               "<div class='card'><a href='/tools/fee-calc.html'>年間手数料計算機</a>"
+               "<div class='meta'>証券会社別の年間コスト試算</div></div>"
+               "<div class='card'><a href='/hikaku.html'>ネット証券6社比較</a>"
+               "<div class='meta'>自動売買目線＋実測データつき</div></div>"
+               "<div class='card'><a href='/glossary.html'>投資検証の用語集</a>"
+               "<div class='meta'>実務目線の短い定義14語</div></div></div>")
     with open(os.path.join(DOCS, "index.html"), "w", encoding="utf-8") as f:
         f.write(page("ホーム", hero + tiles + promises + latest + toolsec + aff, TAGLINE))
 
-    hikaku = ("<h1>証券会社の手数料比較 — 当ラボの実測データつき</h1>"
+    hikaku = ("<h1>ネット証券6社比較 — 自動売買・システムトレード目線＋実測データ</h1>"
               "<p>証券会社選びで最も確実に効くのは手数料です。予測が当たるかは不確実ですが、"
-              "コストは100%確実にリターンから引かれます。当ラボの検証エンジンで実測した影響と"
-              "あわせて比較します（手数料は改定されることがあります。申込前に必ず公式サイトで"
-              "最新の料率をご確認ください。2026年8月時点の調査に基づきます）。</p>"
-              "<h2>米国株の取引手数料</h2>"
-              "<table><tr><th>証券会社</th><th>米国株手数料</th><th>上限</th></tr>"
-              "<tr><td>moomoo証券</td><td>約定代金の0.088%（税込）</td><td>16.5ドル</td></tr>"
-              "<tr><td>楽天証券</td><td>約定代金の0.495%（税込）</td><td>22ドル</td></tr></table>"
+              "コストは100%確実にリターンから引かれます。このページでは主要ネット証券6社を、"
+              "一般的な軸に加えて<strong>「自動売買・システムトレードに向くか」という当ラボ独自の"
+              "実体験軸</strong>で比較します。</p>"
+              "<p class='meta'>※料率・サービスは改定されます。2026年8月時点の調査に基づくため、"
+              "申込前に必ず各社公式サイトで最新情報をご確認ください。</p>"
+              "<h2>総合比較表</h2>"
+              "<table><tr><th>証券会社</th><th>米国株手数料</th><th>国内株手数料</th>"
+              "<th>強み</th><th>自動化適性（当ラボ評）</th></tr>"
+              "<tr><td>moomoo証券</td><td><strong>0.088%</strong>（上限16.5ドル）</td><td>0円</td>"
+              "<td>米株手数料が大手の約1/5。アプリの銘柄分析が強力。24時間取引対応</td>"
+              "<td>◎ 低コストが高回転の自動戦略と好相性</td></tr>"
+              "<tr><td>SBI証券</td><td>0.495%（上限22ドル）</td><td>0円（ゼロ革命）</td>"
+              "<td>取扱商品の広さは国内随一。為替コストの安さも進む</td>"
+              "<td>○ 品揃え重視の長期自動積立向け</td></tr>"
+              "<tr><td>楽天証券</td><td>0.495%（上限22ドル）</td><td>0円（ゼロコース）</td>"
+              "<td>楽天経済圏との連携。取引ツールMARKETSPEEDが有名</td>"
+              "<td>◎ <strong>マーケットスピードRSS</strong>でExcel経由の発注自動化が可能"
+              "（当ラボが実際に自動化で使用した唯一の公式ルート）</td></tr>"
+              "<tr><td>マネックス証券</td><td>0.495%（上限22ドル）</td><td>条件により0円〜</td>"
+              "<td>米国株の買付時為替手数料0銭。銘柄スカウターが優秀</td>"
+              "<td>○ 米株の分析・積立向け</td></tr>"
+              "<tr><td>松井証券</td><td>0.495%（上限22ドル）</td><td>1日50万円まで0円</td>"
+              "<td>シンプルな料金体系。サポート評価が高い</td>"
+              "<td>△ 少額デイトレ向き</td></tr>"
+              "<tr><td>IB証券（Interactive Brokers）</td><td>従量制（1株約0.005ドル・最低約1ドル）</td>"
+              "<td>取扱あり（従量制）</td>"
+              "<td>プロ・機関投資家標準。取扱市場が世界規模</td>"
+              "<td>◎ <strong>本格API</strong>あり。プログラム売買の最終形だが難易度高</td></tr></table>"
               "<h2>当ラボの実測：手数料差は年率でどれだけ効くか</h2>"
               "<p>同一の売買ルール（15.6年・コスト込みバックテスト）を手数料率だけ変えて回した"
               "結果、0.495%と0.088%の差は<strong>年率およそ1.5%</strong>の成績差になりました。"
-              "複利で15年続くと最終資産で数十%の差です。売買頻度が高い運用ほど差は拡大します。</p>"
-              "<h2>国内株について</h2>"
-              "<p>楽天証券は「ゼロコース」で国内株の売買手数料が0円です。当ラボの日本株検証でも"
-              "この前提を使用しています。</p>" + aff +
+              "複利で15年続くと最終資産で数十%の差です。売買頻度が高い運用ほど差は拡大します。"
+              "<a href='/tools/fee-calc.html'>手数料計算機</a>で自分の取引パターンでの年間コストを"
+              "試算できます。</p>"
+              "<h2>タイプ別の選び方</h2>"
+              "<div class='promise'>"
+              "<div class='card'><b>米国株を頻繁に売買する</b><span>手数料率が支配的。0.088%の"
+              "moomoo証券が計算上は最有力。</span></div>"
+              "<div class='card'><b>日本株の自動売買をしたい</b><span>公式に自動化ルート"
+              "（マーケットスピードRSS）を持つ楽天証券が現実解。国内手数料も0円。</span></div>"
+              "<div class='card'><b>NISA中心の長期積立</b><span>主要ネット証券はNISA売買手数料0円が"
+              "主流。品揃えのSBI・為替のマネックスなど強みで選ぶ。</span></div>"
+              "<div class='card'><b>プログラミングで本格運用</b><span>APIの自由度ならIB証券。"
+              "ただし口座維持・操作の難易度は覚悟が必要。</span></div></div>"
+              "<h2>よくある質問</h2>"
+              "<h3>Q. 手数料より「使いやすさ」で選ぶのはダメ？</h3>"
+              "<p>短期売買をしないなら合理的です。年1〜2回の取引なら手数料差は誤差で、"
+              "続けられるツールの方が価値があります。売買頻度が上がるほど手数料の重みが増します。</p>"
+              "<h3>Q. 為替コスト（ドル転）はどう考える？</h3>"
+              "<p>近年は0銭化が進みましたが、経路・タイミングで差が残ります。頻繁にドル転する"
+              "運用では取引手数料と同等以上に効くことがあるため、必ず各社の最新条件を確認して"
+              "ください。</p>"
+              "<h3>Q. 複数口座の使い分けはあり？</h3>"
+              "<p>あり、というのが当ラボの結論です。実際に当ラボの検証でも「日本株=手数料0円の"
+              "証券」「米国株=低率の証券」という役割分担を前提にしています。口座開設は無料なので、"
+              "用途で分けるのが合理的です。</p>" + aff +
               "<p class='meta'>本ページには広告リンクを含む場合があります（PR表記のあるもの）。"
-              "掲載の有無は比較内容・数値に影響しません。</p>")
+              "掲載の有無・順序は比較内容・数値に影響しません。</p>")
     with open(os.path.join(DOCS, "hikaku.html"), "w", encoding="utf-8") as f:
-        f.write(page("証券会社の手数料比較", hikaku,
-                     "米国株手数料を実測データつきで比較。手数料差が年率リターンに与える影響を15年バックテストで検証しました。"))
+        f.write(page("ネット証券6社比較（自動売買目線）", hikaku,
+                     "主要ネット証券6社を手数料・自動売買適性で比較。手数料差が年率リターンに与える影響を15年の実測データつきで解説します。"))
+
+    glossary_terms = [
+        ("過適合（オーバーフィッティング）", "過去データに合わせすぎて、未来では機能しない状態。"
+         "バックテストの数字だけが良くなる最大の原因。当ラボの<a href='/posts/kabt-overfit-anatomy.html'>実例記事</a>参照。"),
+        ("ルックアヘッド・バイアス", "その時点では知り得なかった未来の情報が、判定に混入すること。"
+         "学習期間とテスト期間の重複が典型。"),
+        ("バックテスト", "売買ルールを過去データに適用して成績を測ること。コスト・資金制約・"
+         "単元株を入れないと数字は簡単に数倍化ける。"),
+        ("ペーパートレード", "実際のお金を使わない仮想売買。バックテストと実運用の中間の検証段階。"),
+        ("ドローダウン（DD）", "資産のピークからの下落率。最大DDは戦略の「痛みの深さ」を表す。"
+         "<a href='/tools/drawdown.html'>回復計算機</a>で-30%からの復帰に+43%必要なことを確認できます。"),
+        ("シャープレシオ", "リターンをリスク（変動の大きさ）で割った効率指標。1.0を超えれば良好とされる。"),
+        ("CAGR（年平均成長率）", "複利ベースの年率リターン。単純平均より実態を表す。"),
+        ("モメンタム", "上がっているものは上がり続けやすい傾向。数十年の研究があるが、"
+         "実装コスト込みだと教科書ほど簡単ではない。"),
+        ("平均回帰", "行き過ぎた価格が平均に戻る傾向。モメンタムと逆の性質で、時間軸で使い分ける。"),
+        ("ボラティリティ", "価格変動の大きさ（標準偏差）。リスク管理では敵ではなく測定対象。"),
+        ("ケリー基準", "長期の資産成長を最大化する理論上の賭け金比率。実務ではその半分以下で"
+         "運用するのが定石（推定誤差のため）。"),
+        ("ブートストラップ法", "データを並べ替えて「ありえた別の歴史」を大量生成し、成績のばらつきを"
+         "推定する手法。<a href='/posts/luck-vs-skill-bootstrap.html'>解説記事</a>参照。"),
+        ("スリッページ", "注文時の想定価格と実際の約定価格の差。バックテストに入れ忘れると"
+         "成績が過大評価される。"),
+        ("単元株制約", "株は1株単位でしか買えないため、少額口座では理論通りの配分ができない問題。"),
+    ]
+    gl = ("<h1>投資検証の用語集</h1><p>当ラボの記事に登場する用語を、実務目線の短い定義で"
+          "まとめました。教科書的な定義より「何に気をつけるべきか」を優先しています。</p>"
+          + "".join(f"<h3>{t}</h3><p>{d}</p>" for t, d in glossary_terms))
+    with open(os.path.join(DOCS, "glossary.html"), "w", encoding="utf-8") as f:
+        f.write(page("投資検証の用語集", gl,
+                     "過適合・ルックアヘッド・ドローダウンなど、投資システム検証の用語を実務目線で解説する用語集。"))
 
     about = ("<h1>このサイトについて</h1>"
              "<p>本サイトはAI（Claude）が設計・実装・運用する自動売買システムの検証記録を、"
@@ -471,10 +550,19 @@ def build() -> None:
         f.write(page("このサイトについて", about))
 
     tools()
-    tlist = ("<h1>計算ツール</h1>"
-             "<div class='card'><a href='/tools/fukuri.html'>複利計算機</a></div>"
-             "<div class='card'><a href='/tools/position-size.html'>ポジションサイズ計算機</a></div>"
-             "<div class='card'><a href='/tools/jpy-return.html'>外貨投資の円建てリターン計算機</a></div>")
+    tlist = ("<h1>計算ツール</h1><div class='grid2'>"
+             "<div class='card'><a href='/tools/fukuri.html'>複利計算機</a>"
+             "<div class='meta'>積立×利回り×年数</div></div>"
+             "<div class='card'><a href='/tools/position-size.html'>ポジションサイズ計算機</a>"
+             "<div class='meta'>許容損失から株数を逆算</div></div>"
+             "<div class='card'><a href='/tools/jpy-return.html'>円建てリターン計算機</a>"
+             "<div class='meta'>為替込みの実質損益</div></div>"
+             "<div class='card'><a href='/tools/drawdown.html'>ドローダウン回復計算機</a>"
+             "<div class='meta'>-30%を戻すには+43%必要</div></div>"
+             "<div class='card'><a href='/tools/fee-calc.html'>年間手数料計算機</a>"
+             "<div class='meta'>証券会社別の年間コスト試算</div></div>"
+             "<div class='card'><a href='/glossary.html'>投資検証の用語集</a>"
+             "<div class='meta'>過適合・DD・ケリー基準など14語</div></div></div>")
     with open(os.path.join(DOCS, "tools", "index.html"), "w", encoding="utf-8") as f:
         f.write(page("計算ツール", tlist))
 
@@ -488,9 +576,10 @@ def build() -> None:
                 f"<title>{SITE}</title><link>{BASE_URL}/</link>"
                 f"<description>{TAGLINE}</description>{items}</channel></rss>")
     urls = [f"{BASE_URL}/", f"{BASE_URL}/posts/", f"{BASE_URL}/tools/",
-            f"{BASE_URL}/hikaku.html", f"{BASE_URL}/about.html",
+            f"{BASE_URL}/hikaku.html", f"{BASE_URL}/about.html", f"{BASE_URL}/glossary.html",
             f"{BASE_URL}/tools/fukuri.html", f"{BASE_URL}/tools/position-size.html",
-            f"{BASE_URL}/tools/jpy-return.html"] + \
+            f"{BASE_URL}/tools/jpy-return.html", f"{BASE_URL}/tools/drawdown.html",
+            f"{BASE_URL}/tools/fee-calc.html"] + \
            [f"{BASE_URL}/posts/{p['slug']}.html" for p in posts]
     with open(os.path.join(DOCS, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write("<?xml version='1.0' encoding='UTF-8'?>"
@@ -540,6 +629,33 @@ e=+document.getElementById('e').value,s=+document.getElementById('s').value,d=e-
 if(d<=0){document.getElementById('out').textContent='損切り価格はエントリーより下に設定してください';return}
 let sh=Math.floor(c*k/d);document.getElementById('out').textContent='適正株数: '+sh.toLocaleString()+'株（想定損失 '
 +Math.round(sh*d).toLocaleString()+'円 = 口座の'+(sh*d/c*100).toFixed(2)+'%、必要資金 '+Math.round(sh*e).toLocaleString()+'円）'}""")
+
+    tool_page("drawdown.html", "ドローダウン回復計算機",
+              "資産が○%下落したとき、元に戻すには何%の上昇が必要か。損失の非対称性を体感するための計算機です。",
+              """<div class='card'>下落率 <input id=d type=number value=30 min=1 max=99>%<br>
+<button onclick=calc()>計算する</button><div class=result id=out></div>
+<div class=meta id=tbl style='margin-top:14px'></div></div>""",
+              """function calc(){var d=+document.getElementById('d').value/100;
+var need=(1/(1-d)-1)*100;
+document.getElementById('out').textContent='-'+(d*100).toFixed(0)+'%の損失を取り戻すには +'+need.toFixed(1)+'% の上昇が必要です';
+var rows=[10,20,30,40,50,60,70,80,90].map(function(x){var n=(1/(1-x/100)-1)*100;
+return '-'+x+'% → +'+n.toFixed(0)+'%必要'});
+document.getElementById('tbl').innerHTML=rows.join('<br>')}calc();""")
+
+    tool_page("fee-calc.html", "証券会社の年間手数料計算機",
+              "1回の取引金額と年間取引回数から、証券会社ごとの年間手数料を比較計算します。料率は2026年8月調査時点（必ず公式で最新確認を）。",
+              """<div class='card'>1回の取引金額 <input id=amt type=number value=300000>円<br>
+年間取引回数 <input id=n type=number value=24>回<br>
+<button onclick=calc()>計算する</button><div class=result id=out></div>
+<div id=tbl style='margin-top:10px'></div></div>""",
+              """function calc(){var a=+document.getElementById('amt').value,n=+document.getElementById('n').value;
+var usd=155;var brokers=[['moomoo証券（米国株）',0.00088,16.5*usd],['SBI・楽天・マネックス・松井（米国株）',0.00495,22*usd],
+['楽天・SBI・moomoo（国内株）',0,0]];
+var h='<table><tr><th>証券会社（区分）</th><th>1回あたり</th><th>年間合計</th></tr>';
+brokers.forEach(function(b){var per=Math.min(a*b[1],b[2]||Infinity);if(b[1]===0)per=0;
+h+='<tr><td>'+b[0]+'</td><td>'+Math.round(per).toLocaleString()+'円</td><td><strong>'+Math.round(per*n).toLocaleString()+'円</strong></td></tr>'});
+h+='</table>';document.getElementById('tbl').innerHTML=h;
+document.getElementById('out').textContent='年間'+n+'回 × '+a.toLocaleString()+'円の場合';}calc();""")
 
     tool_page("jpy-return.html", "外貨投資の円建てリターン計算機",
               "米国株などの外貨建て投資は、資産価格と為替の両方で損益が決まります。円ベースの実質リターンを計算します。",
